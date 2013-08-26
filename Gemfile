@@ -1,32 +1,38 @@
-source 'https://rubygems.org'
-gem 'rails', '4.0.0'
-gem 'pg'
-gem 'sass-rails', '~> 4.0.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'jquery-rails'
-gem 'turbolinks'
-gem 'jbuilder', '~> 1.2'
-group :doc do
-  gem 'sdoc', require: false
-end
+source 'http://rubygems.org'
 ruby '2.0.0'
+gem 'rails', '4.0.0'
 
-gem 'bootstrap-sass', '~> 2.0.4.0'
-gem 'foreman'
-gem 'unicorn'
+gem 'pg'
+gem 'bootstrap-sass'
+gem 'coffee-rails'
+gem 'draper'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'rails_12factor', group: :production
+gem 'sass-rails'
+gem 'simple_form'
 gem 'slim-rails'
-group :test, :development do
-  gem 'rspec-rails'
+gem 'turbolinks'
+gem 'uglifier'
+gem 'unicorn'
+
+group :development, :test do
+  gem 'dotenv'
   gem 'factory_girl_rails'
+  gem 'foreman'
   gem 'forgery'
-  gem 'heroku'
-  gem 'zonebie'
+  gem 'pry'
+  gem 'rspec'
+  gem 'rspec-rails'
 end
+
 group :test do
   gem 'capybara'
   gem 'launchy'
-  gem 'database_cleaner'
-  gem 'capybara-webkit'
-  gem 'simplecov'
+  gem 'coveralls', require: false
+  gem 'turnip'
+end
+
+group :tddium_ignore do
+  gem 'pry'
 end
