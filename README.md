@@ -1,4 +1,9 @@
-# <Project Name>
+# Fenway
+
+[![Dependency Status](https://gemnasium.com/kurtisnelson/senior-design.png)](https://gemnasium.com/kurtisnelson/senior-design)
+[![Code Climate](https://codeclimate.com/github/kurtisnelson/senior-design.png)](https://codeclimate.com/github/kurtisnelson/senior-design)
+[![Build Status](https://secure.travis-ci.org/kurtisnelson/senior-design.png)](http://travis-ci.org/kurtisnelson/senior-design)
+[![Coverage Status](https://coveralls.io/repos/kurtisnelson/senior-design/badge.png?branch=master)](https://coveralls.io/r/kurtisnelson/senior-design)
 
 ## Getting Setup
 
