@@ -24,7 +24,15 @@ html lang="en"
               li= link_to "New Game", new_game_path
               li= link_to "New Athlete", new_athlete_path
               li= link_to "New Team", new_team_path
-
+          .login 
+          - if current_user
+            = current_user.username
+          - else
+            = link_to "Sign In", new_user_session_path
+            | 
+            = link_to "Register", new_user_registration_path
+            | 
+            = link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2)
     .container
 
       .content
