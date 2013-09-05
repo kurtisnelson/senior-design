@@ -5,8 +5,6 @@ class User < ActiveRecord::Base
   
 	devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :omniauth_providers => [:google_oauth2]
- 
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :provider, :uid, :avatar
 
   def self.from_omniauth(auth)
     if user = User.find_by_email(auth.info.email)
