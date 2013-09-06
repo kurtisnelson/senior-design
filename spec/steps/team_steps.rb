@@ -1,4 +1,8 @@
-step "I click new team" do
+step "I click on Teams" do
+	click_on "Teams"
+end
+
+step "I click New Team" do
   click_on "New Team"
 end
 
