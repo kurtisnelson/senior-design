@@ -1,4 +1,8 @@
-step "I click new game" do
+step "I click on Games" do
+	click_on "Games"
+end 
+
+step "I click New Game" do
   click_on "New Game"
 end
 

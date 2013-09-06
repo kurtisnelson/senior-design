@@ -1,3 +1,7 @@
+step "I click Sign In" do
+	click_on "Sign In"
+end
+
 step "I click the button Sign in with Google" do
   click_on "Sign in with Google"
 end

@@ -1,4 +1,8 @@
-step "I click new athlete" do
+step "I click on Athletes" do
+	click_on "Athletes"
+end
+
+step "I click New Athlete" do
   click_on "New Athlete"
 end
 
