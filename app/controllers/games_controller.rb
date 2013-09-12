@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.all
+    @games = GameDecorator.decorate_collection Game.all
   end
 
   def new
