@@ -19,6 +19,10 @@ class GamesController < ApplicationController
     end
   end
 
+  def score
+  	@game = Game.find(params[:game_id])
+  end
+
   private
   def game_params
     params.require(:game).permit(

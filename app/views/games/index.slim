@@ -11,3 +11,5 @@ table.table
         td = game.start_time
         td = game.location
         td = game.status_tag
+		td
+			= link_to "Score", game_score_path(game), class: 'btn'

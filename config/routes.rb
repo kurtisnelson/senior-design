@@ -6,7 +6,10 @@ Fenway::Application.routes.draw do
 
   root to: 'home#index'
 
-  resources :games
+  resources :games do
+  	get 'score'
+	post 'score'
+  end
 
   resources :teams
 end
