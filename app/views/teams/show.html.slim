@@ -2,10 +2,19 @@ p#notice = notice
 
 table.table
   tr
-    th = "Name"
+    th  Name
   tr
-    td = @team.name
+    td =  @team.name
   br
+  tr
+    th Description
+  tr
+    td = @team.description
+  tr
+    th Members of Team
+  -@team.users.each do |user| 
+    tr 
+      td = user.email
 = link_to 'Edit', edit_team_path(@team)
 = " | "
 = link_to 'Back', teams_path
