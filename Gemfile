@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 ruby '2.0.0'
 gem 'rails', '4.0.0'
 
+gem 'active_enum', github: 'adzap/active_enum'
 gem 'pg'
 gem 'bootstrap-sass'
 gem 'coffee-rails'

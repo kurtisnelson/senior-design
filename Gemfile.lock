@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/adzap/active_enum.git
+  revision: 280548e3954d8f9e032968dd2757b7e5862cdf49
+  specs:
+    active_enum (0.9.12)
+      activesupport (>= 3.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -238,6 +245,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_enum!
   bootstrap-sass
   capybara
   coffee-rails

@@ -1,27 +1,24 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
-  
-	devise :database_authenticatable, :registerable, :omniauthable,
-         :recoverable, :rememberable, :trackable, :omniauth_providers => [:google_oauth2]
+  devise :database_authenticatable, :registerable, :omniauthable,
+    :recoverable, :rememberable, :trackable, :omniauth_providers => [:google_oauth2]
+
   belongs_to :team
-  def self.from_omniauth(auth)
-    if user = User.find_by_email(auth.info.email)
-      user.provider = auth.provider
-      user.uid = auth.uid
-      user
-    else
-      where(auth.slice(:provider, :uid)).first_or_create do |user|
-        user.provider = auth.provider
-        user.uid = auth.uid
-        user.username = auth.info.name
-        user.email = auth.info.email
-        user.avatar = auth.info.image
-        user.save!
-        Rails.logger.debug("debug::" + user.username)
-      end
-      
+  enumerate :role do
+    value id: 0, name: "Player"
+    value id: 1, name: "Statistician"
+    value id: 2, name: "Coach"
+  end
+
+  def self.find_for_google_oauth2(auth)
+    data = access_token.info
+    user = User.where(:email => data["email"]).first
+
+    unless user
+      user = User.create(name: data["name"],
+                         email: data["email"],
+                         password: Devise.friendly_token[0,20]
+                        )
     end
+    user
   end
 end
