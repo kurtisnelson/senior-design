@@ -1,5 +1,4 @@
 Feature: Games can be created, updated, and scheduled
-		@javascript
         Scenario: A new game can be created
                 When I visit the home page
                 And I click on Games

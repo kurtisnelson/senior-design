@@ -62,6 +62,7 @@ GEM
       rest-client
       simplecov (>= 0.7)
       thor
+    database_cleaner (1.1.1)
     devise (3.0.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -250,6 +251,7 @@ DEPENDENCIES
   capybara
   coffee-rails
   coveralls
+  database_cleaner
   devise
   dotenv
   draper

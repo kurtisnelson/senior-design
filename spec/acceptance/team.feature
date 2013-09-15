@@ -1,5 +1,4 @@
 Feature: Teams can be created, and named
-		@javascript
         Scenario: A new team can be created
                  When I visit the home page
                  And I click on Teams

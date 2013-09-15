@@ -22,40 +22,43 @@ html lang="en"
             ul.nav
               li.dropdown
                 a.dropdown-toggle href="#" data-toggle="dropdown"
-                  <p>Games <span class="caret"></p>
+                  ' Games
+                  span.caret
                 ul.dropdown-menu
                   li= link_to "All Games", games_path
                   li= link_to "New Game", new_game_path
               li.dropdown
                 a.dropdown-toggle href="#" data-toggle="dropdown"
-                  <p>Teams <span class="caret"></p>
+                  ' Users
+                  span.caret
+                ul.dropdown-menu
+                  li= link_to "All Users", users_path
+                  li= link_to "New User", new_user_path
+              li.dropdown
+                a.dropdown-toggle href="#" data-toggle="dropdown"
+                  ' Teams
+                  span.caret
                 ul.dropdown-menu
                   li= link_to "All Teams", teams_path
                   li= link_to "New Team", new_team_path
-              li.dropdown
-                a.dropdown-toggle href="#" data-toggle="dropdown"
-                  <p>Athletes <span class="caret"></p>
-                ul.dropdown-menu
-                  li= link_to "All Athlete", athletes_path
-                  li= link_to "New Athlete", new_athlete_path
             .pull-right
               form.navbar-search
                 input type="text" class="search-query" placeholder="Search"
               ul.nav
                 li.divider-vertical
                 - if current_user
-                  li.small = link_to current_user.username, "/path1"
+                  li.small = link_to current_user.name, user_path(current_user)
                 - else
                   li.dropdown
                     a.dropdown-toggle href="#" data-toggle="dropdown"
-                      <p>Sign In <span class="caret"></p>
+                      ' Sign In
+                      span.caret
                     ul.dropdown-menu
-                      li = link_to "Sign In", new_user_session_path
-                      li = link_to "Register", new_user_registration_path
                       li = link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2)
     .container.clearfix
 
       .content
+        == render 'layouts/messages'
         .row
           .span9
             = yield
