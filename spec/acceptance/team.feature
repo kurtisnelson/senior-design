@@ -12,5 +12,5 @@ Feature: Teams can be created, named, and have players
                 And I click on Teams
                 And I click on all teams
                 And I select the given team
-                Then I see "Ryan"
+                Then I see the user "Ryan"
         
