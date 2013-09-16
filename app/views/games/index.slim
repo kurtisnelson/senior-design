@@ -10,6 +10,6 @@ table.table
         td = game.name
         td = game.start_time
         td = game.location
-        td = game.status_tag
+        td = game.status
 		td
-			= link_to "Score", game_score_path(game), class: 'btn'
+			= link_to "Score Game", game_score_path(game), class: 'btn'

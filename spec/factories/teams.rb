@@ -2,6 +2,7 @@
 
 FactoryGirl.define do
   factory :team do
-    name "MyString"
+    name {Forgery::LoremIpsum.words(1)}
+    description {Forgery::LoremIpsum.words(1)}
   end
 end
