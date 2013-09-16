@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130915190938) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20130916183306) do
 
   create_table "games", force: true do |t|
     t.string   "name"
@@ -23,14 +20,14 @@ ActiveRecord::Schema.define(version: 20130915190938) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "status"
-    t.integer  "team_away_id"
-    t.integer  "team_home_id"
+    t.integer  "away_team_id"
+    t.integer  "home_team_id"
     t.integer  "team_home_score"
     t.integer  "team_away_score"
   end
 
-  add_index "games", ["team_away_id"], name: "index_games_on_team_away_id", using: :btree
-  add_index "games", ["team_home_id"], name: "index_games_on_team_home_id", using: :btree
+  add_index "games", ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
+  add_index "games", ["home_team_id"], name: "index_games_on_home_team_id", using: :btree
 
   create_table "teams", force: true do |t|
     t.string   "name"
