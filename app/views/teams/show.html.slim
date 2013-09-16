@@ -14,7 +14,7 @@ table.table
     th Members of Team
   -@team.users.each do |user| 
     tr 
-      td = user.email
+      td = user.name
 = link_to 'Edit', edit_team_path(@team)
 = " | "
 = link_to 'Back', teams_path
