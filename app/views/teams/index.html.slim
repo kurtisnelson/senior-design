@@ -3,8 +3,12 @@ h1 Listing teams
 table.table
   - @teams.each do |team|
     tr
-      td <h3> #{team.name}</h3> #{link_to 'Show', team} | #{link_to 'Edit', edit_team_path(team)} |  #{link_to 'Destroy', team, :confirm => 'Are you sure?', :method => :delete}
+      td
+        h3 = team.name 
+      td = link_to 'Show', team_path(team)
+      td = link_to 'Edit', edit_team_path(team)
+      td = link_to 'Destroy', team, :confirm => 'Are you sure?', :method => :delete
 
 br
 
-#{link_to 'New Team', new_team_path, :class => 'btn btn-primary'}
+= link_to 'New Team', new_team_path, :class => 'btn btn-primary'
