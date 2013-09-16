@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_for_google_oauth2(auth)
-    data = access_token.info
+    data = auth.info
     user = User.where(:email => data["email"]).first
 
     unless user

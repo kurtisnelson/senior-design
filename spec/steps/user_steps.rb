@@ -8,6 +8,7 @@ end
 
 step "I name the user :name" do |name|
   fill_in "Name", with: name
+  fill_in "Email", with: "example@example.com"
   click_button "Create User"
 end
 
