@@ -5,7 +5,6 @@ Feature: Teams can be created, named, and have players
                  And I click New Team
                  And I name the team "Broncos"
                  Then I see the team called "Broncos"
-        @javascript
         Scenario: A new team can have players
                 Given I create a user "Ryan"
                 When I visit the home page
