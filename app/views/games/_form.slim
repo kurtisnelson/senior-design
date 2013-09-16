@@ -1,7 +1,10 @@
 = simple_form_for @game do |f|
   = f.input :name
+  = f.input :start_date, as: :string
   = f.input :start_time
   = f.input :location
   = f.association :away_team
   = f.association :home_team
   = f.submit
+javascript:
+  $('#game_start_date').datepicker({format: 'yyyy-mm-dd'});

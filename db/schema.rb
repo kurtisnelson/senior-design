@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130916183306) do
+ActiveRecord::Schema.define(version: 20130916190230) do
 
   create_table "games", force: true do |t|
     t.string   "name"
-    t.datetime "start_time"
+    t.time     "start_time"
     t.string   "location"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20130916183306) do
     t.integer  "home_team_id"
     t.integer  "team_home_score"
     t.integer  "team_away_score"
+    t.date     "start_date"
   end
 
   add_index "games", ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
