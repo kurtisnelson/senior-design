@@ -7,7 +7,7 @@ table.table
         h3 = team.name 
       td = link_to 'Show', team_path(team)
       td = link_to 'Edit', edit_team_path(team)
-      td = link_to 'Destroy', team, :confirm => 'Are you sure?', :method => :delete
+      td = link_to 'Destroy', team_path(team), method: :delete, data: {:confirm => 'Are you sure?'}
 
 br
 

@@ -8,6 +8,8 @@ class Game < ActiveRecord::Base
   end
 
   def start_datetime
+    return nil unless start_date
+    start_time ||= Time.now.beginning_of_day
     DateTime.new(start_date.year, start_date.month, start_date.day, start_time.hour, start_time.min, start_time.sec)
   end
 end
