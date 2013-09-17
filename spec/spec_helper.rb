@@ -13,7 +13,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].sort.each {|f| require f}
 
 # Load the .env file
 Dotenv.load
-
+Zonebie.set_random_timezone
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.use_transactional_fixtures = false

@@ -38,6 +38,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'coveralls', require: false
   gem 'turnip'
+  gem 'zonebie'
 end
 
 group :tddium_ignore do
