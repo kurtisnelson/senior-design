@@ -21,3 +21,7 @@ Feature: Teams can be created, named, and have players
                 And I uncheck "Antonio Freeman"
                 And I update the team
                 Then I don't see the player "Antonio Freeman" on the team
+                When I click edit
+                And I add "Antonio Freeman" to the team
+                And I update the team
+                Then I see the player "Antonio Freeman" on the team
