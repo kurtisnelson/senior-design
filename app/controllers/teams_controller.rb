@@ -16,11 +16,6 @@ class TeamsController < ApplicationController
   
   def create
     @team = Team.new(team_params)
-    params[:team][:user_ids].each do | id |
-      if id.length > 0
-        @team.users << User.find(id)
-      end
-    end
 	  if @team.save
 		  flash[:success] = "Saved Team"
 		  redirect_to teams_path
@@ -37,11 +32,6 @@ class TeamsController < ApplicationController
 	 
   def update
   	if @team.update(team_params)
-      params[:team][:user_ids].each do | id |
-        if id.length > 0
-         @team.users << User.find(id)
-        end
-      end
 		  redirect_to @team, notice: 'Team wasy successfully updated'
 	else
 	 	render action: "edit"	 
@@ -54,7 +44,7 @@ class TeamsController < ApplicationController
   
   def team_params
   	params.require(:team).permit(
-		:name, :description, :user_ids, :users_id, :users, :user
+		:name, :description, :user_ids => []
 	)
   end
   	  	
