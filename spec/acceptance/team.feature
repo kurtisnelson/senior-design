@@ -7,7 +7,7 @@ Feature: Teams can be created, named, and have players
                  And I create the team
                  Then I see the team called "Broncos"
         @javascript
-        Scenario: A player can be added to a team
+        Scenario: A player can be added to a team, subsequently removed, then added again
                 Given I create the player "Antonio Freeman"
                 When I visit the home page
                 And I click on Teams
@@ -17,4 +17,7 @@ Feature: Teams can be created, named, and have players
                 And I create the team
                 And I show the team
                 Then I see the player "Antonio Freeman" on the team
-                
+                When I click edit
+                And I uncheck "Antonio Freeman"
+                And I update the team
+                Then I don't see the player "Antonio Freeman" on the team

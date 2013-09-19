@@ -37,3 +37,19 @@ end
 step "I show the team" do
   click_on "Show"
 end
+
+step "I click edit" do
+  click_on "Edit"
+end
+
+step "I uncheck :name" do |name|
+  uncheck(name)
+end
+
+step "I update the team" do 
+  click_button "Update Team"
+end
+
+step "I don't see the player :name on the team" do |name|
+  page.should have_no_content name
+end
