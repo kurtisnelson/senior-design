@@ -4,12 +4,17 @@ Feature: Teams can be created, named, and have players
                  And I click on Teams
                  And I click New Team
                  And I name the team "Broncos"
+                 And I create the team
                  Then I see the team called "Broncos"
-        Scenario: A new team can have players
-                Given I create a user "Ryan"
+        @javascript
+        Scenario: A player can be added to a team
+                Given I create the player "Antonio Freeman"
                 When I visit the home page
                 And I click on Teams
-                And I click on all teams
-                And I select the given team
-                Then I see the user "Ryan"
-        
+                And I click New Team
+                And I name the team "Packers"
+                And I add "Antonio Freeman" to the team
+                And I create the team
+                And I show the team
+                Then I see the player "Antonio Freeman" on the team
+                
