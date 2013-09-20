@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20130918162407) do
     t.string   "uid"
     t.string   "name"
     t.binary   "avatar"
+    t.integer  "roles_mask"
     t.integer  "role",                   default: 0
   end
 
