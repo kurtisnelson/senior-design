@@ -2,6 +2,16 @@ class Game < ActiveRecord::Base
   belongs_to :away_team, class_name: "Team"
   belongs_to :home_team, class_name: "Team"
 
+  def index
+    @games = Game.all
+  end
+
+
+  def new
+    @games = Game.all
+    @game = Game.new
+  end
+
   def in_progress?
     return true if self.start_datetime <= DateTime.now
     false

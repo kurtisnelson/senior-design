@@ -1,9 +1,9 @@
-step "I click on Users" do
-	click_on "Users"
+step "I click on Players" do
+	click_on "Players"
 end
 
-step "I click New User" do
-  click_on "New User"
+step "I click New Player" do
+  click_on "New Player"
 end
 
 step "I name the user :name" do |name|
