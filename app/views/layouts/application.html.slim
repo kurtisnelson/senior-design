@@ -10,67 +10,101 @@ html lang="en"
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
 
-  body
-    .navbar.navbar-fixed-top.navbar-inverse
-      .navbar-inner
-        .container
-            a.btn.btn-navbar data-target=".nav-collapse" data-toggle="collapse"
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
-            a.brand href=root_path Fenway
-            ul.nav
-              li.dropdown
-                a.dropdown-toggle href="#" data-toggle="dropdown"
-                  ' Games
-                  span.caret
-                ul.dropdown-menu
-                  li= link_to "All Games", games_path
-                  li= link_to "New Game", new_game_path
-              li.dropdown
-                a.dropdown-toggle href="#" data-toggle="dropdown"
-                  ' Users
-                  span.caret
-                ul.dropdown-menu
-                  li= link_to "All Users", users_path
-                  li= link_to "New User", new_user_path
-              li.dropdown
-                a.dropdown-toggle href="#" data-toggle="dropdown"
-                  ' Teams
-                  span.caret
-                ul.dropdown-menu
-                  li= link_to "All Teams", teams_path
-                  li= link_to "New Team", new_team_path
-            .pull-right
-              form.navbar-search
-                input type="text" class="search-query" placeholder="Search"
-              ul.nav
-                li.divider-vertical
-                - if user_signed_in?
-                  li = link_to current_user.name, user_path(current_user) 
-                  li = link_to "Sign Out", "/logout", :method => :delete
-                - else
-                  li.dropdown
-                    a.dropdown-toggle href="#" data-toggle="dropdown"
-                      ' Sign In
-                      span.caret
-                    ul.dropdown-menu
-                      li = link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2)
-    .container.clearfix
+    javascript:
+      $(document).ready(function(){
 
-      .content
+        $("#header a").click(function(event){
+          event.preventDefault();
+          document.getElementById("header").className = "large-header transition";
+          document.getElementById("static-nav").className = "static-nav large-nav transition";
+          $("#main-article").hide();
+          var address = this.href;
+          setTimeout(function(){window.location = address;},1000);
+        });
+
+        $("a#user_name").click(function(event){
+          event.preventDefault();
+          document.getElementById("header").className = "small-header";
+          document.getElementById("static-nav").className = "static-nav";
+          $("#main-article").hide();
+          var address = this.href;
+          setTimeout(function(){window.location = address;},1000);
+        });
+
+        $(".login-bar .clickable a").click(function(event){
+          event.preventDefault();
+          if(window.location != "#{root_url}"){
+            document.getElementById("header").className = "large-header transition";
+            document.getElementById("static-nav").className = "static-nav large-nav transition";
+            $("#main-article").hide();
+            var address = this.href;
+            setTimeout(function(){window.location = address;},1000);
+          } else {
+            window.location = this.href;
+          }
+        });
+
+        $(".accordion-inner ul.nav li a").click(function(event){
+          event.preventDefault();
+          document.getElementById("header").className = "small-header";
+          document.getElementById("static-nav").className = "static-nav";
+          $("#main-article").hide();
+          var address = this.href;
+          setTimeout(function(){window.location = address;},1000);
+        });
+      });
+
+  body
+    .container
+      .small-header id="header"
+         = link_to image_tag("fenway_header_splash.png", width:'100%'), root_url
+
+      .login-bar
+        ul.nav.pull-right
+          - if user_signed_in?
+            li.pull-right.clickable = link_to "Sign Out", "/logout", :method => :delete
+            li.pull-right = link_to current_user.name, user_path(current_user), :id => "user_name"
+          - else
+            li.clickable = link_to "Sign In", user_omniauth_authorize_path(:google_oauth2)  
+
+      aside.static-nav id="static-nav"
+        .accordion id="accordion1"
+          .accordion-group
+            .accordion-heading
+              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#games-collapse" Games
+            .accordion-body.collapse id="games-collapse"
+              .accordion-inner
+                ul.nav
+                  li = link_to "All Games", games_path
+                  li= link_to "New Game", new_game_path
+          .accordion-group
+            .accordion-heading
+              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#teams-collapse" Teams
+            .accordion-body.collapse id="teams-collapse"
+              .accordion-inner
+                ul.nav
+                  li = link_to "All Teams", teams_path, :id => "all-teams"
+                  li = link_to "New Team", new_team_path
+          .accordion-group
+            .accordion-heading
+              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#players-collapse" Players
+            .accordion-body.collapse id="players-collapse"
+              .accordion-inner
+                ul.nav
+                  li= link_to "All Players", users_path
+                  li= link_to "New Players", new_user_path
+          .accordion-group
+            .accordion-heading
+              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#leaderboards-collapse" Leaderboards
+            .accordion-body.collapse id="leaderboards-collapse"
+              .accordion-inner
+                ul.nav
+                  li= link_to "All Leaderboards", "/fix_me"
+
+      .main-article id="main-article"
         == render 'layouts/messages'
-        .row
-          .span9
-            = yield
-          .span3
-            .well.sidebar-nav
-              h3 Sidebar
-              ul.nav.nav-list
-                li.nav-header Sidebar
-                li= link_to "Link 1", "/path1"
-                li= link_to "Link 2", "/path2"
-                li= link_to "Link 3", "/path3"
- 
+        = yield
+   
+      .clearfix
+
       footer
-        p &copy; 2012

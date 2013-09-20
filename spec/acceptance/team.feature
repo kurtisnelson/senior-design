@@ -1,5 +1,6 @@
 Feature: Teams can be created, named, and have players
-        Scenario: A new team can be created
+  @javascript
+  Scenario: A new team can be created
                  When I visit the home page
                  And I click on Teams
                  And I click New Team

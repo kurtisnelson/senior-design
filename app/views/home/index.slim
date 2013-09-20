@@ -1,1 +1,16 @@
-h1 Hello World!
+javascript:
+	document.getElementById("header").className = " large-header"
+	document.getElementById("static-nav").className += " large-nav"
+
+
+h2 Play.Score.Repeat.
+p Fenway brings state of the art scorekeeping into the palm of your hand. Play whenever and wherever and Fenway will seamlessly provide live scores and statistics from all your favorite campus players. Set up brakets, track progress, and even view your own statistics all while on your way to your next class. Built from the ground up with you in mind, Fenway is easy to use.
+
+
+h2 Live Games:
+table.table
+- @games.each do |game|
+	tr
+		td
+			h3 = game.name
+			= link_to "Live Score", game_score_path(game)
