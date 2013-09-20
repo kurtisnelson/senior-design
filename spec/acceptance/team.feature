@@ -6,7 +6,6 @@ Feature: Teams can be created, named, and have players
                  And I name the team "Broncos"
                  And I create the team
                  Then I see the team called "Broncos"
-        @javascript
         Scenario: A player can be added to a team, subsequently removed, then added again
                 Given I create the player "Antonio Freeman"
                 When I visit the home page
