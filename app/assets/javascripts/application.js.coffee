@@ -1,4 +1,5 @@
 #= require jquery
+#= require autocomplete-rails
 #= require jquery_ujs
 #= require bootstrap
 #= require bootstrap-datepicker

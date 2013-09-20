@@ -3,6 +3,7 @@ ruby '2.0.0'
 gem 'rails', '4.0.0'
 
 gem 'active_enum', github: 'adzap/active_enum'
+gem 'rails3-jquery-autocomplete', github: 'francisd/rails3-jquery-autocomplete'
 gem 'bootstrap-datepicker-rails'
 gem 'bootstrap-sass'
 gem 'coffee-rails'
