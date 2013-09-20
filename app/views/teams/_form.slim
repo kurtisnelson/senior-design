@@ -2,5 +2,6 @@
   = f.input :name
   = f.label "Description"
   = f.text_area :description
+  = f.association :users, label:"Select the players on your team", as: :check_boxes
   br
   = f.submit

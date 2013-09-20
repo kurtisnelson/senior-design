@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :omniauthable,
     :recoverable, :rememberable, :trackable, :omniauth_providers => [:google_oauth2]
 
-  belongs_to :team
+  has_and_belongs_to_many :teams
   enumerate :role do
     value id: 0, name: "Player"
     value id: 1, name: "Statistician"
