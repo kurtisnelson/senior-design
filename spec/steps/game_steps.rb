@@ -15,3 +15,19 @@ end
 step "I see the game called :name" do |name|
   page.should have_content name
 end
+
+step "I click All Games" do
+	click_link "All Games"
+end
+
+step "I edit a game called :name" do |name|
+	click_on "Edit"
+end
+
+step "I update Home Team" do
+	select "Georgia Tech", :from => "Home Team"
+end
+
+step "I update Away Team" do
+	select "UNC", :from => "Away Team"
+end
