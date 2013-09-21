@@ -14,7 +14,7 @@ Feature: Games can be created, updated, and scheduled
 		And I create a game called "fun"
 		And I visit the home page
 		Then I see the game called "fun"
-	@javascript
+	
 	Scenario: A game can update a Home Team and Away Team
 		Given I create the team "Georgia Tech"
 		Given I create the team "UNC"
