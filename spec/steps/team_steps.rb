@@ -22,6 +22,10 @@ step "I see the team called :name" do |name|
   page.should have_content name
 end
 
+step "I create the team :name" do |name|
+	FactoryGirl.create(:team, name:name)
+end
+
 step "I click on all teams" do
   click_on "All Teams"
 end

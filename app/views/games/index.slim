@@ -2,6 +2,6 @@ table.table
 - @games.each do |game|
 	tr 
 		td 
-			h2 = game.name
+			h2 = link_to game.name, game_path(game)
 			.link = link_to "Live Score", game_score_path(game)
 			.link = link_to "Edit", edit_game_path(game)

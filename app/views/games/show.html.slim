@@ -1,0 +1,20 @@
+p#notice = notice
+
+table.table
+  tr
+    th  Name
+  tr
+    td =  @game.name
+  br
+  tr
+    th Home Team
+  tr
+    td = @game.home_team.name()
+  tr
+  	th Away Team
+  tr
+  	td =@game.away_team.name()
+
+= link_to 'Edit', edit_team_path(@team)
+= " | "
+= link_to 'Back', teams_path
