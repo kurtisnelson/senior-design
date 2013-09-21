@@ -4,5 +4,4 @@ end
 
 step "I visit the Games page" do
   visit '/games'
-  binding.pry
 end
