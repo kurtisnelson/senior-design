@@ -11,6 +11,9 @@ class GamesController < ApplicationController
   def edit
   end
 
+  def show
+  end
+
   def create
     @game = Game.new(game_params)
 
@@ -43,7 +46,7 @@ class GamesController < ApplicationController
 
   def game_params
     params.require(:game).permit(
-      :name, :start_time, :location, :away_team, :home_team
+      :name, :start_time, :location, :away_team_id, :home_team_id
     )
   end
 end
