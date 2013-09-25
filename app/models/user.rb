@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :omniauth_providers => [:google_oauth2]
 
   has_and_belongs_to_many :teams
+  has_many :stats
+
   enumerate :role do
     value id: 0, name: "Player"
     value id: 1, name: "Statistician"
