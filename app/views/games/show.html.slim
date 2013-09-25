@@ -1,20 +1,19 @@
-p#notice = notice
-
-table.table
-  tr
-    th  Name
-  tr
-    td =  @game.name
-  br
-  tr
-    th Home Team
-  tr
-    td = @game.home_team.name()
-  tr
-  	th Away Team
-  tr
-  	td =@game.away_team.name()
-
-= link_to 'Edit', edit_team_path(@team)
+h2 = @game.name
+= link_to 'Edit', edit_game_path(@game)
 = " | "
-= link_to 'Back', teams_path
+= link_to 'Back', games_path
+
+h3 Location
+p = @game.location
+
+h3 Start Time
+p = @game.start_time
+
+h3 Start Date
+p = @game.start_date
+
+h3 Home Team
+p = link_to @game.home_team.name, team_path(@game.home_team)
+
+h3 Away Team
+p = link_to @game.away_team.name, team_path(@game.away_team)
