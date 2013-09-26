@@ -38,7 +38,7 @@ class GamesController < ApplicationController
   end
 
   def score
-  	@game = Game.find(params[:game_id])
+  	@game = Game.find(params[:game_id]).decorate
   end
 
   private
@@ -48,7 +48,7 @@ class GamesController < ApplicationController
 
   def game_params
     params.require(:game).permit(
-      :name, :start_time, :location, :away_team_id, :home_team_id
+      :name, :start_time, :start_date, :location, :away_team_id, :home_team_id
     )
   end
 end
