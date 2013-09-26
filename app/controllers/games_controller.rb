@@ -41,6 +41,22 @@ class GamesController < ApplicationController
   	@game = Game.find(params[:game_id]).decorate
   end
 
+  def add_home_point
+    @game = Game.find(params[:game_id])
+    @game.team_home_score += 1
+    if @game.save
+      redirect_to game_score_path(@game)
+    end
+  end
+
+  def add_away_point
+    @game = Game.find(params[:game_id])
+    @game.team_away_score += 1
+    if @game.save
+      redirect_to game_score_path(@game)
+    end
+  end
+
   private
   def set_game
     @game = Game.find(params[:id])
