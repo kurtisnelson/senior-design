@@ -7,7 +7,6 @@ class Game < ActiveRecord::Base
     @games = Game.all
   end
 
-
   def new
     @games = Game.all
     @game = Game.new
