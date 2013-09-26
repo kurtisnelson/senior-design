@@ -8,4 +8,8 @@ class GameDecorator < Draper::Decorator
       ('<span class="label">' + I18n.t('game.scheduled') + '</span>').html_safe
     end
   end
+
+  def start_time
+  	(@object.start_time.strftime("%l:%M %p")).html_safe
+  end
 end
