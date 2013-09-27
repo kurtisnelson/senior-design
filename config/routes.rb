@@ -9,10 +9,6 @@ Fenway::Application.routes.draw do
   resources :games do
   	get 'score'
     post 'score'
-    get 'add_home_point'
-    post 'add_home_point'
-    get 'add_away_point'
-    post 'add_away_point'
   end
 
   resources :teams
