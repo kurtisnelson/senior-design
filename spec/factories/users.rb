@@ -3,6 +3,7 @@
 FactoryGirl.define do
   factory :user do
     name "Simpkins"
+    email {Forgery::Internet.email_address}
     factory :user_with_team do
         association :team
     end
