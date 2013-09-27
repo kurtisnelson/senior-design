@@ -9,7 +9,7 @@ class GameDecorator < Draper::Decorator
     end
   end
 
-  def start_time
-  	(@object.start_time.strftime("%l:%M %p")).html_safe
+  def pretty_start_time
+    object.start_time.strftime("%l:%M %p")
   end
 end
