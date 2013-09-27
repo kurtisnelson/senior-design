@@ -13,7 +13,7 @@ class Game < ActiveRecord::Base
   end
 
   def in_progress?
-    return true if self.start_datetime <= DateTime.now
+    return true if self.start_datetime && self.start_datetime <= DateTime.now
     false
   end
 
