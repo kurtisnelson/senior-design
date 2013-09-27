@@ -38,10 +38,11 @@ class GamesController < ApplicationController
   end
 
   def score
-    @game = Game.find(params[:game_id]).decorate
+    @game = Game.find(params[:game_id])
     if params[:score].present?
       respond_to do |format|
-        if @game.send(params[:score]) ## HORRIBLE security hole, but lazy quick code
+        @game.send(params[:score]) ## HORRIBLE security hole, but lazy quick code
+        if @game.save
           format.html { redirect_to game_score_path(@game), notice: params[:score] }
           format.json { head :ok }
         else
@@ -49,9 +50,8 @@ class GamesController < ApplicationController
           format.json { render json: @game.errors, status: :unprocessable_entity }
         end
       end
-    else
-      @game = Game.find(params[:game_id]).decorate
     end
+    @game = @game.decorate
   end
 
   def add_home_point
