@@ -24,35 +24,31 @@ class Game < ActiveRecord::Base
   end
 
   def strike
-    if(self.strike_count != 2)
-      self.strike_count += 1
-    else
-      self.strike_count = 0
-      self.ball_count = 0 
-      self.out
-    end
+    strike_count += 1
+    self.out if strike_count == 3
     self.save
   end
 
-    def ball
-    if(self.ball_count != 3)
-      self.ball_count += 1
-    else
-      self.ball_count = 0
-      self.strike_count = 0
-    end
+  def ball
+    self.ball_count += 1
+    self.walk if ball_count == 3
     self.save
   end
 
-    def out
-    if(self.out_count != 2)
-      self.out_count += 1
-    else
-      self.out_count = 0
-    end
+  def walk
+    ball_count = 0
+    strike_count = 0
+  end
+
+  def out
+    self.out_count += 1
     self.ball_count = 0
     self.strike_count = 0
+    next_inning if out_count == 3
     self.save
+  end
+
+  def next_inning
   end
 
   def away_point
@@ -64,7 +60,4 @@ class Game < ActiveRecord::Base
     self.team_home_score += 1
     self.save
   end
-
-
-
 end
