@@ -1,7 +1,9 @@
 class GameState
   attr_reader :id
+  attr_reader :date
   def initialize(id)
     @id = id
+    @date = Game.find(id).start_date
   end
 
   def self.find id
@@ -34,6 +36,11 @@ class GameState
 
   def lineup_to_bases
     REDIS.rpoplpush(key+"_lineup", key+"_bases")
+  end
+
+  def set_expiration
+    REDIS.expireat(key+"_lineup", @date.to_i)
+    REDIS.expireat(key+"_bases", @date.to_i)
   end
 
   private
