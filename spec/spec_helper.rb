@@ -21,6 +21,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner[:redis, port: 6379]
   end
 
   config.before(:each) do
