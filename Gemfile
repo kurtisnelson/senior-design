@@ -15,6 +15,7 @@ gem 'pundit'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'rails_12factor', group: :production
+gem 'redis'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'slim-rails'

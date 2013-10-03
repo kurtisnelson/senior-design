@@ -172,6 +172,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.12.0)
     rake (10.1.0)
+    redis (3.0.4)
     request_store (1.0.5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -282,6 +283,7 @@ DEPENDENCIES
   rails (= 4.0.0)
   rails3-jquery-autocomplete!
   rails_12factor
+  redis
   rspec
   rspec-rails
   sass-rails
