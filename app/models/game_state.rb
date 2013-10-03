@@ -18,23 +18,23 @@ class GameState
   end
 
   def out id
-    REDIS.lrem(key+"_bases", 0, id)
+    r.lrem key(:bases), 0, id
   end
 
   def add_to_lineup id
-    REDIS.lpush(key+"_lineup", obj)
+    r.lpush key(:lineup), obj
   end
 
   def next_in_lineup
-    REDIS.rpop(key+"_lineup")
+    r.rpop key(:lineup)
   end
 
   def lineup_to_out
-    REDIS.rpoplpush(key+"_lineup", key+"_lineup")
+    r.rpoplpush key(:lineup), key(:lineup)
   end
 
   def lineup_to_bases
-    REDIS.rpoplpush(key+"_lineup", key+"_bases")
+    r.rpoplpush key(:lineup), key(:bases)
   end
 
   def strikes
@@ -42,7 +42,7 @@ class GameState
   end
 
   def strike
-    strikes = REDIS.incr(key+"_strikes")
+    strikes = r.incr(key :strikes)
     self.out if strikes == 3
   end
 
@@ -51,7 +51,7 @@ class GameState
   end
 
   def ball
-    balls = REDIS.incr(key+"_balls")
+    balls = r.incr(key :balls)
     self.walk if balls == 3
   end
 
@@ -60,7 +60,7 @@ class GameState
   end
 
   def walk
-    REDIS.pipelined do
+    r.pipelined do
       set(:balls, 0)
       set(:strikes, 0)
     end
@@ -75,8 +75,8 @@ class GameState
   end
 
   def out
-    REDIS.pipelined do
-      outs = REDIS.incr(key+"_outs")
+    r.pipelined do
+      outs = r.incr(key :outs)
       set(:balls, 0)
       set(:striks, 0)
     end
@@ -88,30 +88,35 @@ class GameState
   end
 
   def away_point
-    REDIS.incr(key+"_away")
+    r.incr(key :away)
   end
 
   def home_point
-    REDIS.incr(key+"_home")
+    r.incr(key :home)
   end
 
   def set_expiration
     @date = Game.find(id).start_datetime
-    REDIS.pipelined do
-      REDIS.expireat(key+"_lineup", @date.to_i)
-      REDIS.expireat(key+"_bases", @date.to_i)
+    r.pipelined do
+      r.expireat(key :lineup, @date.to_i)
+      r.expireat(key :bases, @date.to_i)
     end
   end
 
   private
-  def key
-    "game_state_#{@id}"
+  def key name
+    "#{@id}_#{name.to_s}"
   end
 
   def set attr, val
-    REDIS.set(key+"_"+attr.to_s, val)
+    r.set(key(attr), val)
   end
   def get attr
-    REDIS.get(key+"_"+attr.to_s)
+    r.get(key(attr).to_s)
+  end
+
+  def r
+    @r ||= Redis::Namespace.new(:game_state, redis: REDIS)
+    @r
   end
 end
