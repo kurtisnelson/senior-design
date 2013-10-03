@@ -41,7 +41,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:game_id])
     if params[:score].present?
       respond_to do |format|
-        @game.send(params[:score]) ## HORRIBLE security hole, but lazy quick code
+        @game.handle(params[:score])
         if @game.save
           format.html { redirect_to game_score_path(@game), notice: params[:score] }
           format.json { head :ok }
@@ -52,71 +52,6 @@ class GamesController < ApplicationController
       end
     end
     @game = @game.decorate
-  end
-
-  def add_home_point
-    @game = Game.find(params[:game_id])
-    @game.team_home_score += 1
-    if @game.save
-      redirect_to game_score_path(@game)
-    end
-  end
-
-  def add_away_point
-    @game = Game.find(params[:game_id])
-    @game.team_away_score += 1
-    if @game.save
-      redirect_to game_score_path(@game)
-    end
-  end
-
-  def increment_strike
-    @game = Game.find(params[:game_id])
-    if (@game.strike_count != 2)
-      @game.strike_count += 1
-    else
-      @game.strike_count = 0
-      @game.ball_count = 0
-      @game.out_count += 1
-    end
-    if @game.save
-      redirect_to game_score_path(@game)
-    end
-  end
-
-  def increment_ball
-    @game = Game.find(params[:game_id])
-    if (@game.ball_count != 3)
-      @game.ball_count += 1
-    else
-      @game.ball_count = 0
-      @game.strike_count = 0
-    end
-    if @game.save
-      redirect_to game_score_path(@game)
-    end
-  end
-
-  def increment_out
-    @game = Game.find(params[:game_id])
-    if (@game.out_count != 2)
-      @game.out_count += 1
-    else
-      @game.out_count = 0
-      @game.strike_count = 0
-      @game.ball_count = 0
-    end
-    if @game.save
-      redirect_to game_score_path(@game)
-    end
-  end
-
-    def add_away_point
-    @game = Game.find(params[:game_id])
-    @game.team_away_score += 1
-    if @game.save
-      redirect_to game_score_path(@game)
-    end
   end
 
   private
