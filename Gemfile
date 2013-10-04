@@ -15,6 +15,8 @@ gem 'pundit'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'rails_12factor', group: :production
+gem 'redis'
+gem 'redis-namespace'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'slim-rails'
@@ -38,6 +40,7 @@ group :test do
   gem 'launchy'
   gem 'selenium-webdriver'
   gem 'coveralls', require: false
+  gem 'fakeredis'
   gem 'turnip'
   gem 'zonebie'
 end

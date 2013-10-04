@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130930181748) do
+ActiveRecord::Schema.define(version: 20131003192609) do
 
   create_table "games", force: true do |t|
     t.string   "name"
@@ -22,12 +22,7 @@ ActiveRecord::Schema.define(version: 20130930181748) do
     t.integer  "status"
     t.integer  "away_team_id"
     t.integer  "home_team_id"
-    t.integer  "team_home_score", default: 0
-    t.integer  "team_away_score", default: 0
     t.date     "start_date"
-    t.integer  "strike_count",    default: 0
-    t.integer  "ball_count",      default: 0
-    t.integer  "out_count",       default: 0
   end
 
   add_index "games", ["away_team_id"], name: "index_games_on_away_team_id", using: :btree

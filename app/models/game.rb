@@ -17,40 +17,6 @@ class Game < ActiveRecord::Base
 
   def handle event
     raise "Invalid event" unless EVENTS.include? event
-    self.send(event)
-  end
-
-  def strike
-    self.strike_count += 1
-    self.out if strike_count == 3
-  end
-
-  def ball
-    self.ball_count += 1
-    self.walk if ball_count == 3
-  end
-
-  def walk
-    self.ball_count = 0
-    self.strike_count = 0
-  end
-
-  def out
-    self.out_count += 1
-    self.ball_count = 0
-    self.strike_count = 0
-    next_inning if self.out_count >= 3
-  end
-
-  def next_inning
-    self.out_count = 0
-  end
-
-  def away_point
-    self.team_away_score += 1
-  end
-
-  def home_point
-    self.team_home_score += 1
+    GameState.new(self.id).send(event)
   end
 end
