@@ -1,6 +1,7 @@
 class GameState
   attr_reader :id
   attr_reader :date
+
   def initialize(id)
     @id = id
   end
@@ -17,8 +18,9 @@ class GameState
     get(:lineup)
   end
 
-  def out id
-    r.lrem key(:bases), 0, id
+  def out player_id
+    r.lrem key(:bases), 0, player_id
+    r.incr(key :outs)
   end
 
   def add_to_lineup id
@@ -41,25 +43,25 @@ class GameState
     get(:strikes).to_i
   end
 
-  def strike
+  def strike!
     strikes = r.incr(key :strikes)
-    self.out if strikes == 3
+    self.out! if strikes == 3
   end
 
   def balls
     get(:balls)
   end
 
-  def ball
+  def ball!
     balls = r.incr(key :balls)
-    self.walk if balls == 3
+    self.walk! if balls == 3
   end
 
   def walks
     get(:walks).to_i
   end
 
-  def walk
+  def walk!
     r.pipelined do
       set(:balls, 0)
       set(:strikes, 0)
@@ -74,32 +76,39 @@ class GameState
     set(:outs, num)
   end
 
-  def out
+  def out!
     r.pipelined do
       outs = r.incr(key :outs)
       set(:balls, 0)
-      set(:striks, 0)
+      set(:strikes, 0)
     end
-    next_inning if outs >= 3
+    next_inning! if outs >= 3
   end
 
-  def next_inning
+  def next_inning!
     set(:outs, 0)
+    r.del(key :bases)
+    r.del(key :lineup)
   end
 
-  def away_point
+  def away_score!
     r.incr(key :away)
   end
 
-  def home_point
+  def home_score!
     r.incr(key :home)
   end
 
   def set_expiration
-    @date = Game.find(id).start_datetime
+    @date = Game.find(id).start_datetime + 1.day
     r.pipelined do
       r.expireat(key :lineup, @date.to_i)
       r.expireat(key :bases, @date.to_i)
+      r.expireat(key :away, @date.to_i)
+      r.expireat(key :home, @date.to_i)
+      r.expireat(key :balls, @date.to_i)
+      r.expireat(key :strikes, @date.to_i)
+      r.expireat(key :outs, @date.to_i)
     end
   end
 
