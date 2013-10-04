@@ -90,6 +90,8 @@ GEM
     factory_girl_rails (4.2.1)
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
+    fakeredis (0.4.2)
+      redis (~> 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     ffi (1.9.0)
@@ -273,6 +275,7 @@ DEPENDENCIES
   dotenv
   draper
   factory_girl_rails
+  fakeredis
   foreman
   forgery
   jquery-rails

@@ -40,6 +40,7 @@ group :test do
   gem 'launchy'
   gem 'selenium-webdriver'
   gem 'coveralls', require: false
+  gem 'fakeredis'
   gem 'turnip'
   gem 'zonebie'
 end
