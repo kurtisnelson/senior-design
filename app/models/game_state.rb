@@ -10,6 +10,9 @@ class GameState
     self.new(id)
   end
 
+  def single!
+  end
+
   def bases
     get(:bases)
   end

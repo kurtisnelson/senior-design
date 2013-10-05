@@ -5,7 +5,13 @@ Fenway::Application.routes.draw do
   as :user do
     delete "/logout" => "devise/sessions#destroy"
   end
-  
+
+  resources :state, only: [] do
+    put 'single'
+    put 'double'
+    put 'triple'
+  end
+
   resources :games do
   	get 'score'
     post 'score'
