@@ -55,56 +55,85 @@ html lang="en"
       });
 
   body
+    .small-header id="header"
+      /= link_to image_tag("intramural.png", width:'100%'), root_url
+      h1 id="splash-title" A free way to score games
+      .containter
+        .row
+          .span6
+          .span6
+           button.btn.btn-success id="splash-btn" = link_to("Create Your Team", new_team_path) 
+      h2 id="splash-header" Fenway
+      h3 id="splash-text" Bringing people together with sports
     .container
-      .small-header id="header"
-         = link_to image_tag("fenway_header_splash.png", width:'100%'), root_url
+      .login-bar.navbar.navbar-fixed-top
+        ul.nav
+          li.fenway-logo = link_to image_tag("FenwayLogo.png"), root_url
+          li.dropdown.nav-text
+            a.dropdown-toggle data-toggle="dropdown" href="#" Games 
+            ul.dropdown-menu
+              li = link_to "All Games", games_path
+              li = link_to "New Game", new_game_path
+          li.dropdown.nav-text
+            a.dropdown-toggle data-toggle="dropdown" href="#" Teams 
+            ul.dropdown-menu
+              li = link_to "All Teams", teams_path, :id => "all-teams"
+              li = link_to "New Team", new_team_path
+          li.dropdown.nav-text
+            a.dropdown-toggle data-toggle="dropdown" href="#" Players
+            ul.dropdown-menu
+              li= link_to "All Players", users_path
+              li= link_to "New Player", new_user_path
+          li.dropdown.nav-text
+            a.dropdown-toggle data-toggle="dropdown" href="#" Leaderboard 
+            ul.dropdown-menu
+              li= link_to "All Leaderboards", "/fix_me"
 
-      .login-bar
         ul.nav.pull-right
           - if user_signed_in?
-            li.pull-right.clickable = link_to "Sign Out", "/logout", :method => :delete
-            li.pull-right = link_to current_user.name, user_path(current_user), :id => "user_name"
+            li.pull-right.clickable.nav-text = link_to "Sign Out", "/logout", :method => :delete
+            li.pull-right.nav-text = link_to current_user.name, user_path(current_user), :id => "user_name"
           - else
-            li.clickable = link_to "Sign In", user_omniauth_authorize_path(:google_oauth2)  
+            li.pull-right.clickable.nav-text = link_to "Sign In", user_omniauth_authorize_path(:google_oauth2)  
 
-      aside.static-nav id="static-nav"
-        .accordion id="accordion1"
-          .accordion-group
-            .accordion-heading
-              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#games-collapse" Games
-            .accordion-body.collapse id="games-collapse"
-              .accordion-inner
-                ul.nav
-                  li = link_to "All Games", games_path
-                  li= link_to "New Game", new_game_path
-          .accordion-group
-            .accordion-heading
-              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#teams-collapse" Teams
-            .accordion-body.collapse id="teams-collapse"
-              .accordion-inner
-                ul.nav
-                  li = link_to "All Teams", teams_path, :id => "all-teams"
-                  li = link_to "New Team", new_team_path
-          .accordion-group
-            .accordion-heading
-              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#players-collapse" Players
-            .accordion-body.collapse id="players-collapse"
-              .accordion-inner
-                ul.nav
-                  li= link_to "All Players", users_path
-                  li= link_to "New Player", new_user_path
-          .accordion-group
-            .accordion-heading
-              a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#leaderboards-collapse" Leaderboards
-            .accordion-body.collapse id="leaderboards-collapse"
-              .accordion-inner
-                ul.nav
-                  li= link_to "All Leaderboards", "/fix_me"
+      / aside.static-nav id="static-nav"
+      /   .accordion id="accordion1"
+      /     .accordion-group
+      /       .accordion-heading
+      /         a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#games-collapse" Games
+      /       .accordion-body.collapse id="games-collapse"
+      /         .accordion-inner
+      /           ul.nav
+      /             li = link_to "All Games", games_path
+      /             li= link_to "New Game", new_game_path
+      /     .accordion-group
+      /       .accordion-heading
+      /         a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#teams-collapse" Teams
+      /       .accordion-body.collapse id="teams-collapse"
+      /         .accordion-inner
+      /           ul.nav
+      /             li = link_to "All Teams", teams_path, :id => "all-teams"
+      /             li = link_to "New Team", new_team_path
+      /     .accordion-group
+      /       .accordion-heading
+      /         a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#players-collapse" Players
+      /       .accordion-body.collapse id="players-collapse"
+      /         .accordion-inner
+      /           ul.nav
+      /             li= link_to "All Players", users_path
+      /             li= link_to "New Player", new_user_path
+      /     .accordion-group
+      /       .accordion-heading
+      /         a.accordion-toggle data-toggle="collapse" data-parent="#accordion1" href="#leaderboards-collapse" Leaderboards
+      /       .accordion-body.collapse id="leaderboards-collapse"
+      /         .accordion-inner
+      /           ul.nav
+      /             li= link_to "All Leaderboards", "/fix_me"
 
       .main-article id="main-article"
         == render 'layouts/messages'
         = yield
    
-      .clearfix
+      /.clearfix
 
       footer
