@@ -5,18 +5,76 @@
 
 @import "bootstrap"
 
+@font-face
+	font-family: 'fenway_park_jfregular'
+	src: url(font-path('fenway-park-jf-webfont.eot'))
+	src: url(font-path('fenway-park-jf-webfont.eot?#iefix')) format('embedded-opentype'),url(font-path('fenway-park-jf-webfont.woff')) format('woff'),url(font-path('fenway-park-jf-webfont.ttf')) format('truetype'), url(font-path('fenway-park-jf-webfont.svg#fenway_park_jfregular')) format('svg')
+	font-weight: normal
+	font-style: normal
+
+
+.nav-text>a
+	margin-top: 20px
+
+.fenway-logo>a>img
+	width: 100%
+	height: 100%
+	margin-top: -20px
+	margin-left: 30px
+
 .small-header
-	margin-top: -330px
+	margin-top: -165px
+	width: 100%
+	height: 400px
 	transition-duration: 1s
+	background-image: url("intramural.png")
+	background-repeat: no-repeat
+	-webkit-background-size: cover
+	-moz-background-size: cover
+	-o-background-size: cover
+	background-size: cover
 
 .large-header
 	margin-top: 0px
+	width: 100%
+	height: 400px
+	background-image: url("intramural.png")
+	background-repeat: no-repeat
+	-webkit-background-size: cover
+	-moz-background-size: cover
+	-o-background-size: cover
+	background-size: cover
 
 .large-header.transition
 	transition-duration: 1s
 
+h1#splash-title
+	font-family: "Letter Gothic Std", "InaiMathi", "Geneva"
+	padding-top: 150px
+	text-align: center
+	color: white
+
+button#splash-btn
+	text-align: center
+	margin-top: 10px
+	margin-left: 160px
+
+button>a
+	color: white
+
+h2#splash-header
+	padding-top: 66px
+	padding-left: 30px
+	color: white
+
+h3#splash-text
+	margin-top: -15px
+	padding-left: 30px
+	color: black
+
 .login-bar
-	height: 35px
+	background-image: url("diamond_upholstery.png")
+	height: 70px
 	background-color: #e6e6e6
 	padding-right: 20px
 	padding-top: 15px
@@ -30,13 +88,7 @@
 .login-bar ul.nav li a
 	color: #6b6b6b
 	margin-right: 10px
-
-.static-nav
-	width: 215px
-	float: left
-	position: fixed
-	top: 200px
-	transition-duration: 1s
+ 
 
 .static-nav.large-nav
 	top: 550px
@@ -48,9 +100,7 @@
 .main-article
 	margin-top: 10px 
 	width: 680px
-	float: right
-	margin-right: 20px
-	clear: right
+	
 
 .accordion-group
 	border: none
@@ -74,6 +124,14 @@
 h2
 	font-family: "Letter Gothic Std", "InaiMathi", "Geneva"
 	font-size: 48px
+	font-variant: small-caps
+	color: #688f1b
+	font-weight: 200
+	margin-top: 20px
+	margin-left: -5px
+h3
+	font-family: "Letter Gothic Std", "InaiMathi", "Geneva"
+	font-size: 24.5px
 	font-variant: small-caps
 	color: #688f1b
 	font-weight: 200
