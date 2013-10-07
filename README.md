@@ -5,7 +5,12 @@
 [![Build Status](https://secure.travis-ci.org/kurtisnelson/senior-design.png)](http://travis-ci.org/kurtisnelson/senior-design)
 [![Coverage Status](https://coveralls.io/repos/kurtisnelson/senior-design/badge.png?branch=master)](https://coveralls.io/r/kurtisnelson/senior-design)
 
-## Getting Setup
+## Setting up Rails/Ruby
+
+* Install [RVM](https://rvm.io/)
+* Install Ruby 2.0 with RVM
+
+## Getting the App Setup
 
 ```bash
 # Checkout the repo
@@ -16,16 +21,14 @@ gem install bundler
 bundle install
 
 # Install other dependencies
-# ex: brew install <list dependencies here. e.g. postgres, redis, etc.>
+brew install postgres redis
 
 # Get the database ready
-# ex: bundle exec rake db:create:all db:schema:load db:test:prepare
+bundle exec rake db:create:all db:schema:load db:test:prepare
 
 # Start the app and other processes
 
 bundle exec foreman start
-
-# setup other services like Solr, Redis, etc...
 ```
 
 ## Development
