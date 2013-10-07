@@ -11,6 +11,9 @@ class GameState
   end
 
   def single!
+    set(:balls, 0)
+    set(:strikes, 0)
+    lineup_to_bases
   end
 
   def bases
@@ -21,13 +24,17 @@ class GameState
     get(:lineup)
   end
 
+  def at_bat
+    r.lrange(key(:bases), 0, 0).first.to_i
+  end
+
   def out player_id
     r.lrem key(:bases), 0, player_id
     r.incr(key :outs)
   end
 
   def add_to_lineup id
-    r.lpush key(:lineup), obj
+    r.lpush key(:lineup), id
   end
 
   def next_in_lineup
@@ -52,7 +59,7 @@ class GameState
   end
 
   def balls
-    get(:balls)
+    get(:balls).to_i
   end
 
   def ball!
