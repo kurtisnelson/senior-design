@@ -1,31 +1,19 @@
-h1 Score Keeping for #{link_to @game.name, game_path(@game)}
-p = @game.status_tag
-h3 Home Team Score
-p = @game.team_home_score
-= form_tag game_score_path(@game)
-  = hidden_field_tag :score, "home_point"
-  = submit_tag "Add Point"
+.row
+	.span12
+		h1 Score Keeping for #{link_to @game.name, game_path(@game)}
+		
 
-h3 Away Team Score
-p = @game.team_away_score
-= form_tag game_score_path(@game)
-  = hidden_field_tag :score, "away_point"
-  = submit_tag "Add Point"
+.row
+	span12.scoreboard
+		=image_tag("Scoreboard.png")
+.row
+	p.game-status = @game.status_tag
+	.home-team
+		h4.team-name = @game.home_team.name
+	.home-team-score
+		h1.score 0
+	.away-team
+		h4.team-name = @game.away_team.name
+	.away-team-score
+		h1.score 0	
 
-h3 Ball Count
-p = @game.ball_count
-= form_tag game_score_path(@game)
-  = hidden_field_tag :score, "ball"
-  = submit_tag "Add Ball"
-
-h3 Strike Count
-p = @game.strike_count
-= form_tag game_score_path(@game)
-  = hidden_field_tag :score, "strike"
-  = submit_tag "Add Strike"
-
-h3 Out Count
-p = @game.out_count
-= form_tag game_score_path(@game)
-  = hidden_field_tag :score, "out"
-  = submit_tag "Add Out"
