@@ -16,6 +16,21 @@ class GameState
     lineup_to_bases
   end
 
+  def double!
+    set(:balls, 0)
+    set(:strikes, 0)
+    lineup_to_bases
+    r.lpush key(:bases), -1
+  end
+
+  def on_base base_id
+    @player_id ||= r.lindex key(:bases), base_id-1
+    if @player_id == nil 
+      @player_id = -1
+    end
+    Integer(@player_id)
+  end
+
   def bases
     get(:bases)
   end

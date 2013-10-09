@@ -7,8 +7,9 @@ describe GameState do
     it "moves the player at bat to first base" do
       state.add_to_lineup(0)
       state.add_to_lineup(1)
-      state.lineup_to_bases
-      ->{state.single!}.should change(state, :at_bat).from(0).to(1)
+      state.single!
+      state.at_bat.should eq 0
+      state.on_base(1).should eq 0
     end
     it "resets balls and strikes" do
       state.strike!
@@ -18,6 +19,23 @@ describe GameState do
       state.strikes.should eq 0
     end
   end
+
+  describe "#double" do
+    it "moves the player at bat to second base" do
+      state.add_to_lineup(0)
+      state.add_to_lineup(1)
+      state.double!
+      state.on_base(2).should eq 0
+    end
+    it "resets balls and strikes" do
+      state.strike!
+      state.ball!
+      state.double!
+      state.balls.should eq 0
+      state.strikes.should eq 0
+    end
+  end
+
   describe "#out!" do
     it "increments the out count on a fresh game" do
       state.out!
