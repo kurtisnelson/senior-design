@@ -35,6 +35,10 @@ class GameState
     r.lindex(key(:bases), base_id).to_i
   end
 
+  def player_on_base base_id
+    User.find(on_base(base_id))
+  end
+
   def bases
     get(:bases)
   end

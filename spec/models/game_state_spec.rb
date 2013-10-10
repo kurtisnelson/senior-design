@@ -145,4 +145,15 @@ describe GameState do
       state.on_base(3).should eq 1
     end
   end
+
+  describe "#player_on_base" do
+    let(:player) {FactoryGirl.create(:user)}
+    it "gets the player object of the player on base" do
+      state.add_to_lineup(player.uid)
+      state.add_to_lineup(2)
+      state.lineup_to_bases
+      state.single!
+      state.player_on_base(1).name.should eq player.name
+    end
+  end
 end
