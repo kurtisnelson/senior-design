@@ -17,8 +17,8 @@
 	.away-team-score
 		h1.score 0	
 .row
-	button.btn.btn-large id="strikeBtn" Strike
-	button.btn.btn-large id="ballBtn" Ball
+	button.btn.btn-large id="strikeBtn" onClick="do_strike()" Strike
+	button.btn.btn-large id="ballBtn" onClick="do_ball()" Ball
 	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#single'>Single</a></li><li><a href='#double'>Double</a></li><li><a href='#triple'>Triple</a></li><li><a href='#homerun'>Home Run</a></li><li><a href='#out'>Out</a></li><li><a href='#walk'>Walk</a></li></ul>" hidden="true"
 		h4 0
 	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
