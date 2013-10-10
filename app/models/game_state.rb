@@ -19,12 +19,24 @@ class GameState
   def double!
     set(:balls, 0)
     set(:strikes, 0)
-    r.lpush(key(:bases), -1)
+    r.lpush(key(:bases), 0)
+    lineup_to_bases
+  end
+
+   def triple!
+    set(:balls, 0)
+    set(:strikes, 0)
+    r.lpush(key(:bases), 0)
+    r.lpush(key(:bases), 0)
     lineup_to_bases
   end
 
   def on_base base_id
     r.lindex(key(:bases), base_id).to_i
+  end
+
+  def player_on_base base_id
+    User.find(on_base(base_id))
   end
 
   def bases
@@ -118,6 +130,12 @@ class GameState
 
   def home_score!
     r.incr(key :home)
+  end
+
+  def steal! player_id, number_of_bases
+    for i in 1..number_of_bases
+      r.linsert(key(:bases), :before, player_id.to_s, 0.to_s)
+    end
   end
 
   def set_expiration

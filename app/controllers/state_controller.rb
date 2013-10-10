@@ -16,8 +16,23 @@ class StateController < ApplicationController
     head :ok
   end
 
+  def ball
+    @game_state.ball!
+    head :ok
+  end
+
+  def steal
+    @game_state.steal!(params[:player_id], params(:bases_stolen))
+    head :ok
+  end
+
+  def strike
+    @game_state.strike!
+    head :ok
+  end
+
   private
   def set_game_state
-    @game_state = GameState.find(params[:id])
+    @game_state = GameState.find(params[:state_id])
   end
 end
