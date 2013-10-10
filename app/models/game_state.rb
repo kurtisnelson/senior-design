@@ -19,7 +19,15 @@ class GameState
   def double!
     set(:balls, 0)
     set(:strikes, 0)
-    r.lpush(key(:bases), -1)
+    r.lpush(key(:bases), 0)
+    lineup_to_bases
+  end
+
+   def triple!
+    set(:balls, 0)
+    set(:strikes, 0)
+    r.lpush(key(:bases), 0)
+    r.lpush(key(:bases), 0)
     lineup_to_bases
   end
 
