@@ -131,4 +131,18 @@ describe GameState do
       state.ball!
     end
   end
+
+  describe "#steal!" do 
+    it "allows the player to steal bases" do
+      state.add_to_lineup(1)
+      state.add_to_lineup(2)
+      state.lineup_to_bases
+      state.single!
+      state.on_base(1).should eq 1
+      state.steal!(1,2)
+      state.on_base(1).should eq 0
+      state.on_base(2).should eq 0
+      state.on_base(3).should eq 1
+    end
+  end
 end

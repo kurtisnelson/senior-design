@@ -128,6 +128,12 @@ class GameState
     r.incr(key :home)
   end
 
+  def steal! player_id, number_of_bases
+    for i in 1..number_of_bases
+      r.linsert(key(:bases), :before, player_id.to_s, 0.to_s)
+    end
+  end
+
   def set_expiration
     @date = Game.find(id).start_datetime + 1.day
     r.pipelined do

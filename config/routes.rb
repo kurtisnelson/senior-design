@@ -11,6 +11,7 @@ Fenway::Application.routes.draw do
     put 'double'
     put 'triple'
     put 'ball' 
+    put 'steal'
   end
 
   resources :games do
