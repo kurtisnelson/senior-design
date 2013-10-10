@@ -4,4 +4,5 @@
 #= require bootstrap
 #= require bootstrap-datepicker
 #= require bootstrap-collapse
+#= require scoreboard
 #= require_tree .
