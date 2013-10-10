@@ -26,6 +26,11 @@ class StateController < ApplicationController
     head :ok
   end
 
+  def strike
+    @game_state.strike!
+    head :ok
+  end
+
   private
   def set_game_state
     @game_state = GameState.find(params[:state_id])
