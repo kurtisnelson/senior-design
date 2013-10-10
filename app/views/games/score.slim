@@ -19,24 +19,24 @@
 .row
 	button.btn.btn-large id="strikeBtn" Strike
 	button.btn.btn-large id="ballBtn" Ball
-	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#single'>Single</a></li><li><a href='#double'>Double</a></li><li><a href='#triple'>Triple</a></li><li><a href='#homerun'>Home Run</a></li><li><a href='#out'>Out</a></li><li><a href='#walk'>Walk</a></li></ul>"
+	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#single'>Single</a></li><li><a href='#double'>Double</a></li><li><a href='#triple'>Triple</a></li><li><a href='#homerun'>Home Run</a></li><li><a href='#out'>Out</a></li><li><a href='#walk'>Walk</a></li></ul>" hidden="true"
 		h4 0
-	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>"
+	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
 		h4 1
-	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>"
+	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
 		h4 2
-	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>"
+	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
 		h4 3
 
-	.score-light id="ball1"
-	.score-light id="ball2"
-	.score-light id="ball3"
+	.score-light id="ball1" hidden="true"
+	.score-light id="ball2" hidden="true"
+	.score-light id="ball3"	hidden="true"
 
-	.score-light id="strike1"
-	.score-light id="strike2"
+	.score-light id="strike1" hidden="true"
+	.score-light id="strike2" hidden="true"
 
-	.score-light id="out1"
-	.score-light id="out2"
+	.score-light id="out1" hidden="true"
+	.score-light id="out2" hidden="true"
 
 javascript:
 	$('#home').popover();
