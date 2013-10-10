@@ -3,7 +3,7 @@ class GameState
   attr_reader :date
 
   def initialize(id)
-    @id = id
+    @id = id.to_i
   end
 
   def self.find id
@@ -40,11 +40,11 @@ class GameState
   end
 
   def bases
-    get(:bases)
+    r.lrange(key(:bases), 0, -1).map {|i| i.to_i}
   end
 
   def lineup
-    get(:lineup)
+    r.lrange(key(:lineup), 0, -1).map {|i| i.to_i}
   end
 
   def at_bat
@@ -61,15 +61,15 @@ class GameState
   end
 
   def next_in_lineup
-    r.rpop key(:lineup)
+    r.rpop(key(:lineup)).to_i
   end
 
   def lineup_to_out
-    r.rpoplpush key(:lineup), key(:lineup)
+    r.rpoplpush(key(:lineup), key(:lineup)).to_i
   end
 
   def lineup_to_bases
-    r.rpoplpush key(:lineup), key(:bases)
+    r.rpoplpush(key(:lineup), key(:bases)).to_i
   end
 
   def strikes
@@ -81,6 +81,10 @@ class GameState
     self.out! if strikes == 3
   end
 
+  def strikes= num
+    set(:strikes, num)
+  end
+
   def balls
     get(:balls).to_i
   end
@@ -88,6 +92,10 @@ class GameState
   def ball!
     balls = r.incr(key :balls)
     self.walk! if balls == 3
+  end
+
+  def balls= num
+    set(:balls, num)
   end
 
   def walks

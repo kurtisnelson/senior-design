@@ -2,6 +2,7 @@ class StateController < ApplicationController
   before_action :set_game_state
 
   def show
+    @players = User.where(id: @game_state.lineup) + User.where(id: @game_state.bases)
   end
 
   def single
@@ -36,6 +37,8 @@ class StateController < ApplicationController
 
   private
   def set_game_state
-    @game_state = GameState.find(params[:state_id])
+    id = params[:id]
+    id ||= params[:state_id]
+    @game_state = GameState.find(id)
   end
 end

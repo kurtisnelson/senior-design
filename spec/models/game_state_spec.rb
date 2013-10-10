@@ -149,7 +149,7 @@ describe GameState do
   describe "#player_on_base" do
     let(:player) {FactoryGirl.create(:user)}
     it "gets the player object of the player on base" do
-      state.add_to_lineup(player.uid)
+      state.add_to_lineup(player.id)
       state.add_to_lineup(2)
       state.lineup_to_bases
       state.single!
