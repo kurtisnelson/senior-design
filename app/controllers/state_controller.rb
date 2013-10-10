@@ -1,6 +1,9 @@
 class StateController < ApplicationController
   before_action :set_game_state
 
+  def show
+  end
+
   def single
     @game_state.single!
     head :ok

@@ -12,6 +12,7 @@ gem 'draper'
 gem 'omniauth-google-oauth2'
 gem 'pg'
 gem 'pundit'
+gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'rails_12factor', group: :production

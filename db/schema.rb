@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 20131003192609) do
     t.integer  "away_team_id"
     t.integer  "home_team_id"
     t.date     "start_date"
-    t.string   "base_status",  default: "init"
   end
 
   add_index "games", ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
