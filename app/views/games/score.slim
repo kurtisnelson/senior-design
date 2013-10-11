@@ -42,28 +42,13 @@
 		tbody
 			tr
 				td id="innings-home-team" = @game.home_team.name[0..2]
-				td id="innings-top-1" hidden="true" 0
-				td id="innings-top-2" hidden="true" 0
-				td id="innings-top-3" hidden="true" 0
-				td id="innings-top-4" hidden="true" 0
-				td id="innings-top-5" hidden="true" 0
-				td id="innings-top-6" hidden="true" 0
-				td id="innings-top-7" hidden="true" 0
-				td id="innings-top-8" hidden="true" 0
-				td id="innings-top-9" hidden="true" 0
-				td id="innings-top-10" hidden="true" 0
+				- (1..10).each do |i|
+					td#innings-top data-number=i hidden="true" 0
+
 			tr
 				td id="innings-away-team" = @game.away_team.name[0..2]
-				td id="innings-btm-1" hidden="true" 0
-				td id="innings-btm-2" hidden="true" 0
-				td id="innings-btm-3" hidden="true" 0
-				td id="innings-btm-4" hidden="true" 0
-				td id="innings-btm-5" hidden="true" 0
-				td id="innings-btm-6" hidden="true" 0
-				td id="innings-btm-7" hidden="true" 0
-				td id="innings-btm-8" hidden="true" 0
-				td id="innings-btm-9" hidden="true" 0
-				td id="innings-btm-10" hidden="true" 0
+				- (1..10).each do |i|
+					td#innings-btm data-number=i hidden="true" 0
 
 javascript:
 	$('#home').popover();
