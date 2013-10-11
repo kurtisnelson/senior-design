@@ -76,49 +76,38 @@ lineup =
   counter: 0
   next: () ->
     this.at_bat= this.batting_order[this.counter]
-    base.set_home(this.at_bat)
+    #base.set_home(this.at_bat)
+    home.set(this.at_bat)
     this.counter++
     this.counter= this.counter % 9
 
-base =
-  first: {}
-  second: {}
-  third: {}
-  home: {}
-  set_first: (player) ->
-    #put player on first
-    this.first = player
+class Base
+  constructor: (@name) ->
+  player: {}
+  set: (obj) =>
+    this.player = obj
     this.render()
-  set_second: (player) ->
-    #put player on first
-    this.second = player
+  reset: () =>
+    this.player = {}
     this.render()
-  set_third: (player) ->
-    #put player on first
-    this.third = player
-    this.render()
-  set_home: (player) ->
-    #put player on first
-    this.home = player
-    this.render()
-  render: () ->
-    if(!is_empty(this.first))
-      $("#first>h4").text(this.first['id'])
-      $("#first").fadeIn()
-      update_popover("#first", this.first['name'])
-    if(!is_empty(this.second))
-      $("#second>h4").text(this.second['id'])
-      $("#second").fadeIn()
-      update_popover("#second", this.second['name'])
-    if(!is_empty(this.third))
-      $("#third>h4").text(this.third['id'])
-      $("#third").fadeIn()
-      update_popover("#third", this.third['name'])
-    if(!is_empty(this.home))
-      $("#home>h4").text(this.home['id'])
-      $("#home").fadeIn()
-      update_popover("#home", this.home['name'])
+  is_empty: () =>
+    !(Object.getOwnPropertyNames(this.player).length)
+  popover_hide: () =>
+    $('#'+this.name).popover('hide')
+  popover_show: () =>
+    $('#'+this.name).popover('show')
+  render: () =>
+    if(!this.is_empty())
+      $("#"+this.name+">h4").text(this.player['id'])
+      $("#"+this.name).fadeIn()
+      update_popover("#"+this.name , this.player['name'])
+    if(this.is_empty())
+      $("#"+this.name).fadeOut()
 
+home = new Base("home")
+first = new Base("first")
+second = new Base("second")
+third = new Base("third")
 
 stateCallback = (data, status, xhr) ->
   for person in data['players']
@@ -134,10 +123,6 @@ stateCallback = (data, status, xhr) ->
 # #Get the JSON Object
 # $(jQuery.get("/state/" + game_id + ".json", null, stateCallback))
 $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
-
-@debug =() ->
-  console.log(strike.counter)
-  strike.render()
 
 @do_strike = () ->
   #server call
@@ -159,17 +144,66 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   #TODO next_innint if out.counter = 2
   out.process()
 
+@do_start_game = () ->
+  $("#startBtn").fadeOut()
+  lineup.next()
+
 @do_nextup = () ->
   lineup.next()
 
 @do_single = () ->
-  base.set_first(lineup.at_bat)
-  $("#home").fadeOut()
+  home.popover_hide()
+  if(!first.is_empty())
+    first.popover_show()
+    #TODO wait on click
+  first.set(lineup.at_bat)
+  home.reset()
+  do_nextup()
+
+@do_double = () ->
+  home.popover_hide()
+  if(!first.is_empty())
+    first.popover_show()
+  if(!second.is_empty())
+    second.popover_show()
+    #TODO wait on click
+  second.set(lineup.at_bat)
+  home.reset()
+  do_nextup()
+
+@do_triple = () ->
+  home.popover_hide()
+  if(!first.is_empty())
+    first.popover_show()
+  if(!second.is_empty())
+    second.popover_show()
+  if(!third.is_empty())
+    third.popover_show()
+    #TODO wait on click
+  third.set(lineup.at_bat)
+  home.reset()
+  do_nextup()
+
+
+@do_move = (base_on) ->
+  if(base_on == 1)
+    first.popover_hide();
+    second.set(first.player)
+    first.reset()
+  else if(base_on == 2)
+    second.popover_hide()
+    third.set(second.player)
+    second.reset()
+  else if(base_on == 3)
+    third.popover_hide()
+    third.reset()
+    #TODO Update score
+
 
 #Render Helper Function
 
-is_empty = (obj) ->
-  !(Object.getOwnPropertyNames(obj).length)
+#is_empty = (obj) ->
+ # !(Object.getOwnPropertyNames(obj).length)
 
 update_popover = (id, name) ->
   popover = $(id).data('popover')
