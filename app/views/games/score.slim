@@ -17,15 +17,16 @@
 	.away-team-score
 		h1.score 0	
 .row
+	button.btn.btn-large id="startBtn" onClick="do_start_game()" Start Game
 	button.btn.btn-large id="strikeBtn" onClick="do_strike()" Strike
 	button.btn.btn-large id="ballBtn" onClick="do_ball()" Ball
-	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#single'>Single</a></li><li><a href='#double'>Double</a></li><li><a href='#triple'>Triple</a></li><li><a href='#homerun'>Home Run</a></li><li><a href='#out'>Out</a></li><li><a href='#walk'>Walk</a></li></ul>" hidden="true"
+	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_single()'>Single</a></li><li><a onClick='do_double()'>Double</a></li><li><a onClick='do_triple()'>Triple</a></li><li><a href='#homerun'>Home Run</a></li><li><a href='#out'>Out</a></li><li><a href='#walk'>Walk</a></li></ul>" hidden="true"
 		h4 0
-	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
+	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(1)'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
 		h4 1
-	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
+	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(2)'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
 		h4 2
-	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a href='#move'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
+	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(3)'>Score</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
 		h4 3
 
 	.score-light id="ball1" hidden="true"
@@ -42,28 +43,13 @@
 		tbody
 			tr
 				td id="innings-home-team" = @game.home_team.name[0..2]
-				td id="innings-top-1" hidden="true" 0
-				td id="innings-top-2" hidden="true" 0
-				td id="innings-top-3" hidden="true" 0
-				td id="innings-top-4" hidden="true" 0
-				td id="innings-top-5" hidden="true" 0
-				td id="innings-top-6" hidden="true" 0
-				td id="innings-top-7" hidden="true" 0
-				td id="innings-top-8" hidden="true" 0
-				td id="innings-top-9" hidden="true" 0
-				td id="innings-top-10" hidden="true" 0
+				- (1..10).each do |i|
+					td#innings-top data-number=i hidden="true" 0
+
 			tr
 				td id="innings-away-team" = @game.away_team.name[0..2]
-				td id="innings-btm-1" hidden="true" 0
-				td id="innings-btm-2" hidden="true" 0
-				td id="innings-btm-3" hidden="true" 0
-				td id="innings-btm-4" hidden="true" 0
-				td id="innings-btm-5" hidden="true" 0
-				td id="innings-btm-6" hidden="true" 0
-				td id="innings-btm-7" hidden="true" 0
-				td id="innings-btm-8" hidden="true" 0
-				td id="innings-btm-9" hidden="true" 0
-				td id="innings-btm-10" hidden="true" 0
+				- (1..10).each do |i|
+					td#innings-btm data-number=i hidden="true" 0
 
 javascript:
 	$('#home').popover();
