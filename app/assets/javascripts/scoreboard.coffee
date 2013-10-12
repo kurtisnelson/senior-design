@@ -30,7 +30,8 @@ ball =
       this.counter = 0
       strike.counter = 0
       strike.render()
-      out.counter=0
+      #out.counter=0
+      do_walk()
       out.render()
     this.render()
   reset: ->
@@ -83,31 +84,35 @@ lineup =
 
 class Base
   constructor: (@name) ->
-  player: {}
-  set: (obj) =>
-    this.player = obj
+    @player = []
+  set: (obj) ->
+    this.player.push(obj)
     this.render()
-  reset: () =>
-    this.player = {}
+  reset: () ->
+    this.player = []
     this.render()
-  is_empty: () =>
-    !(Object.getOwnPropertyNames(this.player).length)
-  popover_hide: () =>
+  is_empty: () ->
+    #!(Object.getOwnPropertyNames(this.player).length)
+    if this.player.length == 0 
+      return 1
+    else
+      return 0 
+  popover_hide: () ->
     $('#'+this.name).popover('hide')
-  popover_show: () =>
+  popover_show: () ->
     $('#'+this.name).popover('show')
-  render: () =>
+  render: () ->
     if(!this.is_empty())
-      $("#"+this.name+">h4").text(this.player['id'])
+      $("#"+this.name+">h4").text(this.player[0]['id'])
       $("#"+this.name).fadeIn()
-      update_popover("#"+this.name , this.player['name'])
+      update_popover("#"+this.name , this.player[0]['name'])
     if(this.is_empty())
       $("#"+this.name).fadeOut()
 
-home = new Base("home")
-first = new Base("first")
-second = new Base("second")
-third = new Base("third")
+@home = new Base("home")
+@first = new Base("first")
+@second = new Base("second")
+@third = new Base("third")
 
 stateCallback = (data, status, xhr) ->
   for person in data['players']
@@ -160,10 +165,20 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   home.reset()
   do_nextup()
 
-@do_double = () ->
+@do_walk = () ->
   home.popover_hide()
   if(!first.is_empty())
     first.popover_show()
+    #TODO wait on click
+  first.set(lineup.at_bat)
+  home.reset()
+  do_nextup()
+
+@do_double = () ->
+  home.popover_hide()
+  if(!first.is_empty())
+    second.set(first.player.shift())
+    first.render()
   if(!second.is_empty())
     second.popover_show()
     #TODO wait on click
@@ -173,10 +188,12 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
 
 @do_triple = () ->
   home.popover_hide()
-  if(!first.is_empty())
-    first.popover_show()
   if(!second.is_empty())
-    second.popover_show()
+    third.set(second.player.shift())
+    second.render()
+  if(!first.is_empty())
+    third.set(first.player.shift())
+    first.render()
   if(!third.is_empty())
     third.popover_show()
     #TODO wait on click
@@ -187,16 +204,27 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
 
 @do_move = (base_on) ->
   if(base_on == 1)
+    if(!second.is_empty())
+      second.popover_show()
     first.popover_hide();
-    second.set(first.player)
-    first.reset()
+    second.set(first.player.shift())
+    first.render()
+    #first.reset()
   else if(base_on == 2)
+    if(!third.is_empty())
+      third.popover_show()
     second.popover_hide()
-    third.set(second.player)
-    second.reset()
+    third.set(second.player.shift())
+    second.render()
+    #second.reset()
   else if(base_on == 3)
-    third.popover_hide()
-    third.reset()
+    if third.player.length > 2
+      third.popover_show()
+    else
+      third.popover_hide()
+    third.player.shift()
+    third.render()
+    
     #TODO Update score
 
 
