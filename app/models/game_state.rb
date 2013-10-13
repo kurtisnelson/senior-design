@@ -140,10 +140,8 @@ class GameState
     r.incr(key :home)
   end
 
-  def steal! player_id, number_of_bases
-    for i in 1..number_of_bases
-      r.linsert(key(:bases), :before, player_id.to_s, 0.to_s)
-    end
+  def steal! player_id
+    r.linsert(key(:bases), :before, player_id.to_s, nil)
   end
 
   def set_expiration

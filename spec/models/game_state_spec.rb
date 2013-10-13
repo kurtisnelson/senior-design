@@ -139,7 +139,11 @@ describe GameState do
       state.lineup_to_bases
       state.single!
       state.on_base(1).should eq 1
-      state.steal!(1,2)
+      state.steal!(1)
+      state.on_base(1).should eq 0
+      state.on_base(2).should eq 1
+      state.on_base(3).should eq 0
+      state.steal!(1)
       state.on_base(1).should eq 0
       state.on_base(2).should eq 0
       state.on_base(3).should eq 1

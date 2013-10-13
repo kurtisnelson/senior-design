@@ -26,7 +26,7 @@ class StateController < ApplicationController
   end
 
   def steal
-    @game_state.steal!(params[:player_id], params(:bases_stolen))
+    @game_state.steal!(params[:player_id])
     head :ok
   end
 
