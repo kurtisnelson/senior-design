@@ -20,6 +20,9 @@ Fenway::Application.routes.draw do
     post 'score'
   end
 
-  resources :teams
+  resources :teams do
+    put 'add_player'
+  end
+
   root to: 'home#index'
 end

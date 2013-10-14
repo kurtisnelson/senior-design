@@ -37,6 +37,15 @@ class TeamsController < ApplicationController
 	 	render action: "edit"	 
 	end
   end
+
+  def add_player
+    @player = Player.new()
+    @player.team_id = params[:game_id]
+    @player.user_id = params[:user_id]
+    @player.player_number = -1
+    @player.save
+  end
+
   private
   def set_team
   	@team = Team.find(params[:id])
@@ -44,8 +53,8 @@ class TeamsController < ApplicationController
   
   def team_params
   	params.require(:team).permit(
-		:name, :description, :user_ids => []
-	)
+  		:name, :description, :user_ids => []
+  	)
   end
   	  	
 end

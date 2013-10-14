@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
+  has_many :players, dependent: :delete_all
+  has_many :stats
+  has_many :teams, through: :players
+
   devise :database_authenticatable, :registerable, :omniauthable,
     :recoverable, :rememberable, :trackable, :omniauth_providers => [:google_oauth2]
   validates :name, :email, presence: true
-  has_and_belongs_to_many :teams
-  has_many :stats
 
   enumerate :role do
     value id: 0, name: "Player"
