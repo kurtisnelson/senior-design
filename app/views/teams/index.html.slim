@@ -1,14 +1,10 @@
-h1 Listing teams
+h1 Teams
 
-table.table
-  - @teams.each do |team|
-    tr
-      td
-        h3 = team.name 
-      td = link_to 'Show', team_path(team)
-      td = link_to 'Edit', edit_team_path(team)
-      td = link_to 'Destroy', team_path(team), method: :delete, data: {:confirm => 'Are you sure?'}
+table#teams.table.table-striped
+	- @teams.each do |team|
+		== render :partial => "team", locals: {team: team}
 
+h1 New Team
 br
-
-= link_to 'New Team', new_team_path, :class => 'btn btn-primary'
+#new_team
+	== render :partial => "form"

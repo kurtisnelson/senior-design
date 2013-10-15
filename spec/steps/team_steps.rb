@@ -2,6 +2,10 @@ step "I click on Teams" do
 	click_on "Teams"
 end
 
+step "I click on All Teams" do
+  click_on "All Teams"
+end
+
 step "I click New Team" do
   click_on "New Team"
 end

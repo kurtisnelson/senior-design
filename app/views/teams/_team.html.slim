@@ -1,0 +1,9 @@
+tr id=("team_#{team.id}")
+	td
+		h3 = team.name
+		div 
+			= link_to 'Show', team_path(team)
+			= " "
+			= link_to 'Edit', edit_team_path(team)
+			= " "
+		 	= link_to 'Destroy', team_path(team), method: :delete, data: {:confirm => 'Are you sure?'}, remote: true

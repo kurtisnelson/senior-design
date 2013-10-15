@@ -2,6 +2,7 @@ class TeamsController < ApplicationController
   before_action :set_team, only: [:show,:edit,:update, :destroy]
   def index
   	@teams = Team.all
+    @team = Team.new
   end
 
   def new
@@ -16,26 +17,38 @@ class TeamsController < ApplicationController
   
   def create
     @team = Team.new(team_params)
-	  if @team.save
-		  flash[:success] = "Saved Team"
-		  redirect_to teams_path
-	  else
-		  flash[:error] = "Could not save team"
-		  render action: "new"
-	  end
+    if @team.save
+      flash.now[:success] = "Team was successfully created."
+    else
+      flash.now[:error] = "Error in creating team."
+    end
+
+    respond_to do |format|
+      format.html { redirect_to teams_path, notice: 'Team was successfully created.'}
+      format.js   
+    end
   end
   
   def destroy
   	@team.destroy
-	redirect_to teams_url, notice: 'Team was successfully destroyed'
+
+    respond_to do |format|
+      format.html { redirect_to teams_path, notice: "Team was successfully deleted." }
+      format.js  
+    end
   end	
 	 
   def update
-  	if @team.update(team_params)
-		  redirect_to @team, notice: 'Team wasy successfully updated'
-	else
-	 	render action: "edit"	 
-	end
+    if @team.update(team_params)
+      flash.now[:success] = "Team was successfully updated."
+    else
+      flash.now[:error] = "Error in updating team."
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @team }
+      format.js   
+    end
   end
 
   def add_player

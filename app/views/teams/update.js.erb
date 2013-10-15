@@ -1,0 +1,1 @@
+$("#notice").html("<%= escape_javascript(render :partial => 'layouts/messages', :locals => {:flash => flash}).html_safe %>").hide().fadeIn().delay(2000).fadeOut();
