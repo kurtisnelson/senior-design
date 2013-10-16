@@ -129,7 +129,9 @@ class GameState
   def next_inning!
     set(:outs, 0)
     r.del(key :bases)
-    r.del(key :lineup)
+    r.rename(key(:inactive_lineup), key(:temp_lineup))
+    r.rename(key(:lineup), key(:inactive_lineup))
+    r.rename(key(:temp_lineup), key(:lineup))
   end
 
   def away_score!
