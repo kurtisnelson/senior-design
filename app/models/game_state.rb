@@ -4,6 +4,24 @@ class GameState
 
   def initialize(id)
     @id = id.to_i
+    populate_lineup unless llength(:lineup) > 0
+    populate_ilineup unless llength(:inactive_lineup) > 0
+  end
+
+  def populate_lineup
+    game = Game.find(@id)
+    r.del key(:lineup)
+    r.pipelined do
+      game.visitor_lineup.each {|i| r.rpush key(:lineup), i}
+    end
+  end
+
+  def populate_ilineup
+    game = Game.find(@id)
+    r.del key(:inactive_lineup)
+    r.pipelined do
+      game.home_lineup.each {|i| r.rpush key(:inactive_lineup), i}
+    end
   end
 
   def self.find id
@@ -45,6 +63,10 @@ class GameState
 
   def lineup
     r.lrange(key(:lineup), 0, -1).map {|i| i.to_i}
+  end
+
+  def inactive_lineup
+    r.lrange(key(:inactive_lineup), 0, -1).map {|i| i.to_i}
   end
 
   def at_bat
@@ -169,6 +191,10 @@ class GameState
   end
   def get attr
     r.get(key(attr).to_s)
+  end
+
+  def llength attr
+    r.llen(key(attr)).to_i
   end
 
   def r
