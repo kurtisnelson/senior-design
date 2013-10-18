@@ -9,13 +9,13 @@ class Game < ActiveRecord::Base
     false
   end
 
-  def visitor_lineup
-    vl = read_attribute(:visitor_lineup)
+  def away_lineup
+    vl = read_attribute(:away_lineup)
     return [] unless vl
     vl.split(',')
   end
-  def visitor_lineup= lineup
-    write_attribute(:visitor_lineup, lineup.join(','))
+  def away_lineup= lineup
+    write_attribute(:away_lineup, lineup.join(','))
   end
 
   def home_lineup
