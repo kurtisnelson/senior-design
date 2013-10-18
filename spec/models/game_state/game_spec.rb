@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe GameState do
-  let(:state) { GameState.new(FactoryGirl.create(:game).id) }
+describe GameState::Game do
+  let(:state) { GameState::Game.new(FactoryGirl.create(:game).id) }
 
   describe "#single" do
     it "moves the player at bat to first base" do

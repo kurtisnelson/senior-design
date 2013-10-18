@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe StateController do
-	let(:game_state) {GameState.new(FactoryGirl.create(:game).id)}
+	let(:game_state) {GameState::Game.new(FactoryGirl.create(:game).id)}
 	describe "#show" do
 		before :each do
 			FactoryGirl.create_list(:user, 12)
