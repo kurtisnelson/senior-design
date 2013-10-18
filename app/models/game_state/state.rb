@@ -7,6 +7,7 @@ module GameState
     attr_reader :id
     def initialize(id)
       @id = id.to_i
+      @game = ::Game.find(@id)
     end
 
     def self.find id
@@ -26,10 +27,22 @@ module GameState
     end
 
     def llength attr
-      r.llen(key(attr)).to_i
+      r.llen(key(attr))
+    end
+
+    def get_int_array attr
+      r.lrange(key(attr), 0, -1).map {|i| i.to_i}
+    end
+
+    def set_expiration
+      raise "no expiration method"
     end
 
     def r
+      State.r
+    end
+
+    def State.r
       @r ||= Redis::Namespace.new(:game_state, redis: REDIS)
       @r
     end

@@ -1,40 +1,25 @@
 module GameState
   class Game < State
     attr_reader :date
+    attr_reader :lineups, :inning
 
     def initialize(id)
       super(id)
-      populate_lineup unless llength(:lineup) > 0
-      populate_ilineup unless llength(:inactive_lineup) > 0
-    end
-
-    def populate_lineup
-      game = ::Game.find(@id)
-      r.del key(:lineup)
-      r.pipelined do
-        game.visitor_lineup.each {|i| r.rpush key(:lineup), i}
-      end
-    end
-
-    def populate_ilineup
-      game = ::Game.find(@id)
-      r.del key(:inactive_lineup)
-      r.pipelined do
-        game.home_lineup.each {|i| r.rpush key(:inactive_lineup), i}
-      end
+      @lineups = Lineups.new(id)
+      @inning = Inning.new(id)
     end
 
     def single!
       set(:balls, 0)
       set(:strikes, 0)
-      lineup_to_bases
+      lineups.active(@inning).to_bases
     end
 
     def double!
       set(:balls, 0)
       set(:strikes, 0)
       r.lpush(key(:bases), nil)
-      lineup_to_bases
+      lineups.active(@inning).to_bases
     end
 
     def triple!
@@ -42,7 +27,7 @@ module GameState
       set(:strikes, 0)
       r.lpush(key(:bases), nil)
       r.lpush(key(:bases), nil)
-      lineup_to_bases
+      lineups.active(@inning).to_bases
     end
 
     def on_base base_id
@@ -57,14 +42,6 @@ module GameState
       r.lrange(key(:bases), 0, -1).map {|i| i.to_i}
     end
 
-    def lineup
-      r.lrange(key(:lineup), 0, -1).map {|i| i.to_i}
-    end
-
-    def inactive_lineup
-      r.lrange(key(:inactive_lineup), 0, -1).map {|i| i.to_i}
-    end
-
     def at_bat
       r.lrange(key(:bases), 0, 0).first.to_i
     end
@@ -72,22 +49,6 @@ module GameState
     def out player_id
       r.lrem key(:bases), 0, player_id
       r.incr(key :outs)
-    end
-
-    def add_to_lineup id
-      r.lpush key(:lineup), id
-    end
-
-    def next_in_lineup
-      r.rpop(key(:lineup)).to_i
-    end
-
-    def lineup_to_out
-      r.rpoplpush(key(:lineup), key(:lineup)).to_i
-    end
-
-    def lineup_to_bases
-      r.rpoplpush(key(:lineup), key(:bases)).to_i
     end
 
     def strikes
@@ -147,9 +108,6 @@ module GameState
     def next_inning!
       set(:outs, 0)
       r.del(key :bases)
-      r.rename(key(:inactive_lineup), key(:temp_lineup))
-      r.rename(key(:lineup), key(:inactive_lineup))
-      r.rename(key(:temp_lineup), key(:lineup))
     end
 
     def away_score!
@@ -166,14 +124,16 @@ module GameState
 
     def set_expiration
       @date = ::Game.find(id).start_datetime + 1.day
+      epoch = @date.to_i
       r.pipelined do
-        r.expireat(key :lineup, @date.to_i)
-        r.expireat(key :bases, @date.to_i)
-        r.expireat(key :away, @date.to_i)
-        r.expireat(key :home, @date.to_i)
-        r.expireat(key :balls, @date.to_i)
-        r.expireat(key :strikes, @date.to_i)
-        r.expireat(key :outs, @date.to_i)
+        lineups.set_expiration(epoch)
+        inning.set_expiration(epoch)
+        r.expireat(key :bases, epoch)
+        r.expireat(key :away, epoch)
+        r.expireat(key :home, epoch)
+        r.expireat(key :balls, epoch)
+        r.expireat(key :strikes, epoch)
+        r.expireat(key :outs, epoch)
       end
     end
   end

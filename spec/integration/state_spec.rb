@@ -5,8 +5,8 @@ describe StateController do
 	describe "#show" do
 		before :each do
 			FactoryGirl.create_list(:user, 12)
-			User.limit(9).each {|p| game_state.add_to_lineup p.id}
-			game_state.lineup_to_bases
+			User.limit(9).each {|p| game_state.lineups.away.add p.id}
+			game_state.lineups.away.to_bases
 			game_state.outs = 40
 			game_state.balls = 3
 			game_state.strikes = 2
@@ -27,7 +27,7 @@ describe StateController do
 		end
 		it "contains a lineup and bases with User IDs" do
 			@state_json['game']['bases'].should include User.first.id
-			@state_json['game']['lineup'].should eq User.limit(9).pluck(:id).reverse[0..7]
+			@state_json['game']['lineups']['away'].should eq User.limit(9).pluck(:id).reverse[0..7]
 		end
 	end
 end

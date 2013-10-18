@@ -5,9 +5,9 @@ describe GameState::Game do
 
   describe "#single" do
     it "moves the player at bat to first base" do
-      state.add_to_lineup(1)
-      state.add_to_lineup(2)
-      state.lineup_to_bases
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.to_bases
       state.at_bat.should eq 1
       state.single!
       state.at_bat.should eq 2
@@ -24,9 +24,9 @@ describe GameState::Game do
 
   describe "#double" do
     it "moves the player at bat to second base" do
-      state.add_to_lineup(1)
-      state.add_to_lineup(2)
-      state.lineup_to_bases
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.to_bases
       state.at_bat.should eq 1
       state.double!
       state.at_bat.should eq 2
@@ -34,10 +34,10 @@ describe GameState::Game do
       state.on_base(2).should eq 1
     end
     it "moves player two bases foward" do
-      state.add_to_lineup(1)
-      state.add_to_lineup(2)
-      state.add_to_lineup(3)
-      state.lineup_to_bases
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.add 3
+      state.lineups.away.to_bases
       state.single!
       state.double!
       state.on_base(1).should eq 0
@@ -55,9 +55,9 @@ describe GameState::Game do
 
   describe "#triple" do
     it "moves the player at bat to third base" do
-      state.add_to_lineup(1)
-      state.add_to_lineup(2)
-      state.lineup_to_bases
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.to_bases
       state.at_bat.should eq 1
       state.triple!
       state.at_bat.should eq 2
@@ -66,10 +66,10 @@ describe GameState::Game do
       state.on_base(3).should eq 1
     end
     it "moves player three bases foward" do
-      state.add_to_lineup(1)
-      state.add_to_lineup(2)
-      state.add_to_lineup(3)
-      state.lineup_to_bases
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.add 3
+      state.lineups.away.to_bases
       state.single!
       state.triple!
       state.on_base(1).should eq 0
@@ -134,9 +134,9 @@ describe GameState::Game do
 
   describe "#steal!" do 
     it "allows the player to steal bases" do
-      state.add_to_lineup(1)
-      state.add_to_lineup(2)
-      state.lineup_to_bases
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.to_bases
       state.single!
       state.on_base(1).should eq 1
       state.steal!(1)
@@ -153,9 +153,9 @@ describe GameState::Game do
   describe "#player_on_base" do
     let(:player) {FactoryGirl.create(:user)}
     it "gets the player object of the player on base" do
-      state.add_to_lineup(player.id)
-      state.add_to_lineup(2)
-      state.lineup_to_bases
+      state.lineups.away.add player.id
+      state.lineups.away.add 2
+      state.lineups.away.to_bases
       state.single!
       state.player_on_base(1).name.should eq player.name
     end
