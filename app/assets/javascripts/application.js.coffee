@@ -1,8 +1,10 @@
 #= require jquery
-#= require autocomplete-rails
 #= require jquery_ujs
+#= require jquery.ui.all
+#= require autocomplete-rails
 #= require bootstrap
 #= require bootstrap-datepicker
 #= require bootstrap-collapse
 #= require scoreboard
 #= require_tree .
+#= require best_in_place

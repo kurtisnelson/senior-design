@@ -1,0 +1,16 @@
+tr
+	td = link_to game.name, game_path(:id => game.id)
+	td 
+		= best_in_place game, :start_date, :type => :input, activator: "#edit_game_#{game.id}_date"
+		= " "
+		a href="#"
+			i.icon-calendar id="edit_game_#{game.id}_date"
+	td
+		= best_in_place game, :start_time, :type => :input, :display_with => Proc.new { |f| f.strftime("%H:%M") }, activator: "#edit_game_time_#{game.id}"
+		= " "
+		a href="#"
+			i.icon-edit id="edit_game_time_#{game.id}"
+
+javascript:
+	$(".picker_game_time").datepicker({format: 'yyyy-mm-dd'});
+

@@ -1,20 +1,49 @@
-p#notice = notice
+javascript:
+  $(document).ready(function() {
+    /* Activating Best In Place */
+    jQuery(".best_in_place").best_in_place();
+  });
 
-table.table
-  tr
-    th  Name
-  tr
-    td =  @team.name
-  br
-  tr
-    th Description
-  tr
-    td = @team.description
-  tr
-    th Members of Team
-  -@team.users.each do |user| 
-    tr 
-      td = user.name
-= link_to 'Edit', edit_team_path(@team)
-= " | "
-= link_to 'Back', teams_path
+.breadcrumb
+  =link_to "All Teams", teams_path
+  = " "
+  i.icon-chevron-right
+  = " "
+  = link_to @team.name, @team
+
+
+.row
+  .team_name
+    h1 
+      = best_in_place @team, :name, :type => :input
+      = " "
+      i.icon-edit
+
+.row
+  .team_desc
+    p = @team.description
+
+.row
+  h2 Games
+  table.table.table-striped.table-bordered.games
+    thead
+      th Game Name
+      th Start Date
+      th Start Time
+    tbody
+      -@team.games.each do |game|
+        == render :partial => game, locals: {game: game.decorate}
+
+.row
+  h2 Team Members
+  table.table.table-striped.table-bordered.team_members
+    thead
+      tr
+        th Player Name
+        th #
+        th Actions
+    tbody
+      -@team.players.each do |player|
+        == render :partial => player, locals: {team: @team, player: player}
+      //== render :partial => "players/new_player", locals: {team: @team}
+  = link_to "Add Player", new_team_player_path(:team_id => @team.id), remote: true

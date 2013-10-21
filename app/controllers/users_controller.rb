@@ -29,10 +29,10 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
-    else
-      render action: 'edit'
+    @user.update(user_params)
+
+    respond_to do |format|
+      format.json { respond_with_bip(@user) }
     end
   end
 

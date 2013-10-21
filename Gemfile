@@ -24,6 +24,7 @@ gem 'slim-rails'
 gem 'turbolinks'
 gem 'uglifier'
 gem 'unicorn'
+gem 'best_in_place', github: 'bernat/best_in_place'
 
 group :development, :test do
   gem 'dotenv'

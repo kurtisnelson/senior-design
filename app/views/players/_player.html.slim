@@ -1,0 +1,10 @@
+tr id="player_#{player.id}_info"
+
+	td = link_to player.user.name, team_player_path(:team_id => team.id, :id => player.id)
+	td 
+		= best_in_place player, :player_number, :type => :input, :path => team_player_update_jersey_number_path(:team_id => team.id, :player_id => player.id)
+		= " "
+		i.icon-pencil
+	td 
+		= link_to team_player_destroy_path(:team_id => team.id, :player_id => player.id), :method => :put
+			i.icon-remove-sign

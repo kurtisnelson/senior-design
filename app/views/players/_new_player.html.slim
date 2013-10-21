@@ -1,0 +1,17 @@
+tr id="new_player_row"
+	
+	td
+		= simple_form_for [team, Player.new] do |f|
+			= f.input :user_id, :url => autocomplete_user_name_teams_path, :as => :autocomplete
+	td -
+	td	
+		i.icon-remove-sign
+
+	/td = best_in_place player, :user_id, :type => :select, :path => team_player_update_jersey_number_path(:team_id => team.id, :player_id => player.id)
+	/td 
+	/	= best_in_place player, :player_number, :type => :input, :path => team_player_update_jersey_number_path(:team_id => team.id, :player_id => player.id)
+	/	= " "
+	/	i.icon-pencil
+	/td 
+	/	= link_to team_player_destroy_path(:team_id => team.id, :player_id => player.id) 
+	/		i.icon-remove-sign

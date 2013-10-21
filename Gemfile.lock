@@ -6,6 +6,14 @@ GIT
       activesupport (>= 3.0)
 
 GIT
+  remote: git://github.com/bernat/best_in_place.git
+  revision: df178520bf9ba405baee9528d5dbb630d6ff760c
+  specs:
+    best_in_place (2.1.0)
+      jquery-rails
+      rails (>= 3.1)
+
+GIT
   remote: git://github.com/francisd/rails3-jquery-autocomplete.git
   revision: 9884a40f2bb1a8fa3ffab445e6d2c74c3ee99a0d
   specs:
@@ -269,6 +277,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_enum!
+  best_in_place!
   bootstrap-datepicker-rails
   bootstrap-sass
   capybara

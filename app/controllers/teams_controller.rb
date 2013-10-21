@@ -1,5 +1,8 @@
 class TeamsController < ApplicationController
   before_action :set_team, only: [:show,:edit,:update, :destroy]
+  
+  autocomplete :user, :name
+
   def index
   	@teams = Team.all
     @team = Team.new
@@ -48,6 +51,7 @@ class TeamsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to @team }
       format.js   
+      format.json { respond_with_bip(@team)}
     end
   end
 
@@ -57,6 +61,10 @@ class TeamsController < ApplicationController
     @player.user_id = params[:user_id]
     @player.player_number = -1
     @player.save
+  end
+
+  def get_available_users
+    User.all
   end
 
   private

@@ -29,11 +29,11 @@ class GamesController < ApplicationController
   end
 
   def update
-    if @game.update(game_params)
-      redirect_to @game, notice: "Game was updated"
-    else
-      flash[:error] = "Game was not updated"
-      render action: "edit"
+    @game.update_attributes(game_params)
+
+    respond_to do |format|
+      format.html {redirect_to @game}
+      format.json {respond_with_bip(@game)}
     end
   end
 
