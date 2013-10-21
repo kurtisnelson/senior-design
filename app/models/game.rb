@@ -9,6 +9,24 @@ class Game < ActiveRecord::Base
     false
   end
 
+  def away_lineup
+    vl = read_attribute(:away_lineup)
+    return [] unless vl
+    vl.split(',')
+  end
+  def away_lineup= lineup
+    write_attribute(:away_lineup, lineup.join(','))
+  end
+
+  def home_lineup
+    hl = read_attribute(:home_lineup)
+    return [] unless hl
+    hl.split(',')
+  end
+  def home_lineup= lineup
+    write_attribute(:home_lineup, lineup.join(','))
+  end
+
   def start_datetime
     return nil unless start_date
     start_time ||= Time.now.beginning_of_day
