@@ -18,6 +18,8 @@ javascript:
       = best_in_place @team, :name, :type => :input
       = " "
       i.icon-edit
+    p
+      = link_to "Edit", edit_team_path(@team)
 
 .row
   .team_desc

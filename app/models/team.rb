@@ -13,9 +13,10 @@ class Team < ActiveRecord::Base
     User.where.not(id: self.users)
   end
 
-	def add_player 
+	def add_player user_id
     @player = Player.new()
     @player.team_id = self.id
+    @player.user_id = user_id
     @player.player_number = nil
     @player.save
     @player
