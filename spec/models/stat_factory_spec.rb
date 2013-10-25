@@ -22,7 +22,7 @@ describe StatFactory do
   end
     describe "#single" do      
       it "Creates a stat for a player getting a single" do
-        stat = @factory.single player
+        stat = @factory.single player.id
         stat.category(:name).should eq "Single"
         stat.game_id.should eq game.id
         stat.user_id.should eq player.id
