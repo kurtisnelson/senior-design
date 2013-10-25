@@ -39,6 +39,6 @@ class StateController < ApplicationController
   def set_game_state
     id = params[:id]
     id ||= params[:state_id]
-    @game_state = GameState.find(id)
+    @game_state = GameState::Game.find(id)
   end
 end

@@ -24,7 +24,7 @@ module GameState
     end
 
     def next
-      to_a.first
+      to_a.last
     end
 
     def add id

@@ -12,22 +12,24 @@ module GameState
     def single!
       set(:balls, 0)
       set(:strikes, 0)
-      lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_bases
+      sf = StatFactory.new id, @inning
+      sf.single(player_id)
     end
 
     def double!
       set(:balls, 0)
       set(:strikes, 0)
-      r.lpush(key(:bases), nil)
       lineups.active(@inning).to_bases
+      r.lpush(key(:bases), nil)
     end
 
     def triple!
       set(:balls, 0)
       set(:strikes, 0)
-      r.lpush(key(:bases), nil)
-      r.lpush(key(:bases), nil)
       lineups.active(@inning).to_bases
+      r.lpush(key(:bases), nil)
+      r.lpush(key(:bases), nil)
     end
 
     def on_base base_id
@@ -43,12 +45,16 @@ module GameState
     end
 
     def at_bat
-      r.lrange(key(:bases), 0, 0).first.to_i
+      lineups.active(@inning).next
     end
 
     def out player_id
-      r.lrem key(:bases), 0, player_id
-      r.incr(key :outs)
+      if(player_id == at_bat)
+        lineups.active(@inning).to_out
+      else
+        r.lrem key(:bases), 0, player_id
+      end
+      out!
     end
 
     def strikes

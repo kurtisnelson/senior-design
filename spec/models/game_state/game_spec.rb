@@ -5,20 +5,25 @@ describe GameState::Game do
 
   describe "#single" do
     it "moves the player at bat to first base" do
-      state.lineups.away.add 1
-      state.lineups.away.add 2
-      state.lineups.away.to_bases
-      state.at_bat.should eq 1
+      (0..3).each {|id| state.lineups.away.add id}
       state.single!
-      state.at_bat.should eq 2
-      state.on_base(1).should eq 1
+      state.at_bat.should eq 1
+      state.on_base(1).should eq 0
     end
     it "resets balls and strikes" do
       state.strike!
       state.ball!
+      state.lineups.away.add 0
       state.single!
       state.balls.should eq 0
       state.strikes.should eq 0
+    end
+    it "creates a stat for a single for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.single!
+      stat.user_id.should eq 42
+      stat.category = "Single"
+      stat.game_id = state.id
     end
   end
 
@@ -26,23 +31,21 @@ describe GameState::Game do
     it "moves the player at bat to second base" do
       state.lineups.away.add 1
       state.lineups.away.add 2
-      state.lineups.away.to_bases
       state.at_bat.should eq 1
       state.double!
       state.at_bat.should eq 2
-      state.on_base(1).should eq 0
-      state.on_base(2).should eq 1
+      state.on_base(0).should eq 0
+      state.on_base(1).should eq 1
     end
     it "moves player two bases foward" do
       state.lineups.away.add 1
       state.lineups.away.add 2
       state.lineups.away.add 3
-      state.lineups.away.to_bases
       state.single!
       state.double!
-      state.on_base(1).should eq 0
-      state.on_base(2).should eq 2
-      state.on_base(3).should eq 1
+      state.on_base(0).should eq 0
+      state.on_base(1).should eq 2
+      state.on_base(2).should eq 1
     end
     it "resets balls and strikes" do
       state.strike!
@@ -56,26 +59,21 @@ describe GameState::Game do
   describe "#triple" do
     it "moves the player at bat to third base" do
       state.lineups.away.add 1
-      state.lineups.away.add 2
-      state.lineups.away.to_bases
-      state.at_bat.should eq 1
       state.triple!
-      state.at_bat.should eq 2
+      state.on_base(0).should eq 0
       state.on_base(1).should eq 0
-      state.on_base(2).should eq 0
-      state.on_base(3).should eq 1
+      state.on_base(2).should eq 1
     end
     it "moves player three bases foward" do
       state.lineups.away.add 1
       state.lineups.away.add 2
       state.lineups.away.add 3
-      state.lineups.away.to_bases
       state.single!
       state.triple!
+      state.on_base(0).should eq 0
       state.on_base(1).should eq 0
-      state.on_base(2).should eq 0
-      state.on_base(3).should eq 2
-      state.on_base(4).should eq 1
+      state.on_base(2).should eq 2
+      state.on_base(3).should eq 1
     end
     it "resets balls and strikes" do
       state.strike!
