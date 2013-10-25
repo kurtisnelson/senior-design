@@ -38,20 +38,19 @@ class GamesController < ApplicationController
   end
 
   def score
-    @game = Game.find(params[:game_id])
-    if params[:score].present?
-      respond_to do |format|
-        @game.handle(params[:score])
-        if @game.save
-          format.html { redirect_to game_score_path(@game), notice: params[:score] }
-          format.json { head :ok }
-        else
-          format.html { redirect_to game_score_path(@game), error: "Bad things happened" }
-          format.json { render json: @game.errors, status: :unprocessable_entity }
-        end
+    @game = Game.find(params[:game_id]).decorate
+    return unless params[:score].present?
+
+    respond_to do |format|
+      @game.handle(params[:score])
+      if @game.save
+        format.html { redirect_to game_score_path(@game), notice: params[:score] }
+        format.json { head :ok }
+      else
+        format.html { redirect_to game_score_path(@game), error: "Bad things happened" }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end
-    @game = @game.decorate
   end
 
   private

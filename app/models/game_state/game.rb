@@ -128,13 +128,18 @@ module GameState
       r.pipelined do
         lineups.set_expiration(epoch)
         inning.set_expiration(epoch)
+        self.set_expiration(epoch)
+      end
+    end
+
+    private
+    def set_expiration epoch
         r.expireat(key :bases, epoch)
         r.expireat(key :away, epoch)
         r.expireat(key :home, epoch)
         r.expireat(key :balls, epoch)
         r.expireat(key :strikes, epoch)
         r.expireat(key :outs, epoch)
-      end
     end
   end
 end
