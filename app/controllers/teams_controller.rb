@@ -13,6 +13,7 @@ class TeamsController < ApplicationController
   end
 
   def show
+    @players = @team.players
   end
 
   def edit

@@ -244,6 +244,3 @@ update_popover = (id, name) ->
   if (visible)
     tip.find('.popover-title').text(name)
 
-
-
-
