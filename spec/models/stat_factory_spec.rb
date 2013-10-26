@@ -48,5 +48,12 @@ describe StatFactory do
         stat.game_id.should eq game.id
         stat.user_id.should eq player.id
       end        
-    end    
+    describe "#homerun"
+      it "Creates a stat for a player getting a homerun" do
+        stat = @factory.homerun player.id
+        stat.category(:name).should eq "Homerun"
+        stat.game_id.should eq game.id
+        stat.user_id.should eq player.id
+      end        
+    end  
 end

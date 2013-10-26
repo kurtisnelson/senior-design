@@ -99,6 +99,46 @@ describe GameState::Game do
     end    
   end
 
+  describe "#homerun" do
+    it "the people on first,second,third and batting all clear bases" do
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.add 3
+      state.lineups.away.add 4
+      state.homerun!
+      state.on_base(0).should eq 0
+      state.on_base(1).should eq 0
+      state.on_base(2).should eq 0
+    end
+    it "adds a run to the active teams score" do
+      state.lineups.away.add 1
+      state.away_score.should eq 0      
+      state.homerun!
+      state.away_score.should eq 1
+
+    end
+    it "creates a stat for a homerun for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.homerun!
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Homerun"
+      stat.game_id.should eq state.id
+    end
+  end
+
+  describe "#run" do
+    it "in crements the away score by 1" do 
+      state.away_score.should eq 0
+      state.run! state.inning.top?
+      state.away_score.should eq 1
+    end
+    it "increments the home score by 1" do
+      state.home_score.should eq 0 
+      state.run! state.inning.bottom?
+      state.home_score.should eq 1
+    end
+  end
+
   describe "#out!" do
     it "increments the out count on a fresh game" do
       state.out!

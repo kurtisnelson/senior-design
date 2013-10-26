@@ -2,11 +2,14 @@ module GameState
   class Game < State
     attr_reader :date
     attr_reader :lineups, :inning
+    attr_reader :away_score, :home_score
 
     def initialize(id)
       super(id)
       @lineups = Lineups.new(id)
       @inning = Inning.new(id)
+      @home_score = 0
+      @away_score = 0
     end
 
     def single!
@@ -34,6 +37,26 @@ module GameState
       r.lpush(key(:bases), nil)
       sf = StatFactory.new id, @inning
       sf.triple(player_id)
+    end
+
+    def homerun!
+      set(:balls, 0)
+      set(:strikes, 0)
+      player_id = lineups.active(@inning).to_bases
+      r.lpush(key(:bases), nil)
+      r.lpush(key(:bases), nil)
+      r.lpush(key(:bases), nil) 
+      run! @inning.top?
+      sf = StatFactory.new id, @inning
+      sf.homerun(player_id)     
+    end
+   
+    def run! topOrBottom
+      if topOrBottom
+        @away_score+=1
+      else
+        @home_score+=1
+      end
     end
 
     def on_base base_id
