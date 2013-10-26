@@ -29,9 +29,11 @@ module GameState
     def triple!
       set(:balls, 0)
       set(:strikes, 0)
-      lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_bases
       r.lpush(key(:bases), nil)
       r.lpush(key(:bases), nil)
+      sf = StatFactory.new id, @inning
+      sf.triple(player_id)
     end
 
     def on_base base_id

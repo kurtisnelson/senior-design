@@ -1,3 +1,5 @@
+##Look at stat.rb for enum declarations
+
 class StatFactory
   def initialize(game_id, inning)
     @game_id = game_id
@@ -16,6 +18,14 @@ class StatFactory
     s = base_stat
     s.user_id = player
     s.category = 1
+    s.save!
+    s
+  end
+  
+  def triple(player)
+    s = base_stat
+    s.user_id = player
+    s.category = 2
     s.save!
     s
   end

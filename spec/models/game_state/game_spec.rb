@@ -90,6 +90,13 @@ describe GameState::Game do
       state.balls.should eq 0
       state.strikes.should eq 0
     end
+    it "creates a stat for a triple for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.triple!
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Triple"
+      stat.game_id.should eq state.id
+    end    
   end
 
   describe "#out!" do
