@@ -22,8 +22,8 @@ describe GameState::Game do
       state.lineups.away.add 42
       stat = state.single!
       stat.user_id.should eq 42
-      stat.category = "Single"
-      stat.game_id = state.id
+      stat.category(:name).should eq "Single"
+      stat.game_id.should eq state.id
     end
   end
 
@@ -54,6 +54,14 @@ describe GameState::Game do
       state.balls.should eq 0
       state.strikes.should eq 0
     end
+    it "creates a stat for a double for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.double!
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Double"
+      stat.game_id.should eq state.id
+    end
+
   end
 
   describe "#triple" do

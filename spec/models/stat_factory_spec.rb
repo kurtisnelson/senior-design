@@ -27,5 +27,11 @@ describe StatFactory do
         stat.game_id.should eq game.id
         stat.user_id.should eq player.id
       end
+      it "Creates a stat for a player getting a double" do
+        stat = @factory.double player.id
+        stat.category(:name).should eq "Double"
+        stat.game_id.should eq game.id
+        stat.user_id.should eq player.id
+      end      
     end
 end
