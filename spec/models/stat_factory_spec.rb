@@ -40,6 +40,13 @@ describe StatFactory do
         stat.category(:name).should eq "Triple"
         stat.game_id.should eq game.id
         stat.user_id.should eq player.id
-      end      
+      end   
+    describe "#strike_out"
+      it "Creates a stat for a player getting a triple" do
+        stat = @factory.strike_out player.id
+        stat.category(:name).should eq "Strike Out"
+        stat.game_id.should eq game.id
+        stat.user_id.should eq player.id
+      end        
     end    
 end

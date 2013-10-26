@@ -54,11 +54,13 @@ module GameState
 
     def out player_id
       if(player_id == at_bat)
-        lineups.active(@inning).to_out
+        s = lineups.active(@inning).to_out
       else
-        r.lrem key(:bases), 0, player_id
+        s = r.lrem key(:bases), 0, player_id
       end
       out!
+      sf = StatFactory.new id,@inning
+      sf.strike_out s
     end
 
     def strikes
