@@ -46,6 +46,14 @@ class StatFactory
     s
   end  
 
+  def steal(player)
+    s = base_stat
+    s.user_id = player
+    s.category = 3
+    s.save!
+    s
+  end
+
   private
   def base_stat
     Stat.new(game_id: @game_id, inning: @inning)

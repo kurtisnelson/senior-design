@@ -207,6 +207,13 @@ describe GameState::Game do
       state.on_base(2).should eq 0
       state.on_base(3).should eq 1
     end
+    it "creates a stat for a steal for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.steal! 42
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Steal"
+      stat.game_id.should eq state.id      
+    end
   end
 
   describe "#player_on_base" do

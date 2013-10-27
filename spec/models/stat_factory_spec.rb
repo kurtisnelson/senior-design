@@ -55,5 +55,12 @@ describe StatFactory do
         stat.game_id.should eq game.id
         stat.user_id.should eq player.id
       end        
+    end
+    describe "#steal"
+      it "Creates a stat for a player getting a steal" do
+        stat = @factory.steal player.id
+        stat.category(:name).should eq "Steal"
+        stat.game_id.should eq game.id
+        stat.user_id.should eq player.id
     end  
 end

@@ -155,6 +155,9 @@ module GameState
 
     def steal! player_id
       r.linsert(key(:bases), :before, player_id.to_s, nil)
+      sf = StatFactory.new id,@inning
+      sf.steal player_id   
+
     end
 
     def set_expiration
