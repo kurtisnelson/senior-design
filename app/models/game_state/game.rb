@@ -16,6 +16,7 @@ module GameState
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)      
       sf = StatFactory.new id, @inning
       sf.single(player_id)
     end
@@ -24,6 +25,7 @@ module GameState
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)      
       r.lpush(key(:bases), nil)
       sf = StatFactory.new id, @inning
       sf.double(player_id)
@@ -33,6 +35,7 @@ module GameState
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)
       r.lpush(key(:bases), nil)
       r.lpush(key(:bases), nil)
       sf = StatFactory.new id, @inning
@@ -43,6 +46,7 @@ module GameState
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)      
       r.lpush(key(:bases), nil)
       r.lpush(key(:bases), nil)
       r.lpush(key(:bases), nil) 
@@ -57,6 +61,8 @@ module GameState
       else
         @home_score+=1
       end
+      sf = StatFactory.new id, @inning
+      sf.rbi r.get(key(:last_to_bat))
     end
 
     def on_base base_id
@@ -78,6 +84,7 @@ module GameState
     def out player_id
       if(player_id == at_bat)
         s = lineups.active(@inning).to_out
+        r.set(key(:last_to_bat), player_id)
       else
         s = r.lrem key(:bases), 0, player_id
       end

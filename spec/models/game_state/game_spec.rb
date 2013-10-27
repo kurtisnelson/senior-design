@@ -137,8 +137,17 @@ describe GameState::Game do
       state.run! state.inning.bottom?
       state.home_score.should eq 1
     end
+    it "gives the last person to bat an rbi" do
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.single!
+      state.double!
+      stat = state.run! state.inning.top?
+      stat.user_id.should eq 2
+      stat.category(:name).should eq "RBI"
+      stat.game_id.should eq state.id
+    end
   end
-
   describe "#out!" do
     it "increments the out count on a fresh game" do
       state.out!

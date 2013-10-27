@@ -63,4 +63,11 @@ describe StatFactory do
         stat.game_id.should eq game.id
         stat.user_id.should eq player.id
     end  
+    describe "#rbi"
+      it "Creates a stat for a player getting a rbi" do
+        stat = @factory.rbi player.id
+        stat.category(:name).should eq "RBI"
+        stat.game_id.should eq game.id
+        stat.user_id.should eq player.id
+    end      
 end
