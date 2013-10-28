@@ -4,7 +4,8 @@ module GameState
   end
 
   class State
-    attr_reader :id
+    attr_reader :id, :game
+
     def initialize(id)
       @id = id.to_i
       @game = ::Game.find(@id)

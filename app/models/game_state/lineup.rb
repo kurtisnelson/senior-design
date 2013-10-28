@@ -23,6 +23,14 @@ module GameState
       get_int_array my_name
     end
 
+    def set arr
+      r.del my_key
+
+      r.pipelined do
+        arr.each {|i| r.rpush my_key, i}
+      end
+    end
+
     def next
       to_a.last
     end

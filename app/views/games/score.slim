@@ -9,26 +9,17 @@
 .row
 	.info id="home-team-id"
 	.lineup id="home-lineup"
-		ul.sortable
+		ul.sortable id="home-list"
 			h3 
 				=@game.home_team.name[0..2] 
 				|  Lineup
-			- Team.find(@game.home_team_id).users.each do |user|
-				li.ui-state-default data-id= user.id
-					span.ui-icon.ui-icon-arrowthick-2-n-s
-					=Player.find(user.id).player_number
-					=user.name
+				
 	.row
 	.lineup id="away-lineup"
-		ul.sortable
+		ul.sortable id="away-list"
 			h3
 				=@game.away_team.name[0..2] 
 				|  Lineup
-			- Team.find(@game.away_team_id).users.each do |user|
-				li.ui-state-default data-id= user.id
-					span.ui-icon.ui-icon-arrowthick-2-n-s
-					=Player.find(user.id).player_number
-					=user.name
 .row
 	p.game-status = @game.status_tag
 	.home-team

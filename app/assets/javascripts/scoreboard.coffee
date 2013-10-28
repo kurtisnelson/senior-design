@@ -1,6 +1,10 @@
 #get the game_id from the URL
 game_id = window.location.pathname.split('/')[2]
 
+@innings = 
+  number: 0
+  top: true
+
 strike =
   counter: 0
   process: () ->
@@ -71,10 +75,11 @@ out =
       $("#out2").fadeIn()
 
 
-lineup =
-  batting_order: []
-  at_bat: {}
-  counter: 0
+class Lineup
+  constructor: (@name) ->
+    @batting_order = []
+    @at_bat = {}
+    @counter = 0
   next: () ->
     this.at_bat= this.batting_order[this.counter]
     #base.set_home(this.at_bat)
@@ -103,7 +108,7 @@ class Base
     $('#'+this.name).popover('show')
   render: () ->
     if(!this.is_empty())
-      $("#"+this.name+">h4").text(this.player[0]['id'])
+      $("#"+this.name+">h4").text(this.player[0]['user_id'])
       $("#"+this.name).fadeIn()
       update_popover("#"+this.name , this.player[0]['name'])
     if(this.is_empty())
@@ -114,16 +119,42 @@ class Base
 @second = new Base("second")
 @third = new Base("third")
 
-stateCallback = (data, status, xhr) ->
-  for person in data['players']
-    lineup.batting_order.push(person)
+@home_lineup = new Lineup("home")
+@away_lineup = new Lineup("away")
+@home_players = {}
+@away_players = {}
 
+stateCallback = (data, status, xhr) ->
   strike.counter = data['game']['strikes']
   ball.counter  = data['game']['balls']
   out.counter = data['game']['outs']
+  innings.number = data['game']['inning']['number']
+  innings.top = data['game']['inning']['top']
   strike.render()
   ball.render()
   out.render()
+  jQuery.get("/teams/" + data['game']['away_id'] + ".json", awayCallback)
+  jQuery.get("/teams/" + data['game']['home_id'] + ".json", homeCallback)
+
+awayCallback = (data, status, xhr) ->
+  for player in data['players'] 
+    $("#away-list").append(lineup_builder(player))
+    #away_lineup.batting_order.push(player)
+    away_players[player['user_id']] = player
+
+homeCallback = (data, status, xhr) ->
+  for player in data['players'] 
+    $("#home-list").append(lineup_builder(player))
+    #home_lineup.batting_order.push(player)
+    home_players[player['user_id']] = player
+
+lineup_builder = (player) ->
+  html = "<li class='ui-state-default' data-id=" + player['user_id'] + 
+  "> <span class='ui-icon.ui-icon-arrowthick-2-n-s'> </span>" +
+  player['number'] + " " +
+  player['name'] +
+  "</li>"
+  return html
 
 # #Get the JSON Object
 # $(jQuery.get("/state/" + game_id + ".json", null, stateCallback))
@@ -150,18 +181,61 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   out.process()
 
 @do_start_game = () ->
+  
+  #set Home Lineup array
+  console.log home_players
+  home_array = []
+  home_list = $('#home-list li')
+  home_list.each ->
+    player_id = $(@).data('id')
+    home_array.push($(@).data('id'))
+    home_lineup.batting_order.push(home_players[player_id])
+
+  #set Away Lineup array
+  away_array = []
+  away_list = $('#away-list li')
+  away_list.each ->
+    player_id = $(@).data('id')
+    away_array.push(player_id)
+    away_lineup.batting_order.push(away_players[player_id])
+
+  lineup_json = {
+    lineup:{
+      home: home_array
+      away: away_array
+    }
+  }
+
+  console.log lineup_json
+  #Server call
+  jQuery.ajax("/state/#{game_id}.json", {type:'PATCH', contentType: 'application/json', data: JSON.stringify(lineup_json), dataType: 'json' })
+  jQuery.ajax("/state/#{game_id}/start_game", {type:'PUT'})
   $("#startBtn").fadeOut()
-  lineup.next()
+  $(".lineup>ul>li:nth-child(n+10)").fadeOut()
+  $('.sortable').sortable("disable");
+  away_lineup.next()
+
+@which_lineup = () ->
+  if(innings.top)
+    return away_lineup
+  else
+    return home_lineup
 
 @do_nextup = () ->
-  lineup.next()
+  if(innings.top)
+    console.log "away"
+    away_lineup.next()
+  else
+    console.log "home"
+    home_lineup.next()
 
 @do_single = () ->
+  console.log("single")
   home.popover_hide()
   if(!first.is_empty())
     first.popover_show()
     #TODO wait on click
-  first.set(lineup.at_bat)
+  first.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 
@@ -170,7 +244,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   if(!first.is_empty())
     first.popover_show()
     #TODO wait on click
-  first.set(lineup.at_bat)
+  first.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 
@@ -182,7 +256,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   if(!second.is_empty())
     second.popover_show()
     #TODO wait on click
-  second.set(lineup.at_bat)
+  second.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 
@@ -197,7 +271,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   if(!third.is_empty())
     third.popover_show()
     #TODO wait on click
-  third.set(lineup.at_bat)
+  third.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 

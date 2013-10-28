@@ -1,15 +1,27 @@
 module GameState
-  class Inning
+  class Inning < State
     def initialize(game_id)
-      @id = game_id.to_i
+      super(game_id)
+    end
+
+    def next
+      r.incr key(:inning)
+    end
+
+    def to_number
+      r.get(key(:inning)).to_i / 2
     end
 
     def top?
-      true
+      if(r.get(key(:inning)).to_i % 2 == 0)
+        return true
+      else
+        return false
+      end
     end
 
     def bottom?
-      false
+      !top?
     end
   end
 end

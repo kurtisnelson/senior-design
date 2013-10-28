@@ -6,13 +6,15 @@ Fenway::Application.routes.draw do
     delete "/logout" => "devise/sessions#destroy"
   end
 
-  resources :state, only: [:show], defaults: { format: 'json' } do
+  resources :state, only: [:show, :update], defaults: { format: 'json' } do
     put 'single'
     put 'double'
     put 'triple'
     put 'ball'
     put 'steal'
     put 'strike'
+    put 'next_inning'
+    put 'start_game'
   end
 
   resources :games do
@@ -22,10 +24,7 @@ Fenway::Application.routes.draw do
 
   resources :teams do
     get 'autocomplete_user_name', :on => :collection
-    resources :players do
-      put 'update_jersey_number'
-      put 'destroy'
-    end
+    resources :players
   end
 
   root to: 'home#index'
