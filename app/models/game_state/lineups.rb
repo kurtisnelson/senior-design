@@ -8,6 +8,14 @@ module GameState
       @away = Lineup.new(@id, :away)
     end
 
+    def home= arr
+      @home.set arr
+    end
+
+    def away= arr
+      @away.set arr
+    end
+
     def to_a
       @home.to_a + @away.to_a
     end

@@ -2,7 +2,7 @@ class StateController < ApplicationController
   before_action :set_game_state
 
   def show
-    @players = User.where(id: @game_state.lineups.to_a) + User.where(id: @game_state.bases)
+    @game = @game_state.game
   end
 
   def single
@@ -32,6 +32,25 @@ class StateController < ApplicationController
 
   def strike
     @game_state.strike!
+    head :ok
+  end
+
+  def next_inning
+    @game_state.next_inning!
+    head :ok
+  end
+
+  def start_game
+    #raise "already started" unless @game_state.inning.to_number < 1
+    @game_state.next_inning!
+    @game_state.next_inning!
+    head :ok
+  end
+
+  def update
+    lineups = params[:lineup]
+    @game_state.lineups.home = lineups[:home]
+    @game_state.lineups.away = lineups[:away]
     head :ok
   end
 

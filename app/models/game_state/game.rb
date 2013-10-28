@@ -150,6 +150,7 @@ module GameState
     def next_inning!
       set(:outs, 0)
       r.del(key :bases)
+      @inning.next
     end
 
     def away_score!

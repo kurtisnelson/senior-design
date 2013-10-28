@@ -7,6 +7,20 @@
 	span12.scoreboard
 		=image_tag("Scoreboard.png")
 .row
+	.info id="home-team-id"
+	.lineup id="home-lineup"
+		ul.sortable id="home-list"
+			h3 
+				=@game.home_team.name[0..2] 
+				|  Lineup
+				
+	.row
+	.lineup id="away-lineup"
+		ul.sortable id="away-list"
+			h3
+				=@game.away_team.name[0..2] 
+				|  Lineup
+.row
 	p.game-status = @game.status_tag
 	.home-team
 		h4.team-name = @game.home_team.name
@@ -26,7 +40,7 @@
 		h4 1
 	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(2)'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
 		h4 2
-	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(3)'>Score</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
+	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(3)'>Score</a></li><li><a href='#out'>Out</a></li></ul>" hidden="true"
 		h4 3
 
 	.score-light id="ball1" hidden="true"
@@ -41,20 +55,22 @@
 
 	table id="innings-grid"
 		tbody
-			tr
-				td id="innings-home-team" = @game.home_team.name[0..2]
-				- (1..10).each do |i|
-					td#innings-top data-number=i hidden="true" 0
-
-			tr
+			tr id="away-inning-row"
 				td id="innings-away-team" = @game.away_team.name[0..2]
 				- (1..10).each do |i|
-					td#innings-btm data-number=i hidden="true" 0
+					td.innings-top data-number=i 
+
+			tr id="home-inning-row"
+				td id="innings-home-team" = @game.home_team.name[0..2]
+				- (1..10).each do |i|
+					td.innings-btm data-number=i 
 
 javascript:
 	$('#home').popover();
 	$('#first').popover();
 	$('#second').popover();
 	$('#third').popover();
+	$('.sortable').sortable();
+	$('.sortable').disableSelection();
 
 

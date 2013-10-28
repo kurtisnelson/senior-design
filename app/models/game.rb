@@ -4,6 +4,11 @@ class Game < ActiveRecord::Base
   has_many :stats
 
   EVENTS = ["strike", "ball", "walk", "out", "away_point", "home_point"]
+
+  def players
+    away_team.players + home_team.players
+  end
+
   def in_progress?
     return true if self.start_datetime && self.start_datetime <= DateTime.now
     false

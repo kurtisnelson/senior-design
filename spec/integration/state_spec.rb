@@ -17,9 +17,6 @@ describe StateController do
 		it "returns a json Game" do
 			@state_json['game']['id'].should eq game_state.id
 		end
-		it "returns relevant Users" do
-			@state_json['players'].length.should eq 9	
-		end
 		it "contains balls, strikes, outs" do
 			@state_json['game']['balls'].should eq 3
 			@state_json['game']['strikes'].should eq 2
