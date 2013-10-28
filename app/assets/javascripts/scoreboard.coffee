@@ -1,9 +1,26 @@
 #get the game_id from the URL
 game_id = window.location.pathname.split('/')[2]
+home_score = 0
+away_score = 0
 
 @innings = 
+  count: 2
   number: 0
   top: true
+  score: 0
+  next: ->
+    if(this.score == 0)
+      if(which_lineup().name == "home")
+        $("#home-inning-row [data-number='"+innings.number+"']").html(innings.score)
+      else if(which_lineup().name == "away")
+        $("#away-inning-row [data-number='"+innings.number+"']").html(innings.score)
+    this.score = 0
+    this.count++
+    this.number = Math.floor(this.count / 2)
+    if(this.count % 2 == 0)
+      this.top= true
+    else
+      this.top= false
 
 strike =
   counter: 0
@@ -56,7 +73,7 @@ ball =
       $("#ball2").fadeIn()      
       $("#ball3").fadeIn()
 
-out =
+@out =
   counter: 0
   process: () ->
     this.counter++
@@ -129,6 +146,7 @@ stateCallback = (data, status, xhr) ->
   ball.counter  = data['game']['balls']
   out.counter = data['game']['outs']
   innings.number = data['game']['inning']['number']
+  console.log innings.number
   innings.top = data['game']['inning']['top']
   strike.render()
   ball.render()
@@ -164,7 +182,9 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   #server call
   $(jQuery.ajax("/state/#{game_id}/strike", {type:'PUT'}))
   if strike.counter == 2
-    out.process()
+    do_out()
+    home.reset()
+    do_nextup()
   else
     strike.process()
 
@@ -176,9 +196,18 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
 
 @do_out = () ->
   #Server call
-  $(jQuery.ajax("/state/#{game_id}/out", {type:'PUT'}))
-  #TODO next_innint if out.counter = 2
+  #$(jQuery.ajax("/state/#{game_id}/out", {type:'PUT'}))
+  #TODO next_inning if out.counter = 2
+  console.log "before out counter 2"
+  if out.counter == 2
+    console.log "out counter 2"
+    innings.next()
+    home.reset()
+    first.reset()
+    second.reset()
+    third.reset()
   out.process()
+  
 
 @do_start_game = () ->
   
@@ -214,6 +243,8 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   $(".lineup>ul>li:nth-child(n+10)").fadeOut()
   $('.sortable').sortable("disable");
   away_lineup.next()
+  innings.number= 1
+  innings.top = true
 
 @which_lineup = () ->
   if(innings.top)
@@ -222,6 +253,8 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     return home_lineup
 
 @do_nextup = () ->
+  ball.reset()
+  strike.reset()
   if(innings.top)
     console.log "away"
     away_lineup.next()
@@ -296,11 +329,24 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
       third.popover_show()
     else
       third.popover_hide()
+    do_score()
     third.player.shift()
     third.render()
+
     
     #TODO Update score
-
+@do_score = () ->
+  innings.score++
+  ball.reset()
+  strike.reset()
+  if(which_lineup().name == "home")
+    home_score++
+    $(".home-team-score>h1").html(home_score)
+    $("#home-inning-row [data-number='"+innings.number+"']").html(innings.score)
+  else if(which_lineup().name == "away")
+    away_score++
+    $(".away-team-score>h1").html(away_score)
+    $("#away-inning-row [data-number='"+innings.number+"']").html(innings.score)
 
 #Render Helper Function
 
