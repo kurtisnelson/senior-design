@@ -263,37 +263,37 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     home_lineup.next()
 
 @do_single = () ->
-  console.log("single")
+  #TODO single server put
   home.popover_hide()
   if(!first.is_empty())
     first.popover_show()
-    #TODO wait on click
   first.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 
 @do_walk = () ->
+  #TODO walk server put
   home.popover_hide()
   if(!first.is_empty())
     first.popover_show()
-    #TODO wait on click
   first.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 
 @do_double = () ->
+  #TODO double server put
   home.popover_hide()
   if(!first.is_empty())
     second.set(first.player.shift())
     first.render()
   if(!second.is_empty())
     second.popover_show()
-    #TODO wait on click
   second.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 
 @do_triple = () ->
+  #TODO triple server put
   home.popover_hide()
   if(!second.is_empty())
     third.set(second.player.shift())
@@ -303,13 +303,18 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     first.render()
   if(!third.is_empty())
     third.popover_show()
-    #TODO wait on click
   third.set(which_lineup().at_bat)
   home.reset()
   do_nextup()
 
 
-@do_move = (base_on) ->
+@do_move = (base_on, func) ->
+  if(func == 1)
+    #TODO steal server put
+    console.log "steal"
+  if(func == 0)
+    #TODO move server put
+    console.log "move"
   if(base_on == 1)
     if(!second.is_empty())
       second.popover_show()
@@ -334,17 +339,18 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     third.render()
 
     
-    #TODO Update score
 @do_score = () ->
   innings.score++
   ball.reset()
   strike.reset()
   if(which_lineup().name == "home")
     home_score++
+    #TODO home score server Put
     $(".home-team-score>h1").html(home_score)
     $("#home-inning-row [data-number='"+innings.number+"']").html(innings.score)
   else if(which_lineup().name == "away")
     away_score++
+    #TODO away score server Put
     $(".away-team-score>h1").html(away_score)
     $("#away-inning-row [data-number='"+innings.number+"']").html(innings.score)
 
