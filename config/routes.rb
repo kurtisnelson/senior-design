@@ -24,7 +24,10 @@ Fenway::Application.routes.draw do
 
   resources :teams do
     get 'autocomplete_user_name', :on => :collection
-    resources :players
+    resources :players do
+      put 'update_jersey_number'
+      put 'destroy'
+    end
   end
 
   root to: 'home#index'
