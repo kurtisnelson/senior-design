@@ -240,7 +240,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   jQuery.ajax("/state/#{game_id}.json", {type:'PATCH', contentType: 'application/json', data: JSON.stringify(lineup_json), dataType: 'json' })
   jQuery.ajax("/state/#{game_id}/start_game", {type:'PUT'})
   $("#startBtn").fadeOut()
-  $(".lineup>ul>li:nth-child(n+10)").fadeOut()
+  $(".lineup>ul>li:nth-child(n+11)").fadeOut()
   $('.sortable').sortable("disable");
   away_lineup.next()
   innings.number= 1
@@ -305,6 +305,21 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     third.popover_show()
   third.set(which_lineup().at_bat)
   home.reset()
+  do_nextup()
+
+@do_homerun = () ->
+  home.popover_hide()
+  if(!second.is_empty())
+    second.reset()
+    do_score()
+  if(!first.is_empty())
+    first.reset()
+    do_score()
+  if(!third.is_empty())
+    third.reset()
+    do_score()
+  home.reset()
+  do_score()
   do_nextup()
 
 
