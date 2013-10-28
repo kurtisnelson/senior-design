@@ -22,8 +22,8 @@ describe GameState::Game do
       state.lineups.away.add 42
       stat = state.single!
       stat.user_id.should eq 42
-      stat.category = "Single"
-      stat.game_id = state.id
+      stat.category(:name).should eq "Single"
+      stat.game_id.should eq state.id
     end
   end
 
@@ -54,6 +54,14 @@ describe GameState::Game do
       state.balls.should eq 0
       state.strikes.should eq 0
     end
+    it "creates a stat for a double for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.double!
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Double"
+      stat.game_id.should eq state.id
+    end
+
   end
 
   describe "#triple" do
@@ -82,19 +90,81 @@ describe GameState::Game do
       state.balls.should eq 0
       state.strikes.should eq 0
     end
+    it "creates a stat for a triple for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.triple!
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Triple"
+      stat.game_id.should eq state.id
+    end    
   end
 
+  describe "#homerun" do
+    it "the people on first,second,third and batting all clear bases" do
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.lineups.away.add 3
+      state.lineups.away.add 4
+      state.homerun!
+      state.on_base(0).should eq 0
+      state.on_base(1).should eq 0
+      state.on_base(2).should eq 0
+    end
+    it "adds a run to the active teams score" do
+      state.lineups.away.add 1
+      state.away_score.should eq 0      
+      state.homerun!
+      state.away_score.should eq 1
+
+    end
+    it "creates a stat for a homerun for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.homerun!
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Homerun"
+      stat.game_id.should eq state.id
+    end
+  end
+
+  describe "#run" do
+    it "in crements the away score by 1" do 
+      state.away_score.should eq 0
+      state.run! state.inning.top?
+      state.away_score.should eq 1
+    end
+    it "increments the home score by 1" do
+      state.home_score.should eq 0 
+      state.run! state.inning.bottom?
+      state.home_score.should eq 1
+    end
+    it "gives the last person to bat an rbi" do
+      state.lineups.away.add 1
+      state.lineups.away.add 2
+      state.single!
+      state.double!
+      stat = state.run! state.inning.top?
+      stat.user_id.should eq 2
+      stat.category(:name).should eq "RBI"
+      stat.game_id.should eq state.id
+    end
+  end
   describe "#out!" do
     it "increments the out count on a fresh game" do
       state.out!
       state.outs.should eq 1
     end
-
     it "calls next_inning after 3 outs" do
       state.should_receive(:next_inning!).once
       state.out!
       state.out!
       state.out!
+    end
+    it "records a strike out stat when out is called on current batter" do
+      state.lineups.away.add 32
+      stat = state.out 32
+      stat.user_id.should eq 32
+      stat.category(:name).should eq "Strike Out"
+      stat.game_id.should eq state.id
     end
   end
 
@@ -145,6 +215,13 @@ describe GameState::Game do
       state.on_base(1).should eq 0
       state.on_base(2).should eq 0
       state.on_base(3).should eq 1
+    end
+    it "creates a stat for a steal for the player at bat" do
+      state.lineups.away.add 42
+      stat = state.steal! 42
+      stat.user_id.should eq 42
+      stat.category(:name).should eq "Steal"
+      stat.game_id.should eq state.id      
     end
   end
 

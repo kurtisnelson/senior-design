@@ -2,17 +2,21 @@ module GameState
   class Game < State
     attr_reader :date
     attr_reader :lineups, :inning
+    attr_reader :away_score, :home_score
 
     def initialize(id)
       super(id)
       @lineups = Lineups.new(id)
       @inning = Inning.new(id)
+      @home_score = 0
+      @away_score = 0
     end
 
     def single!
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)      
       sf = StatFactory.new id, @inning
       sf.single(player_id)
     end
@@ -20,16 +24,45 @@ module GameState
     def double!
       set(:balls, 0)
       set(:strikes, 0)
-      lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)      
       r.lpush(key(:bases), nil)
+      sf = StatFactory.new id, @inning
+      sf.double(player_id)
     end
 
     def triple!
       set(:balls, 0)
       set(:strikes, 0)
-      lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)
       r.lpush(key(:bases), nil)
       r.lpush(key(:bases), nil)
+      sf = StatFactory.new id, @inning
+      sf.triple(player_id)
+    end
+
+    def homerun!
+      set(:balls, 0)
+      set(:strikes, 0)
+      player_id = lineups.active(@inning).to_bases
+      r.set(key(:last_to_bat), player_id)      
+      r.lpush(key(:bases), nil)
+      r.lpush(key(:bases), nil)
+      r.lpush(key(:bases), nil) 
+      run! @inning.top?
+      sf = StatFactory.new id, @inning
+      sf.homerun(player_id)     
+    end
+   
+    def run! topOrBottom
+      if topOrBottom
+        @away_score+=1
+      else
+        @home_score+=1
+      end
+      sf = StatFactory.new id, @inning
+      sf.rbi r.get(key(:last_to_bat))
     end
 
     def on_base base_id
@@ -50,11 +83,14 @@ module GameState
 
     def out player_id
       if(player_id == at_bat)
-        lineups.active(@inning).to_out
+        s = lineups.active(@inning).to_out
+        r.set(key(:last_to_bat), player_id)
       else
-        r.lrem key(:bases), 0, player_id
+        s = r.lrem key(:bases), 0, player_id
       end
       out!
+      sf = StatFactory.new id,@inning
+      sf.strike_out s
     end
 
     def strikes
@@ -126,6 +162,9 @@ module GameState
 
     def steal! player_id
       r.linsert(key(:bases), :before, player_id.to_s, nil)
+      sf = StatFactory.new id,@inning
+      sf.steal player_id   
+
     end
 
     def set_expiration
