@@ -184,7 +184,6 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   if strike.counter == 2
     do_out()
     home.reset()
-    do_nextup()
   else
     strike.process()
 
@@ -197,17 +196,35 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
 @do_out = () ->
   #Server call
   #$(jQuery.ajax("/state/#{game_id}/out", {type:'PUT'}))
-  #TODO next_inning if out.counter = 2
-  console.log "before out counter 2"
   if out.counter == 2
-    console.log "out counter 2"
+    console.log "out counter is 2"
     innings.next()
     home.reset()
     first.reset()
     second.reset()
     third.reset()
+    do_nextup()
   out.process()
-  
+
+@do_out_onbase = (base_on) ->
+  if(base_on == 0)
+    home.popover_hide()
+    home.reset()
+    do_out()
+    do_nextup()
+  else if(base_on == 1)
+    first.popover_hide()
+    first.reset()
+    do_out()
+  else if(base_on == 2)
+    second.popover_hide()
+    second.reset()
+    do_out()
+  else if(base_on == 3)
+    third.popover_hide()
+    third.reset()
+    do_out()
+
 
 @do_start_game = () ->
   
