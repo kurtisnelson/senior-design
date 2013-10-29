@@ -2,7 +2,7 @@ class PlayersController < ApplicationController
   def new
     @player = Player.new
     @player.team_id = params[:team_id]
-    @player.save
+    @team = Team.find(params[:team_id])
 
     respond_to do |format|
       format.js
@@ -22,7 +22,23 @@ class PlayersController < ApplicationController
 	end
 
 	def create
-		@Player.new(player_params)
+    @user = User.where(:name => params[:player][:user][:name]).first
+    @team = Team.find(params[:team_id])
+
+    if @user != nil
+      @player = Player.new
+      @player.team_id = params[:team_id]
+      @player.user_id = @user.id
+      @player.save
+      flash.now[:success] = "Player added to team."
+    else
+      flash.now[:error] = "User does not exist."
+    end
+    respond_to do |format|
+      format.html { redirect_to Team.find(params[:team_id]) }
+      format.js
+    end
+    
 	end
 
   def add
@@ -33,6 +49,12 @@ class PlayersController < ApplicationController
     respond_to do |format|
       format.json { respond_with_bip(@player) }
     end
+  end
+
+  def destroy
+    @player = Player.find(params[:player_id])
+    @player.destroy
+    redirect_to Team.find(params[:team_id])
   end
 
   def update_jersey_number

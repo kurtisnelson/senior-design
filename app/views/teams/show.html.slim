@@ -4,12 +4,11 @@ javascript:
     jQuery(".best_in_place").best_in_place();
   });
 
-.breadcrumb
-  =link_to "All Teams", teams_path
-  = " "
-  i.icon-chevron-right
-  = " "
-  = link_to @team.name, @team
+ul.breadcrumb
+  li 
+    = link_to "All Teams", teams_path
+    span.divider = "/"
+  li = link_to @team.name, @team
 
 
 .row
@@ -38,7 +37,7 @@ javascript:
 
 .row
   h2 Team Members
-  table.table.table-striped.table-bordered.team_members
+  table.table.table-striped.table-bordered.team_members id="players"
     thead
       tr
         th Player Name
@@ -47,5 +46,4 @@ javascript:
     tbody
       -@team.players.each do |player|
         == render :partial => player, locals: {team: @team, player: player}
-      //== render :partial => "players/new_player", locals: {team: @team}
-  = link_to "Add Player", new_team_player_path(:team_id => @team.id), remote: true
+  = link_to "Add Player", new_team_player_path(:team_id => @team.id), remote: true, class: "btn"

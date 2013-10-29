@@ -1,0 +1,6 @@
+<% if @player != nil %>
+  $("#new_player_row").remove();
+  $("<%= escape_javascript(render :partial => 'players/player', :locals => {:team => @team, :player => @player}) %>").appendTo("#players").fadeIn();
+<% else %>
+  alert("test");
+<% end %>

@@ -1,0 +1,1 @@
+$("<%= escape_javascript(render :partial => 'players/new_player', :locals => {:team => @team, :player => Player.new}).html_safe %>").appendTo("#players").fadeIn();

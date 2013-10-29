@@ -9,61 +9,8 @@ html lang="en"
 
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
-    javascript:
-      $(document).ready(function(){
-
-        $("#header a").click(function(event){
-          event.preventDefault();
-          document.getElementById("header").className = "large-header transition";
-          document.getElementById("static-nav").className = "static-nav large-nav transition";
-          $("#main-article").hide();
-          var address = this.href;
-          setTimeout(function(){window.location = address;},1000);
-        });
-
-        $("a#user_name").click(function(event){
-          event.preventDefault();
-          document.getElementById("header").className = "small-header";
-          document.getElementById("static-nav").className = "static-nav";
-          $("#main-article").hide();
-          var address = this.href;
-          setTimeout(function(){window.location = address;},1000);
-        });
-
-        $(".login-bar .clickable a").click(function(event){
-          event.preventDefault();
-          if(window.location != "#{root_url}"){
-            document.getElementById("header").className = "large-header transition";
-            document.getElementById("static-nav").className = "static-nav large-nav transition";
-            $("#main-article").hide();
-            var address = this.href;
-            setTimeout(function(){window.location = address;},1000);
-          } else {
-            window.location = this.href;
-          }
-        });
-
-        $(".accordion-inner ul.nav li a").click(function(event){
-          event.preventDefault();
-          document.getElementById("header").className = "small-header";
-          document.getElementById("static-nav").className = "static-nav";
-          $("#main-article").hide();
-          var address = this.href;
-          setTimeout(function(){window.location = address;},1000);
-        });
-      });
 
   body
-    .small-header id="header"
-      /= link_to image_tag("intramural.png", width:'100%'), root_url
-      /h1 id="splash-title" A free way to score games
-      /.containter
-      /  .row
-      /    .span6
-      /    .span6
-      /     button.btn.btn-success id="splash-btn" = link_to("Create Your Team", new_team_path) 
-      /h2 id="splash-header" Fenway
-      /h3 id="splash-text" Bringing people together with sports
     .container
       .login-bar.navbar.navbar-fixed-top
         ul.nav

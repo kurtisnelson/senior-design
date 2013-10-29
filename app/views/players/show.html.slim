@@ -1,13 +1,11 @@
-.breadcrumb
-	= link_to "All Teams", teams_path
-	= " "
-	i.icon-chevron-right
-	= " "
-	= link_to @team.name, @team
-	= " "
-	i.icon-chevron-right
-	= " "
-	= link_to @player.user.name, team_player_path(:team_id => @team.id, :player_id => @player.id)
+ul.breadcrumb
+  li
+    = link_to "All Teams", teams_path
+    span.divider = "/"
+  li
+    = link_to @team.name, @team
+    span.divider = "/"
+	li = link_to @player.user.name, team_player_path(:team_id => @team.id, :player_id => @player.id)
 
 h1 = @player.user.name
 h2 = @player.player_number

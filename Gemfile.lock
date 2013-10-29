@@ -51,6 +51,11 @@ GEM
     arel (4.0.0)
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
+    better_errors (1.0.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     bootstrap-datepicker-rails (1.1.1.8)
       railties (>= 3.0)
     bootstrap-sass (2.3.2.2)
@@ -79,6 +84,7 @@ GEM
       term-ansicolor
       thor
     database_cleaner (1.2.0)
+    debug_inspector (0.0.2)
     devise (3.1.1)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -278,6 +284,8 @@ PLATFORMS
 DEPENDENCIES
   active_enum!
   best_in_place!
+  better_errors
+  binding_of_caller
   bootstrap-datepicker-rails
   bootstrap-sass
   capybara

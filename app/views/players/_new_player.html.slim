@@ -1,8 +1,9 @@
 tr id="new_player_row"
 	
-	td
-		= simple_form_for [team, Player.new] do |f|
-			= f.input :user_id, :url => autocomplete_user_name_teams_path, :as => :autocomplete
+	td 
+		= simple_form_for [team, player], remote: true do |f|
+			= f.simple_fields_for :user do |u|
+				= u.input :name, :url => autocomplete_user_name_teams_path, :as => :autocomplete
 	td -
 	td	
 		i.icon-remove-sign
