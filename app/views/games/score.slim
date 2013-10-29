@@ -34,13 +34,13 @@
 	button.btn.btn-large id="startBtn" onClick="do_start_game()" Start Game
 	button.btn.btn-large id="strikeBtn" onClick="do_strike()" Strike
 	button.btn.btn-large id="ballBtn" onClick="do_ball()" Ball
-	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_single()'>Single</a></li><li><a onClick='do_double()'>Double</a></li><li><a onClick='do_triple()'>Triple</a></li><li><a href='#homerun'>Home Run</a></li><li><a href='#out'>Out</a></li><li><a href='#walk'>Walk</a></li></ul>" hidden="true"
+	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_single()'>Single</a></li><li><a onClick='do_double()'>Double</a></li><li><a onClick='do_triple()'>Triple</a></li><li><a onClick='do_homerun()'>Home Run</a></li><li><a onClick='do_out_onbase(0)'>Out</a></li><li><a onClick='do_walk()'>Walk</a></li></ul>" hidden="true"
 		h4 0
-	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(1)'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
+	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(1,1)'>Steal</a></li><li><a onClick='do_move(1,0)'>Move</a></li><li><a onClick='do_out_onbase(1)'>Out</a></li></ul>" hidden="true"
 		h4 1
-	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(2)'>Move</a></li><li><a href='#out'>Out</a></li><li><a href='#score'>Score</a></li></ul>" hidden="true"
+	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(2,1)'>Steal</a></li><li><a onClick='do_move(2,0)'>Move</a></li><li><a onClick='do_out_onbase(2)'>Out</a></ul>" hidden="true"
 		h4 2
-	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a href='#steal'>Steal</a></li><li><a onClick='do_move(3)'>Score</a></li><li><a href='#out'>Out</a></li></ul>" hidden="true"
+	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(3,1)'>Steal</a></li><li><a onClick='do_move(3,0)'>Score</a></li><li><a onClick='do_out_onbase(3)'>Out</a></li></ul>" hidden="true"
 		h4 3
 
 	.score-light id="ball1" hidden="true"
