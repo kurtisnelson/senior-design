@@ -9,18 +9,26 @@ away_score = 0
   top: true
   score: 0
   next: ->
-    if(this.score == 0)
-      if(which_lineup().name == "home")
-        $("#home-inning-row [data-number='"+innings.number+"']").html(innings.score)
-      else if(which_lineup().name == "away")
-        $("#away-inning-row [data-number='"+innings.number+"']").html(innings.score)
+    if(this.number <= 10)
+      if(this.score == 0)
+        if(which_lineup().name == "home")
+          $("#home-inning-row [data-number='"+innings.number+"']").html(innings.score)
+        else if(which_lineup().name == "away")
+          $("#away-inning-row [data-number='"+innings.number+"']").html(innings.score)
     this.score = 0
-    this.count++
-    this.number = Math.floor(this.count / 2)
-    if(this.count % 2 == 0)
-      this.top= true
+    if(this.count >= 19 and home_score != away_score)
+      #game over
+      console.log "game over"
+      $("#strikeBtn").fadeOut()
+      $("#ballBtn").fadeOut()
     else
-      this.top= false
+      this.count++
+      this.number = Math.floor(this.count / 2)
+      if(this.count % 2 == 0)
+        this.top= true
+      else
+        this.top= false
+      do_nextup()
 
 strike =
   counter: 0
@@ -182,8 +190,8 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   #server call
   $(jQuery.ajax("/state/#{game_id}/strike", {type:'PUT'}))
   if strike.counter == 2
-    do_out()
     home.reset()
+    do_out()
   else
     strike.process()
 
@@ -198,11 +206,12 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   #$(jQuery.ajax("/state/#{game_id}/out", {type:'PUT'}))
   if out.counter == 2
     console.log "out counter is 2"
-    innings.next()
     home.reset()
     first.reset()
     second.reset()
     third.reset()
+    innings.next()
+  else
     do_nextup()
   out.process()
 
