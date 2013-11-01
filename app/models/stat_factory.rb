@@ -64,6 +64,6 @@ class StatFactory
 
   private
   def base_stat
-    Stat.new(game_id: @game_id, inning: @inning.to_number)
+    Stat.new(game_id: @game_id, inning: @inning)
   end
 end

@@ -59,7 +59,12 @@ module GameState
     end
 
     def on_base base_id
-      bases[base_id - 1]
+      temp = bases[base_id - 1]
+      if temp == nil
+        return 0
+      else
+        return temp
+      end
     end
 
     def player_on_base base_id #THIS IS WRONG, but ryan is lazy at 3am.
@@ -174,6 +179,22 @@ module GameState
       end
     end
 
+    def increment_away_score
+      r.incr(key(:away_score))
+    end
+
+    def away_score 
+      r.get(key(:away_score)).to_i
+    end
+
+    def increment_home_score
+      r.incr(key(:home_score))
+    end
+
+    def home_score
+       r.get(key(:home_score)).to_i 
+    end
+
     def set_expiration
       @date = ::Game.find(id).start_datetime + 1.day
       epoch = @date.to_i
@@ -192,22 +213,6 @@ module GameState
         r.expireat(key :balls, epoch)
         r.expireat(key :strikes, epoch)
         r.expireat(key :outs, epoch)
-    end
-
-    def increment_away_score
-      r.incr(key(:away_score))
-    end
-
-    def away_score 
-      r.get(key(:away_score)).to_i
-    end
-
-    def increment_home_score
-      r.incr(key(:home_score))
-    end
-
-    def home_score
-       r.get(key(:home_score)).to_i 
     end
   end
 end

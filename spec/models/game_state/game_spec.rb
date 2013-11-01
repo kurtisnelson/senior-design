@@ -89,13 +89,6 @@ describe GameState::Game do
       state.on_base(2).should eq 0
       state.on_base(3).should eq 0
     end
-    it "adds a run to the active teams score" do
-      state.lineups.away.add 1
-      state.away_score.should eq 0      
-      state.homerun!
-      state.away_score.should eq 1
-
-    end
     it "creates a stat for a homerun for the player at bat" do
       state.lineups.away.add 42
       stat = state.homerun!
@@ -185,7 +178,7 @@ describe GameState::Game do
       state.lineups.away.add 2
       state.single!
       state.on_base(1).should eq 1
-      state.steal!(1,2)
+      state.move!(1,2,1)
       state.on_base(1).should eq 0
       state.on_base(2).should eq 1
       state.on_base(3).should eq 0
@@ -193,7 +186,7 @@ describe GameState::Game do
     it "creates a stat for a steal for the player at bat" do
       state.lineups.away.add 42
       state.single!
-      stat = state.steal!(42,2)
+      stat = state.move!(42,2,1)
       stat.user_id.should eq 42
       stat.category(:name).should eq "Steal"
       stat.game_id.should eq state.id      
