@@ -8,8 +8,6 @@ module GameState
       super(id)
       @lineups = Lineups.new(id)
       @inning = Inning.new(id)
-      @home_score = 0
-      @away_score = 0
 
     end
 
@@ -45,16 +43,16 @@ module GameState
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_base 4
       r.set(key(:last_to_bat), player_id)      
-      run! @inning.top?
+      # run! @inning.top?
       sf = StatFactory.new id, @inning
       sf.homerun(player_id)     
     end
    
     def run! topOrBottom
       if topOrBottom
-        @away_score+=1
+        increment_away_score
       else
-        @home_score+=1
+        increment_home_score
       end
       sf = StatFactory.new id, @inning
       sf.rbi r.get(key(:last_to_bat))
@@ -156,7 +154,7 @@ module GameState
       r.incr(key :home)
     end
 
-    def steal! player_id, new_base
+    def move! player_id, new_base, is_steal
       temp = bases
       if new_base == 2
         temp[1] = temp[0]
@@ -170,9 +168,10 @@ module GameState
         sf.rbi player_id
       end
       set_array key(:bases), temp
-      sf = StatFactory.new id,@inning
-      sf.steal player_id   
-
+      if is_steal
+        sf = StatFactory.new id,@inning
+        sf.steal player_id   
+      end
     end
 
     def set_expiration
@@ -193,6 +192,22 @@ module GameState
         r.expireat(key :balls, epoch)
         r.expireat(key :strikes, epoch)
         r.expireat(key :outs, epoch)
+    end
+
+    def increment_away_score
+      r.incr(key(:away_score))
+    end
+
+    def away_score 
+      r.get(key(:away_score))
+    end
+
+    def increment_home_score
+      r.incr(key(:home_score))
+    end
+
+    def home_score
+       r.get(key(:home_score))     
     end
   end
 end

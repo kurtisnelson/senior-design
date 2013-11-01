@@ -20,6 +20,16 @@ class StateController < ApplicationController
     head :ok
   end
 
+  def homerun
+    @game_state.homerun!
+    head :ok
+  end
+
+  def score
+    @game_state.run!(params[:topOrBottom].to_i)
+    head :ok
+  end
+
   def ball
     @game_state.ball!
     head :ok
@@ -27,6 +37,11 @@ class StateController < ApplicationController
 
   def steal
     @game_state.steal!(params[:player_id])
+    head :ok
+  end
+
+  def move
+    @game_state.move! params[:player_id], params[:new_base], params[:is_steal]
     head :ok
   end
 
