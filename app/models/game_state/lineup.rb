@@ -43,8 +43,18 @@ module GameState
       r.rpoplpush(my_key, my_key).to_i
     end
 
-    def to_bases
-      r.rpoplpush(my_key, key(:bases)).to_i
+    def to_base base
+      player_id = r.rpop(my_key)
+      if base == 1
+        r.set(key(:bases),[player_id.to_i,0,0].to_json)
+      elsif base == 2
+        r.set(key(:bases),[0,player_id.to_i,0].to_json)
+      elsif base == 3
+        r.set(key(:bases),[0,0,player_id.to_i].to_json)
+      elsif base == 4
+        r.set(key(:bases),[0,0,0].to_json)
+      end
+      player_id
     end
 
     def set_expiration epoch

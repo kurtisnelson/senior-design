@@ -15,7 +15,7 @@ module GameState
     def single!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 1
       r.set(key(:last_to_bat), player_id)      
       sf = StatFactory.new id, @inning
       sf.single(player_id)
@@ -24,9 +24,8 @@ module GameState
     def double!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 2
       r.set(key(:last_to_bat), player_id)      
-      r.lpush(key(:bases), nil)
       sf = StatFactory.new id, @inning
       sf.double(player_id)
     end
@@ -34,10 +33,8 @@ module GameState
     def triple!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 3
       r.set(key(:last_to_bat), player_id)
-      r.lpush(key(:bases), nil)
-      r.lpush(key(:bases), nil)
       sf = StatFactory.new id, @inning
       sf.triple(player_id)
     end
@@ -45,11 +42,8 @@ module GameState
     def homerun!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 4
       r.set(key(:last_to_bat), player_id)      
-      r.lpush(key(:bases), nil)
-      r.lpush(key(:bases), nil)
-      r.lpush(key(:bases), nil) 
       run! @inning.top?
       sf = StatFactory.new id, @inning
       sf.homerun(player_id)     
@@ -66,7 +60,15 @@ module GameState
     end
 
     def on_base base_id
-      r.lindex(key(:bases), base_id).to_i
+      temp = r.get(key(:bases))
+      if base_id == 1
+        ret_val = JSON.parse(temp)[0]
+      elsif base_id == 2
+        ret_val = JSON.parse(temp)[1]
+      elsif base_id == 3
+        ret_val = JSON.parse(temp)[2]
+      end
+      ret_val
     end
 
     def player_on_base base_id
@@ -161,8 +163,20 @@ module GameState
       r.incr(key :home)
     end
 
-    def steal! player_id
-      r.linsert(key(:bases), :before, player_id.to_s, nil)
+    def steal! player_id, new_base
+      temp = r.get(key(:bases))
+      temp = JSON.parse(temp)
+      if new_base == 2
+        temp[1] = temp[0]
+        temp[0] = 0
+      elsif new_base == 3
+        temp[2] = temp[1]
+        temp[1] = 0
+      elsif new_base == 4
+        temp = [0,0,0]
+        #TODO, score a run
+      end
+      r.set(key(:bases),temp.to_json)
       sf = StatFactory.new id,@inning
       sf.steal player_id   
 

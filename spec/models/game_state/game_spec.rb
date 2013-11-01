@@ -34,17 +34,7 @@ describe GameState::Game do
       state.at_bat.should eq 1
       state.double!
       state.at_bat.should eq 2
-      state.on_base(0).should eq 0
-      state.on_base(1).should eq 1
-    end
-    it "moves player two bases foward" do
-      state.lineups.away.add 1
-      state.lineups.away.add 2
-      state.lineups.away.add 3
-      state.single!
-      state.double!
-      state.on_base(0).should eq 0
-      state.on_base(1).should eq 2
+      state.on_base(1).should eq 0
       state.on_base(2).should eq 1
     end
     it "resets balls and strikes" do
@@ -68,19 +58,8 @@ describe GameState::Game do
     it "moves the player at bat to third base" do
       state.lineups.away.add 1
       state.triple!
-      state.on_base(0).should eq 0
       state.on_base(1).should eq 0
-      state.on_base(2).should eq 1
-    end
-    it "moves player three bases foward" do
-      state.lineups.away.add 1
-      state.lineups.away.add 2
-      state.lineups.away.add 3
-      state.single!
-      state.triple!
-      state.on_base(0).should eq 0
-      state.on_base(1).should eq 0
-      state.on_base(2).should eq 2
+      state.on_base(2).should eq 0
       state.on_base(3).should eq 1
     end
     it "resets balls and strikes" do
@@ -106,9 +85,9 @@ describe GameState::Game do
       state.lineups.away.add 3
       state.lineups.away.add 4
       state.homerun!
-      state.on_base(0).should eq 0
       state.on_base(1).should eq 0
       state.on_base(2).should eq 0
+      state.on_base(3).should eq 0
     end
     it "adds a run to the active teams score" do
       state.lineups.away.add 1
@@ -204,21 +183,17 @@ describe GameState::Game do
     it "allows the player to steal bases" do
       state.lineups.away.add 1
       state.lineups.away.add 2
-      state.lineups.away.to_bases
       state.single!
       state.on_base(1).should eq 1
-      state.steal!(1)
+      state.steal!(1,2)
       state.on_base(1).should eq 0
       state.on_base(2).should eq 1
       state.on_base(3).should eq 0
-      state.steal!(1)
-      state.on_base(1).should eq 0
-      state.on_base(2).should eq 0
-      state.on_base(3).should eq 1
     end
     it "creates a stat for a steal for the player at bat" do
       state.lineups.away.add 42
-      stat = state.steal! 42
+      state.single!
+      stat = state.steal!(42,2)
       stat.user_id.should eq 42
       stat.category(:name).should eq "Steal"
       stat.game_id.should eq state.id      
@@ -230,7 +205,6 @@ describe GameState::Game do
     it "gets the player object of the player on base" do
       state.lineups.away.add player.id
       state.lineups.away.add 2
-      state.lineups.away.to_bases
       state.single!
       state.player_on_base(1).name.should eq player.name
     end
