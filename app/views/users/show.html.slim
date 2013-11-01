@@ -1,11 +1,20 @@
-p#notice = notice
+.container
+  .row
+    h1 = @user.name
 
-table.table
-  tr
-    th Name
-  tr
-    td = @user.name
-  br
-= link_to 'Edit', edit_user_path(@user)
-= " | "
-= link_to 'Back', users_path
+    h2 Bio
+    .well
+      p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id mi libero. Praesent egestas erat vitae lorem feugiat, non convallis mi consequat. Phasellus ullamcorper sodales tellus at condimentum. Suspendisse vitae libero tempor, elementum dui sed, mattis justo. Vestibulum interdum facilisis sapien, non rutrum leo pretium sit amet. Curabitur adipiscing eros et purus imperdiet dictum. Nulla venenatis consectetur metus eu tempor. Curabitur ornare et nisl vitae congue. Cras commodo faucibus facilisis. Praesent condimentum eget mauris vel tristique.
+
+    h2 Player for
+    .well
+      - @user.teams.each do |t|
+        -@player = Player.where(user_id: @user.id, team_id: t.id).first
+        h3 = link_to t.name, t
+        h4
+          = "Jersey Number: "
+          = @player.player_number
+
+    h2 Stats
+    .well
+      h4 Not functional yet.

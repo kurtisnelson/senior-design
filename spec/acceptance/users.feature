@@ -1,8 +1,17 @@
-Feature: Users can be created, and named
+Feature: A user can log onto Fenway
 	
-	Scenario: A new user can be created
-		When I visit the home page
-		And I click on Players
-		And I click New Player
-		And I name the user "Bob"
-		Then I see the user called "Bob"
+	Scenario: A user can see the sign in button
+    Given A user is not logged in
+    When A user visits the home page
+    Then The user can see the Sign In button
+
+  Scenario: A user can log in
+    Given A user is not logged in
+    When A user visits the home page
+    And The user logs in
+    Then The user can see his name
+
+  Scenario: A user can log out
+    Given A user is logged in
+    When A user clicks log out
+    Then The user can see the Sign In button

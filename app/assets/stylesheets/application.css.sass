@@ -6,146 +6,144 @@
 @import "game"
 
 @import "bootstrap"
-
-@font-face
-	font-family: 'fenway_park_jfregular'
-	src: url(font-path('fenway-park-jf-webfont.eot'))
-	src: url(font-path('fenway-park-jf-webfont.eot?#iefix')) format('embedded-opentype'),url(font-path('fenway-park-jf-webfont.woff')) format('woff'),url(font-path('fenway-park-jf-webfont.ttf')) format('truetype'), url(font-path('fenway-park-jf-webfont.svg#fenway_park_jfregular')) format('svg')
-	font-weight: normal
-	font-style: normal
+html
+	height: 100%
 
 body
-	padding-top: 100px
-
-
-.nav-text>a
-	margin-top: 20px
-
-.fenway-logo>a>img
-	width: 100%
+	font-family: 'Oxygen', arial
 	height: 100%
-	margin-top: -20px
-	margin-left: 30px
 
-.small-header
-	margin-top: -165px
-	width: 100%
-	height: 400px
-	transition-duration: 1s
-	background-image: image-url("intramural.png")
-	background-repeat: no-repeat
-	-webkit-background-size: cover
-	-moz-background-size: cover
-	-o-background-size: cover
-	background-size: cover
+h1,h2,h3,h4,h5,h6,p
+	color: #424242
+	font-weight: light
 
-.large-header
-	margin-top: 0px
-	width: 100%
-	height: 400px
-	background-image: image-url("intramural.png")
-	background-repeat: no-repeat
-	-webkit-background-size: cover
-	-moz-background-size: cover
-	-o-background-size: cover
-	background-size: cover
+h1,h2
+	text-transform: uppercase
 
-.large-header.transition
-	transition-duration: 1s
-
-h1#splash-title
-	font-family: "Letter Gothic Std", "InaiMathi", "Geneva"
-	padding-top: 150px
-	text-align: center
-	color: white
-
-button#splash-btn
-	text-align: center
-	margin-top: 10px
-	margin-left: 160px
-
-button>a
-	color: white
-
-h2#splash-header
-	padding-top: 66px
-	padding-left: 30px
-	color: white
-
-h3#splash-text
-	margin-top: -15px
-	padding-left: 30px
-	color: black
-
-.login-bar
-	background-image: image-url("diamond_upholstery.png")
-	height: 70px
-	background-color: #e6e6e6
-	padding-right: 20px
-	padding-top: 15px
-
-.login-bar ul.nav li 
-	font-family: "InaiMathi", "Geneva"
-	font-size: 20px
+h3, h4
 	font-variant: small-caps
-	letter-spacing: 3px
+	letter-spacing: -1px
 
-.login-bar ul.nav li a
-	color: #6b6b6b
-	margin-right: 10px
- 
-
-.static-nav.large-nav
-	top: 550px
-	transition-duration: 0s
-
-.static-nav.large-nav.transition
-	transition-duration: 1s
-
-.main-article
-	margin-top: 10px 
-	
-
-.accordion-group
-	border: none
-	font-family: "InaiMathi", "Geneva"
-	font-variant: small-caps
-	font-size: 24px
-	letter-spacing: 3px
-	color: #6b6b6b
-
-.accordion-body.in
-	margin-bottom: -10px
-
-.accordion-group a
-	color: #6b6b6b
-
-.accordion-group ul li a
-	font-size: 20px
-	margin-left: 5px
-	margin-bottom: 10px
+h1
+	font-size: 100px
+	line-height: 105px
 
 h2
-	font-family: "Letter Gothic Std", "InaiMathi", "Geneva"
-	font-size: 48px
+	font-size: 36px
+	color: #fb8a7d
+
+h2.grey_title
 	font-variant: small-caps
-	color: #688f1b
-	font-weight: 200
-	margin-top: 20px
-	margin-left: -5px
+	text-transform: none
+	color: #424242
+	margin-bottom: -6px
+
 h3
-	font-family: "Letter Gothic Std", "InaiMathi", "Geneva"
-	font-size: 24.5px
-	font-variant: small-caps
-	color: #688f1b
-	font-weight: 200
-	margin-top: 20px
-	margin-left: -5px
+	font-size: 30px
 
 p 
-	font-size: 16px
-	line-height: 25px
+	font-size: 18px
+	line-height: 28px
 
+ul li span
+	font-size: 30px
+	color: #424242
+	margin-top: 25px
+	margin-right: 30px
+	margin-left: 20px
+	margin-bottom: 40px
+
+li p
+	font-size: 16px
+	line-height: 24px
+
+.navbar
+	height: 40px
+	background-color: #dadada
+	box-shadow: 4px 4px 5px #888888
+	background-image: linear-gradient(rgb(248, 248, 248), rgb(218, 218, 218))
+	padding-top: 5px
+
+.navbar .nav > li > a.active 
+	color: #fb8a7d
+
+#sign_in
+	margin-right: 20px
+	margin-top: 55px
+
+#sign_in li
+	display: block
+	float: left
+	margin-left: 10px
+
+#sign_in li:first
+	margin-left: 0px
+
+
+.btn.btn-large
+	background-color: #424242
+	background-image: linear-gradient(rgb(66, 66, 66), rgb(70, 70, 70))
+	font-variant: small-caps
+
+.btn.btn-large:hover
+	background-image: linear-gradient(rgb(90, 90, 90), rgb(80, 80, 80))
+
+.btn.btn-primary
+	background-image: linear-gradient(rgb(75, 75, 75), rgb(70, 70, 70))
+
+.btn-header
+	margin-top: 120px
+	margin-right: 20px
+
+#open_field
+	background-image: image-url("open_field.png")
+	background-repeat: no-repeat
+	background-size: cover
+	background-position: center
+	height: 400px
+
+.grey_line
+	height: 1px
+	background-color: #424242
+	margin: 10px 0px
+
+.grey_background
+	padding-top: 10px
+	background-color: #424242
+	min-height: 50%
+	height: auto
+	overflow: hidden
+
+.grey_background h2, .grey_background p
+	color: #ffffff
+
+.grey_background h3
+	color: #fb8a7d
+
+ul.how_it_works
+	list-style: none
+
+ul.how_it_works li
+	width: 350px
+	float: left
+
+ul.how_it_works h3
+	margin-top: 20px
+
+ul.how_it_works li:nth-child(odd)
+	margin-right: 175px
+
+ul.how_it_works li
+	background-image: image-url("ball_ol_list.png")
+	background-repeat: no-repeat
+	background-size: 59px 59px
+	background-position: 0 10px
+
+.game_feed
+	min-height: calc(100% - 419px)
+
+ul.ui-autocomplete
+	z-index: 1100
 
 
 

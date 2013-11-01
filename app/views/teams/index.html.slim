@@ -1,10 +1,14 @@
-h1 Teams
+.container
+  .row
+    .pull-left
+      h1 Teams
+      h2 Get Together and Play
+    = link_to "Create a Team", new_team_path, class: "btn btn-primary btn-large pull-right btn-header"
+    .clearfix
+    p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mattis et dolor et suscipit. Maecenas auctor tempor ipsum quis porta. Nam dui mauris, consectetur vel tincidunt sed, sollicitudin sed ante. Suspendisse eu ante augue. Sed nulla felis, cursus nec dui vel, interdum lacinia nisl. Duis molestie vulputate consequat. Suspendisse interdum velit arcu, vel tincidunt dolor vehicula a. Curabitur sapien orci, commodo vitae blandit id, volutpat facilisis sapien. Integer condimentum lacus vehicula urna sagittis eleifend nec non arcu.
 
-table#teams.table.table-striped
-	- @teams.each do |team|
-		== render :partial => "team", locals: {team: team}
+    h3 Leading Teams
+    .well
+      - @teams.each do |t|
+        h3 = link_to t.name, t
 
-h1 New Team
-br
-#new_team
-	== render :partial => "form"

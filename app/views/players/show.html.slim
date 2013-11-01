@@ -1,13 +1,21 @@
-ul.breadcrumb
-  li
-    = link_to "All Teams", teams_path
-    span.divider = "/"
-  li
-    = link_to @team.name, @team
-    span.divider = "/"
-	li = link_to @player.user.name, team_player_path(:team_id => @team.id, :player_id => @player.id)
+.container
+  .row
+    ul.breadcrumb
+      li
+        = link_to "All Teams", teams_path
+        span.divider = "/"
+      li
+        = link_to @team.name, @team
+        span.divider = "/"
+    	li = link_to @player.user.name, team_player_path(:team_id => @team.id, :player_id => @player.id)
 
-h1 = @player.user.name
-h2 = @player.player_number
+    h1.pull-left = "##{@player.player_number} "  + @player.user.name
+    .clearfix
+    = link_to "User profile", @player.user
+    h2 Stats while playing with #{@team.name}
+    .well
+      p To be added.
 
-= link_to "User profile", @player.user
+    h2 Bio
+    .well
+      p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id mi libero. Praesent egestas erat vitae lorem feugiat, non convallis mi consequat. Phasellus ullamcorper sodales tellus at condimentum. Suspendisse vitae libero tempor, elementum dui sed, mattis justo. Vestibulum interdum facilisis sapien, non rutrum leo pretium sit amet. Curabitur adipiscing eros et purus imperdiet dictum. Nulla venenatis consectetur metus eu tempor. Curabitur ornare et nisl vitae congue. Cras commodo faucibus facilisis. Praesent condimentum eget mauris vel tristique.

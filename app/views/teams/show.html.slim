@@ -4,46 +4,62 @@ javascript:
     jQuery(".best_in_place").best_in_place();
   });
 
-ul.breadcrumb
-  li 
-    = link_to "All Teams", teams_path
-    span.divider = "/"
-  li = link_to @team.name, @team
+.container
+  .row
+    ul.breadcrumb
+      li 
+        = link_to "All Teams", teams_path
+        span.divider = "/"
+      li = link_to @team.name, @team
 
 
-.row
-  .team_name
-    h1 
-      = best_in_place @team, :name, :type => :input
-      = " "
-      i.icon-edit
-    p
-      = link_to "Edit", edit_team_path(@team)
+  .row
+    .team_name
+      h1 
+        = best_in_place @team, :name, :type => :input
+        = " "
+        i.icon-edit
+      p
+        = link_to "Edit", edit_team_path(@team)
 
-.row
-  .team_desc
-    p = @team.description
+  .row
+    .team_desc
+      p = @team.description
 
-.row
-  h2 Games
-  table.table.table-striped.table-bordered.games
-    thead
-      th Game Name
-      th Start Date
-      th Start Time
-    tbody
-      -@team.games.each do |game|
-        == render :partial => game, locals: {game: game.decorate}
+  .row
+    h2 Games
+    table.table.table-striped.table-bordered.games
+      thead
+        th Game Name
+        th Start Date
+        th Start Time
+      tbody
+        -@team.games.each do |game|
+          == render :partial => game, locals: {game: game.decorate}
 
-.row
-  h2 Team Members
-  table.table.table-striped.table-bordered.team_members id="players"
-    thead
-      tr
-        th Player Name
-        th #
-        th Actions
-    tbody
-      -@team.players.each do |player|
-        == render :partial => player, locals: {team: @team, player: player}
-  = link_to "Add Player", new_team_player_path(:team_id => @team.id), remote: true, class: "btn"
+  .row
+    h2 Team Members
+    table.table.table-striped.table-bordered.team_members id="players"
+      thead
+        tr
+          th Player Name
+          th #
+          th Actions
+      tbody
+        -@team.players.each do |player|
+          == render :partial => player, locals: {team: @team, player: player}
+
+    = link_to "Add Player", "#new_player_modal", class: "btn", :data => {:toggle => "modal"}
+
+    .modal.hide.fade id="new_player_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+
+      .modal-header
+        button.close data-dismiss="modal" aria-hidden="true" x
+        h2 Add Player
+
+      .modal-body
+        p Please choose an existing player.
+        = simple_form_for [@team, Player.new] do |f|
+          = f.simple_fields_for :user do |u|
+            = u.input :name, :url => autocomplete_user_name_teams_path, :as => :autocomplete
+          = f.submit class: "btn btn-primary"

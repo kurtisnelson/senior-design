@@ -2,6 +2,7 @@ class TeamsController < ApplicationController
   before_action :set_team, only: [:show,:edit,:update, :destroy]
   
   autocomplete :user, :name
+  autocomplete :team, :name
 
   def index
   	@teams = Team.all

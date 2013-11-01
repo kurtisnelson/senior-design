@@ -1,19 +1,23 @@
-h2 = @game.name
-= link_to 'Edit', edit_game_path(@game)
-= " | "
-= link_to 'Back', games_path
+.container
+  .row   
+    h1 = @game.name
+    h4
+      = link_to 'Edit', edit_game_path(@game)
+      = " | "
+      = link_to 'Back', games_path
 
-h3 Location
-p = @game.location
+    .well
+      h3 Location
+      p = @game.location
 
-h3 Start Time
-p = @game.start_time
+      h3 Start Time
+      p = @game.start_time
 
-h3 Start Date
-p = @game.start_date
+      h3 Start Date
+      p = @game.start_date
 
-h3 Home Team
-p = link_to @game.home_team.name, team_path(@game.home_team)
+      h3 Home Team
+      p = link_to @game.home_team.name, team_path(@game.home_team)
 
-h3 Away Team
-p = link_to @game.away_team.name, team_path(@game.away_team)
+      h3 Away Team
+      p = link_to @game.away_team.name, team_path(@game.away_team)

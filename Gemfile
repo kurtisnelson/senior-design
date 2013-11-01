@@ -25,6 +25,7 @@ gem 'turbolinks'
 gem 'uglifier'
 gem 'unicorn'
 gem 'best_in_place', github: 'bernat/best_in_place'
+gem 'google-webfonts-rails'
 
 group :development, :test do
   gem 'dotenv'
@@ -34,8 +35,6 @@ group :development, :test do
   gem 'pry'
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'better_errors'
-  gem 'binding_of_caller'
 end
 
 group :test do

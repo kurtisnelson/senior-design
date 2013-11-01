@@ -22,8 +22,14 @@ Fenway::Application.routes.draw do
     post 'score'
   end
 
+
+  resources :players do
+    put 'new_user', :on => :collection
+  end
+
   resources :teams do
     get 'autocomplete_user_name', :on => :collection
+    get 'autocomplete_team_name', :on => :collection
     resources :players do
       put 'update_jersey_number'
       put 'destroy'

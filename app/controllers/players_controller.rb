@@ -1,17 +1,15 @@
 class PlayersController < ApplicationController
   def new
     @player = Player.new
-    @player.team_id = params[:team_id]
-    @team = Team.find(params[:team_id])
-
-    respond_to do |format|
-      format.js
-    end
   end
 
   def show
     @player = Player.find(params[:id])
-    @team = Team.find(params[:team_id])
+    @team = Team.find(@player.team_id)
+  end
+
+  def index
+    @users = User.where(id: Player.all.pluck(:id)).order(:name)
   end
 
 	def edit
@@ -30,9 +28,9 @@ class PlayersController < ApplicationController
       @player.team_id = params[:team_id]
       @player.user_id = @user.id
       @player.save
-      flash.now[:success] = "Player added to team."
+      flash[:success] = "Player added to team."
     else
-      flash.now[:error] = "User does not exist."
+      flash[:error] = "User does not exist."
     end
     respond_to do |format|
       format.html { redirect_to Team.find(params[:team_id]) }
@@ -67,10 +65,24 @@ class PlayersController < ApplicationController
     end
   end
 
+  def new_user
+    @user = User.create(user_params)
+    @player = Player.new
+    @player.user_id = @user.id
+    @player.save
+    redirect_to players_path
+  end
+
 	private
 	def player_params
 		params.require(:player).permit(
 			:team_id, :user_id, :player_number
 		)
 	end
+
+  def user_params
+    params[:player].require(:user).permit(
+      :name, :email
+    )
+  end
 end

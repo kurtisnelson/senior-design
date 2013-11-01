@@ -1,17 +1,35 @@
-step "I click on Players" do
-	click_on "Players"
+step "A user is not logged in" do
+  logout
 end
 
-step "I click New Player" do
-  click_on "New Player"
+step "A user visits the home page" do 
+  visit root_path
 end
 
-step "I name the user :name" do |name|
-  fill_in "Name", with: name
-  fill_in "Email", with: "example@example.com"
-  click_button "Create User"
+step "The user can see the Sign In button" do 
+  page.should have_content "Sign In"
 end
 
-step "I see the user called :name" do |name|
-  page.should have_content name
+step "The user logs in" do
+  @user = FactoryGirl.build(:user)
+  login_as @user
+  visit root_path
+end
+
+step "The user can see his name" do
+  page.should have_content @user.name
+end
+
+step "A user is logged in" do
+  @user = FactoryGirl.build(:user)
+  login_as @user
+  visit root_path
+end
+
+step "A user clicks log out" do
+  click_on "Sign Out"
+end
+
+step "The user can see the Sign In button" do
+  page.should have_content "Sign In"
 end

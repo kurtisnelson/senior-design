@@ -1,7 +1,20 @@
-table.table
-- @games.each do |game|
-	tr 
-		td 
-			h2 = link_to game.name, game_path(game)
-			.link = link_to "Live Score", game_score_path(game)
-			.link = link_to "Edit", edit_game_path(game)
+.container
+  .row
+    .pull-left
+      h1 Games
+      h2 Play. Score. Repeat.
+    = link_to "Schedule Game", new_game_path, class: "btn btn-primary btn-large pull-right btn-header"
+    .clearfix
+    p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mattis et dolor et suscipit. Maecenas auctor tempor ipsum quis porta. Nam dui mauris, consectetur vel tincidunt sed, sollicitudin sed ante. Suspendisse eu ante augue. Sed nulla felis, cursus nec dui vel, interdum lacinia nisl. Duis molestie vulputate consequat. Suspendisse interdum velit arcu, vel tincidunt dolor vehicula a. Curabitur sapien orci, commodo vitae blandit id, volutpat facilisis sapien. Integer condimentum lacus vehicula urna sagittis eleifend nec non arcu.
+
+    h2.grey_title Game Feed
+
+.grey_background.game_feed
+  .container
+    .row
+      - if @games.size == 0
+        p Sorry no active games right now.
+      - else
+        - @games.each do |g|
+          h2 = link_to g.name, g
+          p = link_to "Live Score", game_score_path(g)

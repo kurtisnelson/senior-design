@@ -1,0 +1,25 @@
+.container
+  .row
+    .pull-left
+      h1 Players
+      h2 Race to the Top
+    = link_to "Create New Player", "#new_player_modal", class: "btn btn-primary btn-large pull-right btn-header", :data => {:toggle => "modal"}
+    .clearfix
+    p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mattis et dolor et suscipit. Maecenas auctor tempor ipsum quis porta. Nam dui mauris, consectetur vel tincidunt sed, sollicitudin sed ante. Suspendisse eu ante augue. Sed nulla felis, cursus nec dui vel, interdum lacinia nisl. Duis molestie vulputate consequat. Suspendisse interdum velit arcu, vel tincidunt dolor vehicula a. Curabitur sapien orci, commodo vitae blandit id, volutpat facilisis sapien. Integer condimentum lacus vehicula urna sagittis eleifend nec non arcu.
+    h3 Trending Players
+    .well
+      - @users.each do |p|
+        h3 = link_to p.name, p
+
+  .modal.hide.fade id="new_player_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+
+    .modal-header
+      button.close data-dismiss="modal" aria-hidden="true" x
+      h3 New Player
+
+    .modal-body
+      = simple_form_for Player.new, :url => new_user_players_path, :method => :put do |f|
+        = f.simple_fields_for :user do |u|
+          = u.input :name
+          = u.input :email
+        = f.submit

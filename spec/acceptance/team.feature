@@ -1,28 +1,19 @@
 Feature: Teams can be created, named, and have players
   
   Scenario: A new team can be created
-    When I visit the home page
-    And I click on Teams
-    And I click on All Teams
-    And I name the team "Broncos"
-    And I create the team
+    Given A users visits the home page
+    And He clicks on Teams
+    When He clicks on Create A Team
+    And He names the team "Broncos"
+    And He creates the team
     Then I see the team called "Broncos"
 
-  Scenario: A player can be added to a team, subsequently removed, then added again
-    Given I create the player "Antonio Freeman"
-    When I visit the home page
-    And I click on Teams
-    And I click on All Teams
-    And I name the team "Packers"
-    And I add "Antonio Freeman" to the team
-    And I create the team
-    And I show the team
-    Then I see the player "Antonio Freeman" on the team
-    When I click edit
-    And I uncheck "Antonio Freeman"
-    And I update the team
-    Then I don't see the player "Antonio Freeman" on the team
-    When I click edit
-    And I add "Antonio Freeman" to the team
-    And I update the team
-    Then I see the player "Antonio Freeman" on the team
+  @javascript
+  Scenario: A Team can add a player
+    Given A Player exists
+    And A Team exists
+    And A user is on the team page
+    When He clicks on Add Player
+    And Fills in name with the playe's name
+    And Clicks add player
+    Then The player should be added to the team

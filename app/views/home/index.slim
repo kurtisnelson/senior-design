@@ -1,16 +1,36 @@
-javascript:
-	document.getElementById("header").className = " large-header"
-	document.getElementById("static-nav").className += " large-nav"
+.container
+  .row
+    .pull-left
+      h1 Fenway
+      h2 The New Way to Play
+    = link_to "View Live Games", games_path, class: "btn btn-primary btn-large pull-right btn-header"
+    .clearfix
+    p Fenway brings state of the art scorekeeping into the palm of your hand. Play whenever and wherever and Fenway will seamlessly provide live scores and statistics from all your favorite campus players. Set up brakets, track progress, and even view your own statistics all while on your way to your next class. Built from the ground up with you in mind, Fenway is easy to use.
 
+div id="open_field"
 
-h2 Play.Score.Repeat.
-p Fenway brings state of the art scorekeeping into the palm of your hand. Play whenever and wherever and Fenway will seamlessly provide live scores and statistics from all your favorite campus players. Set up brakets, track progress, and even view your own statistics all while on your way to your next class. Built from the ground up with you in mind, Fenway is easy to use.
-
-
-h2 Live Games:
-table.table
-- @games.each do |game|
-	tr
-		td
-			h3 = game.name
-			= link_to "Live Score", game_score_path(game)
+.grey_background
+  .container
+    .row
+      h2 HOW DOES IT WORK?
+      ul.how_it_works
+        li 
+          span.pull-left 1.
+          h3.pull-left Create A Team
+          .clearfix
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor placerat magna euismod semper. Phasellus non ipsum ac diam hendrerit pellentesque a et ligula. Proin dictum condimentum quam, vitae tempor ligula auctor vel. Ut vehicula blandit felis eu imperdiet. Nullam in ornare libero. Aliquam volutpat ligula id justo venenatis cursus. Vestibulum id aliquet urna. Fusce interdum arcu diam, vitae rutrum ligula scelerisque vitae.
+        li
+          span.pull-left 2.
+          h3.pull-left Schedule A Game
+          .clearfix
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor placerat magna euismod semper. Phasellus non ipsum ac diam hendrerit pellentesque a et ligula. Proin dictum condimentum quam, vitae tempor ligula auctor vel. Ut vehicula blandit felis eu imperdiet. Nullam in ornare libero. Aliquam volutpat ligula id justo venenatis cursus. Vestibulum id aliquet urna. Fusce interdum arcu diam, vitae rutrum ligula scelerisque vitae.
+        li
+          span.pull-left 3.
+          h3.pull-left Keep Score
+          .clearfix
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor placerat magna euismod semper. Phasellus non ipsum ac diam hendrerit pellentesque a et ligula. Proin dictum condimentum quam, vitae tempor ligula auctor vel. Ut vehicula blandit felis eu imperdiet. Nullam in ornare libero. Aliquam volutpat ligula id justo venenatis cursus. Vestibulum id aliquet urna. Fusce interdum arcu diam, vitae rutrum ligula scelerisque vitae.
+        li 
+          span.pull-left 4.
+          h3.pull-left View Statistics
+          .clearfix
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor placerat magna euismod semper. Phasellus non ipsum ac diam hendrerit pellentesque a et ligula. Proin dictum condimentum quam, vitae tempor ligula auctor vel. Ut vehicula blandit felis eu imperdiet. Nullam in ornare libero. Aliquam volutpat ligula id justo venenatis cursus. Vestibulum id aliquet urna. Fusce interdum arcu diam, vitae rutrum ligula scelerisque vitae.
