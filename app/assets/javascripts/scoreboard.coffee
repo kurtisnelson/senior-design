@@ -319,7 +319,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   do_nextup()
 
 @do_triple = () ->
-  #TODO triple server put
+  jQuery.ajax("/state/#{game_id}/triple", {type:'PUT'})
   home.popover_hide()
   if(!second.is_empty())
     third.set(second.player.shift())
