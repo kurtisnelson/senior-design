@@ -53,10 +53,7 @@ end
 
 
 step "The Player is on the Team" do
-  @p = Player.new
-  @p.user_id = @player.id
-  @p.team_id = @team.id
-  @p.save
+  @p = @team.add_player @player.id
 end
 
 step "A user is on the team page" do
