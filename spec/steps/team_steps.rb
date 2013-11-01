@@ -44,7 +44,7 @@ step "Fills in name with the player's name" do
 end
 
 step "Clicks add player" do
- page.execute_script("$('#new_player').submit();")
+  click_button "Create Player"
 end
 
 step "The player should be added to the team" do

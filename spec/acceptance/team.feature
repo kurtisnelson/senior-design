@@ -8,7 +8,6 @@ Feature: Teams can be created, named, and have players
     And He creates the team
     Then I see the team called "Broncos"
 
-  @javascript
   Scenario: A Team can add a player
     Given A Player exists
     And A Team exists
