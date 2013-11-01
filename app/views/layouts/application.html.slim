@@ -9,9 +9,9 @@ html lang="en"
 
     = google_webfonts_init({google: ['Oxygen']})
     = stylesheet_link_tag "application", :media => "all"
-    = javascript_include_tag "application"
+    = javascript_include_tag "application", debug: true
 
-  body
+  body data-controller="#{controller.controller_name}" data-action="#{controller.action_name}"
     .login-bar.navbar.navbar-fixed-top
       .container
         - if not current_page?('/')

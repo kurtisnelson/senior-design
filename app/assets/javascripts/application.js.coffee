@@ -5,6 +5,6 @@
 #= require bootstrap
 #= require bootstrap-datepicker
 #= require bootstrap-collapse
-#= require scoreboard
-#= require_tree .
+#= require loadjs
 #= require best_in_place
+#= require_tree .

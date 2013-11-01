@@ -26,6 +26,7 @@ gem 'uglifier'
 gem 'unicorn'
 gem 'best_in_place', github: 'bernat/best_in_place'
 gem 'google-webfonts-rails'
+gem 'loadjs'
 
 group :development, :test do
   gem 'dotenv'

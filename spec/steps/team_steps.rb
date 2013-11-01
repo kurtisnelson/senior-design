@@ -39,7 +39,7 @@ step "He clicks on Add Player" do
   click_on "Add Player"
 end
 
-step "Fills in name with the playe's name" do
+step "Fills in name with the player's name" do
   fill_in "player[user][name]", with: @player.name
 end
 

@@ -14,6 +14,6 @@ Feature: Teams can be created, named, and have players
     And A Team exists
     And A user is on the team page
     When He clicks on Add Player
-    And Fills in name with the playe's name
+    And Fills in name with the player's name
     And Clicks add player
     Then The player should be added to the team
