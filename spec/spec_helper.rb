@@ -21,6 +21,7 @@ Zonebie.set_random_timezone
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.use_transactional_fixtures = false
+  config.include BestInPlace::TestHelpers
   config.include Warden::Test::Helpers
   Warden.test_mode!
 

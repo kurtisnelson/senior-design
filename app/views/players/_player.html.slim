@@ -2,7 +2,7 @@ tr id="player_#{player.id}_info"
 
 	td = link_to player.user.name, team_player_path(:team_id => team.id, :id => player.id)
 	td 
-		= best_in_place player, :player_number, :type => :input, :path => team_player_update_jersey_number_path(:team_id => team.id, :player_id => player.id),  activator: "#edit_player_#{player.id}_number"
+		= best_in_place player, :player_number, :type => :input, :path => team_player_update_jersey_number_path(:team_id => team.id, :player_id => player.id), activator: "#edit_player_#{player.id}_number"
 		= " "
 		i.icon-pencil id="edit_player_#{player.id}_number"
 	td 

@@ -9,10 +9,6 @@ class Team < ActiveRecord::Base
       self.away_games + self.home_games
   end
 
-  def available_players
-    User.where.not(id: self.users)
-  end
-
 	def add_player user_id
     @player = Player.new()
     @player.team_id = self.id

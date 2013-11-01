@@ -35,38 +35,20 @@ class TeamsController < ApplicationController
   end
   
   def destroy
-  	@team.destroy
+    @team.destroy
 
     respond_to do |format|
-      format.html { redirect_to teams_path, notice: "Team was successfully deleted." }
+      format.html { redirect_to teams_path,  flash[:success] = "Team was successfully deleted." }
       format.js  
     end
   end	
 	 
   def update
-    if @team.update(team_params)
-      flash.now[:success] = "Team was successfully updated."
-    else
-      flash.now[:error] = "Error in updating team."
-    end
-
+    @team.update(team_params)
+    
     respond_to do |format|
-      format.html { redirect_to @team }
-      format.js   
-      format.json { respond_with_bip(@team)}
+      format.json {respond_with_bip(@team)}
     end
-  end
-
-  def add_player
-    @player = Player.new()
-    @player.team_id = params[:game_id]
-    @player.user_id = params[:user_id]
-    @player.player_number = -1
-    @player.save
-  end
-
-  def get_available_users
-    User.all
   end
 
   private

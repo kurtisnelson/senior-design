@@ -16,3 +16,12 @@ Feature: Teams can be created, named, and have players
     And Fills in name with the player's name
     And Clicks add player
     Then The player should be added to the team
+
+  @javascript
+  Scenario: A Player's jersey number can be updated
+    Given A Player exists
+    And A Team exists
+    And The Player is on the Team
+    And A user is on the team page
+    When A user changes the player's jersey number
+    Then The user can see the new jersey number

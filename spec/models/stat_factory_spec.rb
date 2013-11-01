@@ -1,19 +1,5 @@
 require 'spec_helper'
 
-# describe Stat_Factory do
-#   describe "#add_player" do
-#     let(:team) {FactoryGirl.create(:team)}
-#     let(:user) {FactoryGirl.create(:user)}
-#     it "adds a user to a team" do 
-#       team.add_player(user.id)
-#       team.players.count.should eq 1
-#       user.teams.count.should eq 1
-#       team.players.first.user.id.should eq user.id
-#       user.players.first.team.id.should eq team.id
-#     end
-#   end
-# end
-
 describe StatFactory do
   let(:game) {FactoryGirl.build_stubbed(:game)}
   let(:player) {FactoryGirl.build_stubbed(:user)}

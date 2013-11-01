@@ -51,3 +51,25 @@ step "The player should be added to the team" do
   page.should have_content @player.name
 end
 
+
+step "The Player is on the Team" do
+  @p = Player.new
+  @p.user_id = @player.id
+  @p.team_id = @team.id
+  @p.save
+end
+
+step "A user is on the team page" do
+  visit team_path(@team)
+end
+
+step "A user changes the player's jersey number" do
+  @jersey_number = 1 + rand(10)
+  find_by_id("edit_player_#{@p.id}_number").click
+  bip_text @p, :player_number, @jersey_number.to_s
+  page.evaluate_script 'jQuery.active == 0'
+end 
+
+step "The user can see the new jersey number" do
+  page.should have_content @jersey_number
+end
