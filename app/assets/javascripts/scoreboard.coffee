@@ -156,6 +156,9 @@ stateCallback = (data, status, xhr) ->
   innings.number = data['game']['inning']['number']
   console.log innings.number
   innings.top = data['game']['inning']['top']
+  #first_id = data['game']['bases'][0]
+  #second_id = data['game']['base'][1]
+  #third_id = data['game']['base'][2]
   strike.render()
   ball.render()
   out.render()
@@ -240,7 +243,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   #set Home Lineup array
   console.log home_players
   home_array = []
-  home_list = $('#home-list li')
+  home_list = $('#home-list li:nth-child(-n+10)')
   home_list.each ->
     player_id = $(@).data('id')
     home_array.push($(@).data('id'))
@@ -248,7 +251,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
 
   #set Away Lineup array
   away_array = []
-  away_list = $('#away-list li')
+  away_list = $('#away-list li:nth-child(-n+10)')
   away_list.each ->
     player_id = $(@).data('id')
     away_array.push(player_id)
@@ -351,20 +354,20 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
 
 
 @do_move = (base_on, func) ->
+  move_json = {
+      player_id: 1
+      new_base: base_on+1 
+      is_steal: 0
+    }
+
   if(func == 1)
     #TODO steal server put
     console.log "steal"
+    move_json.is_steal = 1
 
   if(base_on == 1)
-    if(func == 0)
-      #TODO move server put
-      move_json = {
-        player_id: first.player[0]['user_id'] 
-        new_base: base_on+1 
-        is_steal: 0
-      }
-      jQuery.ajax("/state/#{game_id}/move", {type:'PUT', contentType: 'application/json', data: JSON.stringify(move_json), dataType: 'json' })
-      console.log "move"
+    #update player_id
+    move_json.player_id = first.player[0]['user_id']
     if(!second.is_empty())
       second.popover_show()
     first.popover_hide();
@@ -372,6 +375,8 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     first.render()
     #first.reset()
   else if(base_on == 2)
+    #update player_id
+    move_json.player_id = second.player[0]['user_id']
     if(!third.is_empty())
       third.popover_show()
     second.popover_hide()
@@ -379,6 +384,8 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     second.render()
     #second.reset()
   else if(base_on == 3)
+    #update player_id
+    move_json.player_id = third.player[0]['user_id']
     if third.player.length > 2
       third.popover_show()
     else
@@ -386,28 +393,31 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     do_score()
     third.player.shift()
     third.render()
+  #server call
+  jQuery.ajax("/state/#{game_id}/move", {type:'PUT', contentType: 'application/json', data: JSON.stringify(move_json), dataType: 'json' })
+
 
     
 @do_score = () ->
+  score_json = {
+    topOrBottom: 0
+  }
   innings.score++
   ball.reset()
   strike.reset()
   if(which_lineup().name == "home")
-    score_json = {
-    topOrBottom: 0
-    }
+    score_json.topOrBottom = 0
     home_score++
-    jQuery.ajax("/state/#{game_id}/score", {type:'PUT',contentType: 'application/json', data: JSON.stringify(score_json), dataType: 'json'})
     $(".home-team-score>h1").html(home_score)
     $("#home-inning-row [data-number='"+innings.number+"']").html(innings.score)
   else if(which_lineup().name == "away")
-    score_json = {
-    topOrBottom: 1
-    }
+    score_json.topOrBottom = 1
     away_score++
-    jQuery.ajax("/state/#{game_id}/score", {type:'PUT',contentType: 'application/json', data: JSON.stringify(score_json), dataType: 'json'})
     $(".away-team-score>h1").html(away_score)
     $("#away-inning-row [data-number='"+innings.number+"']").html(innings.score)
+  #server call
+  jQuery.ajax("/state/#{game_id}/score", {type:'PUT',contentType: 'application/json', data: JSON.stringify(score_json), dataType: 'json'})
+
 
 #Render Helper Function
 
