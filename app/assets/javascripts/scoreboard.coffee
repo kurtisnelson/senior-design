@@ -2,6 +2,7 @@
 game_id = window.location.pathname.split('/')[2]
 home_score = 0
 away_score = 0
+state_json = {}
 
 @innings = 
   count: 2
@@ -150,18 +151,7 @@ class Base
 @away_players = {}
 
 stateCallback = (data, status, xhr) ->
-  strike.counter = data['game']['strikes']
-  ball.counter  = data['game']['balls']
-  out.counter = data['game']['outs']
-  innings.number = data['game']['inning']['number']
-  console.log innings.number
-  innings.top = data['game']['inning']['top']
-  #first_id = data['game']['bases'][0]
-  #second_id = data['game']['base'][1]
-  #third_id = data['game']['base'][2]
-  strike.render()
-  ball.render()
-  out.render()
+  state_json = date
   jQuery.get("/teams/" + data['game']['away_id'] + ".json", awayCallback)
   jQuery.get("/teams/" + data['game']['home_id'] + ".json", homeCallback)
 
@@ -176,6 +166,28 @@ homeCallback = (data, status, xhr) ->
     $("#home-list").append(lineup_builder(player))
     #home_lineup.batting_order.push(player)
     home_players[player['user_id']] = player
+
+initialize = (data) ->
+  strike.counter = data['game']['strikes']
+  ball.counter  = data['game']['balls']
+  out.counter = data['game']['outs']
+  innings.number = data['game']['inning']['number']
+  console.log innings.number
+  innings.top = data['game']['inning']['top']
+  if(innings.top)
+    first.player = away_players[data['game']['bases'][0]]
+    second.player = away_players[data['game']['base'][1]]
+    third.player = away_players[data['game']['base'][2]]
+  else
+    first.player = home_players[data['game']['bases'][0]]
+    second.player = home_players[data['game']['base'][1]]
+    third.player = home_players[data['game']['base'][2]]
+  strike.render()
+  ball.render()
+  out.render()
+  first.render()
+  second.render()
+  third.render()
 
 lineup_builder = (player) ->
   html = "<li class='ui-state-default' data-id=" + player['user_id'] + 
