@@ -5,7 +5,7 @@ away_score = 0
 state_json = {}
 
 @innings = 
-  count: 2
+  count: 0
   number: 0
   top: true
   score: 0
@@ -151,7 +151,7 @@ class Base
 @away_players = {}
 
 stateCallback = (data, status, xhr) ->
-  state_json = date
+  state_json = data
   jQuery.get("/teams/" + data['game']['away_id'] + ".json", awayCallback)
   jQuery.get("/teams/" + data['game']['home_id'] + ".json", homeCallback)
 
@@ -166,28 +166,57 @@ homeCallback = (data, status, xhr) ->
     $("#home-list").append(lineup_builder(player))
     #home_lineup.batting_order.push(player)
     home_players[player['user_id']] = player
+  if(innings.count > 1)
+    console.log "initialize ran"
+    initialize(state_json)
 
 initialize = (data) ->
-  strike.counter = data['game']['strikes']
-  ball.counter  = data['game']['balls']
-  out.counter = data['game']['outs']
-  innings.number = data['game']['inning']['number']
-  console.log innings.number
-  innings.top = data['game']['inning']['top']
+  strike.counter = data.game.strikes
+  ball.counter  = data.game.balls
+  out.counter = data.game.outs
+  innings.number = data.game.inning.number
+  innings.top = data.game.inning.top
+   #set innings count
   if(innings.top)
-    first.player = away_players[data['game']['bases'][0]]
-    second.player = away_players[data['game']['base'][1]]
-    third.player = away_players[data['game']['base'][2]]
+    innings.count = innings.number * 2
   else
-    first.player = home_players[data['game']['bases'][0]]
-    second.player = home_players[data['game']['base'][1]]
-    third.player = home_players[data['game']['base'][2]]
+    innings.count = innings.number * 2 +1
+  #set start button
+  if(innings.count > 1)
+    $("#startBtn").fadeOut()
+  #set players on base
+  if(innings.top)
+    if(!first.is_empty())
+      first.set(away_players[data.game.bases[0]])
+    if(!second.is_empty())
+      second.set(away_players[data.game.bases[1]])
+    if(!third.is_empty())
+      third.set(away_players[data.game.bases[2]])
+  else
+    if(!first.is_empty())
+      first.set(home_players[data.game.bases[0]])
+    if(!second.is_empty())
+      second.set(home_players[data.game.bases[1]])
+    if(!third.is_empty())
+      third.set(home_players[data.game.bases[2]])
+  #set home lineup
+  for player_id in data.game.lineups.home
+    home_lineup.batting_order.push(home_players[player_id])
+  #set away lineup
+  for player_id in data.game.lineups.away
+    away_lineup.batting_order.push(away_players[player_id])
+  #set home score
+  home_score = data.game.home_score
+  #set away score
+  away_score = data.game.away_score
+
   strike.render()
   ball.render()
   out.render()
   first.render()
   second.render()
   third.render()
+  do_nextup()
 
 lineup_builder = (player) ->
   html = "<li class='ui-state-default' data-id=" + player['user_id'] + 
