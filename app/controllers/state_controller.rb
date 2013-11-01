@@ -35,10 +35,10 @@ class StateController < ApplicationController
     head :ok
   end
 
-  def steal
-    @game_state.steal!(params[:player_id])
-    head :ok
-  end
+  # def steal
+  #   @game_state.steal!(params[:player_id])
+  #   head :ok
+  # end
 
   def move
     @game_state.move! params[:player_id], params[:new_base], params[:is_steal]

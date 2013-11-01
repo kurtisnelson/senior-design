@@ -168,7 +168,7 @@ module GameState
         sf.rbi player_id
       end
       set_array key(:bases), temp
-      if is_steal
+      if is_steal == 1
         sf = StatFactory.new id,@inning
         sf.steal player_id   
       end
@@ -199,7 +199,7 @@ module GameState
     end
 
     def away_score 
-      r.get(key(:away_score))
+      r.get(key(:away_score)).to_i
     end
 
     def increment_home_score
@@ -207,7 +207,7 @@ module GameState
     end
 
     def home_score
-       r.get(key(:home_score))     
+       r.get(key(:home_score)).to_i 
     end
   end
 end

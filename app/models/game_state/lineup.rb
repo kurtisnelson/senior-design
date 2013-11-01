@@ -41,15 +41,17 @@ module GameState
 
     def to_base base
       player_id = r.rpop(my_key)
+      temp = get_int_array(:bases)
       if base == 1
-        set_array key(:bases), [player_id.to_i,0,0]
+        temp[0] = player_id
       elsif base == 2
-        set_array key(:bases), [0,player_id.to_i,0]
+        temp[1] = player_id        
       elsif base == 3
-        set_array key(:bases), [0,0,player_id.to_i]
+        temp[2] = player_id        
       elsif base == 4
-        set_array key(:bases), [0,0,0]
+        temp[3] = player_id        
       end
+      set_array key(:bases), temp
       player_id
     end
 
