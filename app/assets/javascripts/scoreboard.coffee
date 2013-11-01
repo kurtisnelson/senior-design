@@ -289,7 +289,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
     home_lineup.next()
 
 @do_single = () ->
-  #TODO single server put
+  jQuery.ajax("/state/#{game_id}/single", {type:'PUT'})
   home.popover_hide()
   if(!first.is_empty())
     first.popover_show()
@@ -307,7 +307,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   do_nextup()
 
 @do_double = () ->
-  #TODO double server put
+  jQuery.ajax("/state/#{game_id}/double", {type:'PUT'})
   home.popover_hide()
   if(!first.is_empty())
     second.set(first.player.shift())

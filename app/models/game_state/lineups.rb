@@ -9,11 +9,11 @@ module GameState
     end
 
     def home= arr
-      @home.set arr
+      @home.set_array @home.my_key, arr
     end
 
     def away= arr
-      @away.set arr
+      @away.set_array @away.my_key, arr
     end
 
     def to_a

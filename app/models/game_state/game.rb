@@ -10,6 +10,7 @@ module GameState
       @inning = Inning.new(id)
       @home_score = 0
       @away_score = 0
+
     end
 
     def single!
@@ -60,23 +61,15 @@ module GameState
     end
 
     def on_base base_id
-      temp = r.get(key(:bases))
-      if base_id == 1
-        ret_val = JSON.parse(temp)[0]
-      elsif base_id == 2
-        ret_val = JSON.parse(temp)[1]
-      elsif base_id == 3
-        ret_val = JSON.parse(temp)[2]
-      end
-      ret_val
+      bases[base_id - 1]
     end
 
-    def player_on_base base_id
+    def player_on_base base_id #THIS IS WRONG, but ryan is lazy at 3am.
       User.find(on_base(base_id))
     end
 
     def bases
-      r.lrange(key(:bases), 0, -1).map {|i| i.to_i}
+      get_int_array :bases
     end
 
     def at_bat
@@ -164,8 +157,7 @@ module GameState
     end
 
     def steal! player_id, new_base
-      temp = r.get(key(:bases))
-      temp = JSON.parse(temp)
+      temp = bases
       if new_base == 2
         temp[1] = temp[0]
         temp[0] = 0
@@ -175,8 +167,9 @@ module GameState
       elsif new_base == 4
         temp = [0,0,0]
         #TODO, score a run
+        sf.rbi player_id
       end
-      r.set(key(:bases),temp.to_json)
+      set_array key(:bases), temp
       sf = StatFactory.new id,@inning
       sf.steal player_id   
 

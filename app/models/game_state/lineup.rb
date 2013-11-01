@@ -23,12 +23,8 @@ module GameState
       get_int_array my_name
     end
 
-    def set arr
-      r.del my_key
-
-      r.pipelined do
-        arr.each {|i| r.rpush my_key, i}
-      end
+    def set_lineup arr
+      set_array my_key, arr
     end
 
     def next
@@ -46,13 +42,13 @@ module GameState
     def to_base base
       player_id = r.rpop(my_key)
       if base == 1
-        r.set(key(:bases),[player_id.to_i,0,0].to_json)
+        set_array key(:bases), [player_id.to_i,0,0]
       elsif base == 2
-        r.set(key(:bases),[0,player_id.to_i,0].to_json)
+        set_array key(:bases), [0,player_id.to_i,0]
       elsif base == 3
-        r.set(key(:bases),[0,0,player_id.to_i].to_json)
+        set_array key(:bases), [0,0,player_id.to_i]
       elsif base == 4
-        r.set(key(:bases),[0,0,0].to_json)
+        set_array key(:bases), [0,0,0]
       end
       player_id
     end
@@ -61,7 +57,6 @@ module GameState
       r.expireat(my_key, epoch)
     end
 
-    private
     def my_key
       key(my_name)
     end

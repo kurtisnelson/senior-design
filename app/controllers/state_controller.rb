@@ -49,8 +49,8 @@ class StateController < ApplicationController
 
   def update
     lineups = params[:lineup]
-    @game_state.lineups.home = lineups[:home]
-    @game_state.lineups.away = lineups[:away]
+    @game_state.lineups.home = lineups[:home].reverse
+    @game_state.lineups.away = lineups[:away].reverse
     head :ok
   end
 

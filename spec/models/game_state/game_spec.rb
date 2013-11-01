@@ -56,11 +56,11 @@ describe GameState::Game do
 
   describe "#triple" do
     it "moves the player at bat to third base" do
-      state.lineups.away.add 1
+      state.lineups.away.add 5
       state.triple!
       state.on_base(1).should eq 0
       state.on_base(2).should eq 0
-      state.on_base(3).should eq 1
+      state.on_base(3).should eq 5
     end
     it "resets balls and strikes" do
       state.strike!

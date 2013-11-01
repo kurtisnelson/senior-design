@@ -6,7 +6,7 @@ describe StateController do
 		before :each do
 			FactoryGirl.create_list(:user, 12)
 			User.limit(9).each {|p| game_state.lineups.away.add p.id}
-			game_state.lineups.away.to_bases 
+			game_state.lineups.away.to_base 2
 			game_state.outs = 40
 			game_state.balls = 3
 			game_state.strikes = 2

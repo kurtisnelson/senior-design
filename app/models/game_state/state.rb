@@ -23,6 +23,12 @@ module GameState
       r.set(key(attr), val)
     end
 
+    def set_array key, arr
+      r.del key
+      arr.each {|i| r.rpush key, i}
+      true
+    end
+
     def get attr
       r.get(key(attr).to_s)
     end
