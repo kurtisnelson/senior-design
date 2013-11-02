@@ -20,13 +20,28 @@ class StateController < ApplicationController
     head :ok
   end
 
+  def homerun
+    @game_state.homerun!
+    head :ok
+  end
+
+  def score
+    @game_state.run!(params[:topOrBottom].to_i)
+    head :ok
+  end
+
   def ball
     @game_state.ball!
     head :ok
   end
 
-  def steal
-    @game_state.steal!(params[:player_id])
+  # def steal
+  #   @game_state.steal!(params[:player_id])
+  #   head :ok
+  # end
+
+  def move
+    @game_state.move! params[:player_id], params[:new_base], params[:is_steal]
     head :ok
   end
 
@@ -49,8 +64,8 @@ class StateController < ApplicationController
 
   def update
     lineups = params[:lineup]
-    @game_state.lineups.home = lineups[:home]
-    @game_state.lineups.away = lineups[:away]
+    @game_state.lineups.home = lineups[:home].reverse
+    @game_state.lineups.away = lineups[:away].reverse
     head :ok
   end
 

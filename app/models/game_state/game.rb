@@ -8,14 +8,13 @@ module GameState
       super(id)
       @lineups = Lineups.new(id)
       @inning = Inning.new(id)
-      @home_score = 0
-      @away_score = 0
+
     end
 
     def single!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 1
       r.set(key(:last_to_bat), player_id)      
       sf = StatFactory.new id, @inning
       sf.single(player_id)
@@ -24,9 +23,8 @@ module GameState
     def double!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 2
       r.set(key(:last_to_bat), player_id)      
-      r.lpush(key(:bases), nil)
       sf = StatFactory.new id, @inning
       sf.double(player_id)
     end
@@ -34,10 +32,8 @@ module GameState
     def triple!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 3
       r.set(key(:last_to_bat), player_id)
-      r.lpush(key(:bases), nil)
-      r.lpush(key(:bases), nil)
       sf = StatFactory.new id, @inning
       sf.triple(player_id)
     end
@@ -45,36 +41,38 @@ module GameState
     def homerun!
       set(:balls, 0)
       set(:strikes, 0)
-      player_id = lineups.active(@inning).to_bases
+      player_id = lineups.active(@inning).to_base 4
       r.set(key(:last_to_bat), player_id)      
-      r.lpush(key(:bases), nil)
-      r.lpush(key(:bases), nil)
-      r.lpush(key(:bases), nil) 
-      run! @inning.top?
+      # run! @inning.top?
       sf = StatFactory.new id, @inning
       sf.homerun(player_id)     
     end
    
     def run! topOrBottom
       if topOrBottom
-        @away_score+=1
+        increment_away_score
       else
-        @home_score+=1
+        increment_home_score
       end
       sf = StatFactory.new id, @inning
       sf.rbi r.get(key(:last_to_bat))
     end
 
     def on_base base_id
-      r.lindex(key(:bases), base_id).to_i
+      temp = bases[base_id - 1]
+      if temp == nil
+        return 0
+      else
+        return temp
+      end
     end
 
-    def player_on_base base_id
+    def player_on_base base_id #THIS IS WRONG, but ryan is lazy at 3am.
       User.find(on_base(base_id))
     end
 
     def bases
-      r.lrange(key(:bases), 0, -1).map {|i| i.to_i}
+      get_int_array :bases
     end
 
     def at_bat
@@ -161,11 +159,40 @@ module GameState
       r.incr(key :home)
     end
 
-    def steal! player_id
-      r.linsert(key(:bases), :before, player_id.to_s, nil)
-      sf = StatFactory.new id,@inning
-      sf.steal player_id   
+    def move! player_id, new_base, is_steal
+      temp = bases
+      if new_base == 2
+        temp[1] = temp[0]
+        temp[0] = 0
+      elsif new_base == 3
+        temp[2] = temp[1]
+        temp[1] = 0
+      elsif new_base == 4
+        temp = [0,0,0]
+        #TODO, score a run
+        sf.rbi player_id
+      end
+      set_array key(:bases), temp
+      if is_steal == 1
+        sf = StatFactory.new id,@inning
+        sf.steal player_id   
+      end
+    end
 
+    def increment_away_score
+      r.incr(key(:away_score))
+    end
+
+    def away_score 
+      r.get(key(:away_score)).to_i
+    end
+
+    def increment_home_score
+      r.incr(key(:home_score))
+    end
+
+    def home_score
+       r.get(key(:home_score)).to_i 
     end
 
     def set_expiration

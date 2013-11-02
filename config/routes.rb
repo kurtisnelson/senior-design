@@ -15,6 +15,9 @@ Fenway::Application.routes.draw do
     put 'strike'
     put 'next_inning'
     put 'start_game'
+    put 'homerun'
+    put 'score'
+    put 'move'
   end
 
   resources :games do

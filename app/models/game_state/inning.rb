@@ -6,6 +6,7 @@ module GameState
 
     def next
       r.incr key(:inning)
+      set_array key(:bases), [0,0,0,0]
     end
 
     def to_number
