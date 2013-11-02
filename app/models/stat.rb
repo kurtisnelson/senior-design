@@ -13,4 +13,41 @@ class Stat < ActiveRecord::Base
     value id: 7, name: "Strike Out"
     value id: 8, name: "Base on Balls"
   end
+
+  def self.avg(stats)
+    at_bats = Stat.at_bats(stats)
+    @avg = Stat.hits(stats).to_f / ( at_bats > 0 ? at_bats : 1 )
+  end
+
+  def self.homeruns(stats)
+    @homeruns = Stat.look_for("Homerun", stats)
+  end
+
+  def self.rbi(stats)
+    @rbi = Stat.look_for("RBI", stats)
+  end 
+
+  def self.obp(stats)
+    denom = Stat.at_bats(stats) + Stat.look_for("Base on Balls", stats)
+    @obp = (Stat.hits(stats).to_f + Stat.look_for("Base on Balls", stats)) / (denom > 0 ? denom : 1 )
+  end
+
+  def self.hits(stats)
+    @hits = Stat.look_for("Single", stats) + Stat.look_for("Double", stats) + Stat.look_for("Triple", stats) + Stat.look_for("Homerun", stats) 
+  end 
+
+  def self.at_bats(stats)
+    @at_bats =  Stat.hits(stats) + Stat.look_for("Out", stats)
+  end
+
+  private
+    def self.look_for(value_in, stats)
+      @value = 0
+      stats.each do |stat|
+        if stat.category(:name) == value_in
+          @value = @value + 1
+        end
+      end
+      @value
+    end
 end

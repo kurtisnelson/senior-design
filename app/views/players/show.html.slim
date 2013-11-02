@@ -1,20 +1,40 @@
 .container
   .row
-    ul.breadcrumb
-      li
-        = link_to "All Teams", teams_path
-        span.divider = "/"
-      li
-        = link_to @team.name, @team
-        span.divider = "/"
-    	li = link_to @player.user.name, team_player_path(:team_id => @team.id, :player_id => @player.id)
+    .player_summary
+      h1 = @player.user.name
+      = link_to "Sign in to personalize", "#"
+      = link_to "User profile", @player.user
+    .player_generic_info
+      ul 
+        li = "##{@player.player_number} [player_position]"
+        li = "Bats: R, Throws: R"
+        li = @player.team.name
+      ul.group
+        li
+          p.label Birth Date
+          p "Unknown"
+        li
+          p.label Birthplace
+          p "Unknown"
+        li 
+          p.label Affiliation
+          p "Unkown"
 
-    h1.pull-left = "##{@player.player_number} "  + @player.user.name
-    .clearfix
-    = link_to "User profile", @player.user
-    h2 Stats while playing with #{@team.name}
-    .well
-      p To be added.
+    h2 Career Stats
+    - @games = Game.where("away_team_id=? or home_team_id=?", @player.team.id, @player.team.id)
+    - @stats = Stat.where(user_id: @player.user.id, game_id: @games.pluck(:id))
+    table.table.table-striped
+      thead
+        th AVG
+        th HR
+        th RBI
+        th OBP
+      tbody
+        tr
+          td id="average" = Stat.avg(@stats)
+          td id="homeruns" = Stat.homeruns(@stats)
+          td id="rbi" = Stat.rbi(@stats)
+          td id="obp" = Stat.obp(@stats)
 
     h2 Bio
     .well
