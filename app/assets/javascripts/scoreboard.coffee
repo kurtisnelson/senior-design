@@ -228,7 +228,9 @@ initialize = (data) ->
   first.render()
   second.render()
   third.render()
-  do_nextup()
+  # do_nextup()
+  which_lineup().next()
+  home.render()
 
 lineup_builder = (player) ->
   html = "<li class='ui-state-default' data-id=" + player['user_id'] + 
