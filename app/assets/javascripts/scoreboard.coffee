@@ -180,6 +180,7 @@ homeCallback = (data, status, xhr) ->
 
 initialize = (data) ->
   $(".lineup>ul>li:nth-child(n+11)").fadeOut()
+  $('.sortable').sortable("disable");
   strike.counter = data.game.strikes
   ball.counter  = data.game.balls
   out.counter = data.game.outs
