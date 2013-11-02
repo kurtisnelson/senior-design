@@ -49,7 +49,7 @@ module GameState
       elsif base == 3
         temp[2] = player_id
       elsif base == 4
-        temp[3] = player_id
+        temp = [0,0,0,0]
       end
       set_array key(:bases), temp
       player_id
