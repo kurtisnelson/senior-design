@@ -1,7 +1,7 @@
 #get the game_id from the URL
 game_id = window.location.pathname.split('/')[2]
-home_score = 0
-away_score = 0
+@home_score = 0
+@away_score = 0
 state_json = {}
 
 @innings = 
@@ -152,6 +152,14 @@ class Base
 
 stateCallback = (data, status, xhr) ->
   state_json = data
+  #set innings
+  innings.number = data.game.inning.number
+  innings.top = data.game.inning.top
+  #set innings count
+  if(innings.top)
+    innings.count = innings.number * 2
+  else
+    innings.count = innings.number * 2 +1
   jQuery.get("/teams/" + data['game']['away_id'] + ".json", awayCallback)
   jQuery.get("/teams/" + data['game']['home_id'] + ".json", homeCallback)
 
@@ -171,45 +179,49 @@ homeCallback = (data, status, xhr) ->
     initialize(state_json)
 
 initialize = (data) ->
+  $(".lineup>ul>li:nth-child(n+11)").fadeOut()
   strike.counter = data.game.strikes
   ball.counter  = data.game.balls
   out.counter = data.game.outs
-  innings.number = data.game.inning.number
-  innings.top = data.game.inning.top
-   #set innings count
-  if(innings.top)
-    innings.count = innings.number * 2
-  else
-    innings.count = innings.number * 2 +1
+  
   #set start button
-  if(innings.count > 1)
-    $("#startBtn").fadeOut()
+  $("#startBtn").fadeOut()
   #set players on base
   if(innings.top)
-    if(!first.is_empty())
+    if(data.game.bases[0] != 0)
       first.set(away_players[data.game.bases[0]])
-    if(!second.is_empty())
+    if(data.game.bases[1] != 0)
       second.set(away_players[data.game.bases[1]])
-    if(!third.is_empty())
+    if(data.game.bases[2] != 0)
       third.set(away_players[data.game.bases[2]])
   else
-    if(!first.is_empty())
+    if(data.game.bases[0] != 0)
       first.set(home_players[data.game.bases[0]])
-    if(!second.is_empty())
+    if(data.game.bases[1] != 0)
       second.set(home_players[data.game.bases[1]])
-    if(!third.is_empty())
+    if(data.game.bases[2] != 0)
       third.set(home_players[data.game.bases[2]])
   #set home lineup
   for player_id in data.game.lineups.home
-    home_lineup.batting_order.push(home_players[player_id])
+    home_lineup.batting_order.unshift(home_players[player_id])
   #set away lineup
   for player_id in data.game.lineups.away
-    away_lineup.batting_order.push(away_players[player_id])
+    away_lineup.batting_order.unshift(away_players[player_id])
   #set home score
   home_score = data.game.home_score
   #set away score
   away_score = data.game.away_score
+  console.log ("away_score: " + away_score)
 
+  #Render Scores
+  if(which_lineup().name == "home" and home_score > 0)
+    console.log "home_score"
+    $(".home-team-score>h1").html(home_score)
+  else if(which_lineup().name == "away" and away_score > 0)
+    console.log "away_score"
+    $(".away-team-score>h1").html(away_score)
+
+  #Render Everything else
   strike.render()
   ball.render()
   out.render()
@@ -318,6 +330,7 @@ $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
   away_lineup.next()
   innings.number= 1
   innings.top = true
+  #innings.count = 2
 
 @which_lineup = () ->
   if(innings.top)
