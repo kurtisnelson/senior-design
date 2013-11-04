@@ -30,6 +30,14 @@ class StatFactory
     s
   end
 
+  def out(player)
+    s = base_stat
+    s.user_id = player
+    s.category = 6
+    s.save!
+    s
+  end
+
   def strike_out(player)
     s = base_stat
     s.user_id = player
@@ -58,6 +66,14 @@ class StatFactory
     s = base_stat
     s.user_id = player
     s.category = 5
+    s.save!
+    s
+  end
+
+  def base_on_balls(player)
+    s = base_stat
+    s.user_id = player
+    s.category = 8
     s.save!
     s
   end

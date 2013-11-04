@@ -1,21 +1,68 @@
+.player_summary
+  .container
+    .row
+      .pull-left
+        img.player_img src="http://placehold.it/200x200"
+      .pull-left
+        h1.player_name = link_to @player.user.name, @player.user
+        = link_to "Sign in to personalize", "#", class: "btn btn-mini"
+        .clearfix
+        .player_generic_info
+          ul.player_generic_info.inline.large
+            li = "##{@player.player_number} 3B"
+            li.divider
+            li = "Bats: R, Throws: R"
+            li.divider
+            li = link_to @player.team.name, @player.team
+          .clearfix
+          table.player_from_info
+            tr
+              td.desc Birth Date:
+              td Unknown
+            tr
+              td.desc Birthplace:
+              td Unknown
+            tr 
+              td.desc Affiliation:
+              td Unkown
+      .career_stats.pull-right
+        h2 Career Stats
+        - @games = Game.where("away_team_id=? or home_team_id=?", @player.team.id, @player.team.id)
+        - @stats = Stat.where(user_id: @player.user.id, game_id: @games.pluck(:id))
+        table.table.table-striped
+          thead
+            th AVG
+            th HR
+            th RBI
+            th OBP
+          tbody
+            tr
+              td id="average" = Stat.avg(@stats)
+              td id="homeruns" = Stat.homeruns(@stats)
+              td id="rbi" = Stat.rbi(@stats)
+              td id="obp" = Stat.obp(@stats)
+        h2 Season Stats
+        - @games = @games.where("DATE(start_date) >= ?", Date.new(Time.now.year,1,1))
+        - @stats = Stat.where(user_id: @player.user.id, game_id: @games.pluck(:id))
+        table.table.table-striped
+          thead
+            th AVG
+            th HR
+            th RBI
+            th OBP
+          tbody
+            tr
+              td id="" = Stat.avg(@stats)
+              td id="" = Stat.homeruns(@stats)
+              td id="" = Stat.rbi(@stats)
+              td id="" = Stat.obp(@stats)
+      .clearfix
 .container
   .row
-    ul.breadcrumb
-      li
-        = link_to "All Teams", teams_path
-        span.divider = "/"
-      li
-        = link_to @team.name, @team
-        span.divider = "/"
-    	li = link_to @player.user.name, team_player_path(:team_id => @team.id, :player_id => @player.id)
-
-    h1.pull-left = "##{@player.player_number} "  + @player.user.name
-    .clearfix
-    = link_to "User profile", @player.user
-    h2 Stats while playing with #{@team.name}
-    .well
-      p To be added.
-
     h2 Bio
-    .well
-      p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id mi libero. Praesent egestas erat vitae lorem feugiat, non convallis mi consequat. Phasellus ullamcorper sodales tellus at condimentum. Suspendisse vitae libero tempor, elementum dui sed, mattis justo. Vestibulum interdum facilisis sapien, non rutrum leo pretium sit amet. Curabitur adipiscing eros et purus imperdiet dictum. Nulla venenatis consectetur metus eu tempor. Curabitur ornare et nisl vitae congue. Cras commodo faucibus facilisis. Praesent condimentum eget mauris vel tristique.
+    p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id mi libero. Praesent egestas erat vitae lorem feugiat, non convallis mi consequat. Phasellus ullamcorper sodales tellus at condimentum. Suspendisse vitae libero tempor, elementum dui sed, mattis justo. Vestibulum interdum facilisis sapien, non rutrum leo pretium sit amet. Curabitur adipiscing eros et purus imperdiet dictum. Nulla venenatis consectetur metus eu tempor. Curabitur ornare et nisl vitae congue. Cras commodo faucibus facilisis. Praesent condimentum eget mauris vel tristique.
+    h2.grey_title More Info
+.grey_background
+  .contianer
+    .row
+
