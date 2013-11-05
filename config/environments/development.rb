@@ -26,4 +26,9 @@ Fenway::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  require 'pusher'
+  Pusher.app_id = '55244'
+  Pusher.key    = 'e6f4f74ff01f5f5800af'
+  Pusher.secret = ENV['PUSHER_SECRET']
 end

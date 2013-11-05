@@ -15,7 +15,8 @@ module GameState
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_base 1
-      r.set(key(:last_to_bat), player_id)      
+      r.set(key(:last_to_bat), player_id)
+      pusher 'single'
       sf = StatFactory.new id, @inning
       sf.single(player_id)
     end
@@ -24,7 +25,8 @@ module GameState
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_base 2
-      r.set(key(:last_to_bat), player_id)      
+      r.set(key(:last_to_bat), player_id)
+      pusher 'double'
       sf = StatFactory.new id, @inning
       sf.double(player_id)
     end
@@ -34,6 +36,7 @@ module GameState
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_base 3
       r.set(key(:last_to_bat), player_id)
+      pusher 'triple'
       sf = StatFactory.new id, @inning
       sf.triple(player_id)
     end
@@ -44,22 +47,25 @@ module GameState
       player_id = lineups.active(@inning).to_base 4
       r.set(key(:last_to_bat), player_id)      
       # run! @inning.top?
+      pusher 'homerun'
       sf = StatFactory.new id, @inning
-      sf.homerun(player_id)     
+      sf.homerun(player_id)
     end
-   
+
     def run! topOrBottom
       if topOrBottom
         increment_away_score
       else
         increment_home_score
       end
+      pusher 'run', top: topOrBottom
       sf = StatFactory.new id, @inning
       sf.rbi r.get(key(:last_to_bat))
     end
 
     def on_base base_id
       temp = bases[base_id - 1]
+      pusher 'on_base', base_id: base_id
       if temp == nil
         return 0
       else
@@ -87,6 +93,7 @@ module GameState
         s = r.lrem key(:bases), 0, player_id
       end
       out!
+      pusher 'out', player_id: player_id
       sf = StatFactory.new id,@inning
       sf.strike_out s
     end
@@ -98,6 +105,7 @@ module GameState
     def strike!
       strikes = r.incr(key :strikes)
       self.out! if strikes == 3
+      pusher 'strike'
     end
 
     def strikes= num
@@ -111,6 +119,7 @@ module GameState
     def ball!
       balls = r.incr(key :balls)
       self.walk! if balls == 3
+      pusher 'ball'
     end
 
     def balls= num
@@ -126,6 +135,7 @@ module GameState
         set(:balls, 0)
         set(:strikes, 0)
       end
+      pusher 'walk'
     end
 
     def outs
@@ -143,20 +153,24 @@ module GameState
         set(:strikes, 0)
       end
       next_inning! if outs >= 3
+      pusher 'out'
     end
 
     def next_inning!
       set(:outs, 0)
       r.del(key :bases)
       @inning.next
+      pusher 'next_inning'
     end
 
     def away_score!
       r.incr(key :away)
+      pusher 'away_score'
     end
 
     def home_score!
       r.incr(key :home)
+      pusher 'home_score'
     end
 
     def move! player_id, new_base, is_steal
@@ -173,6 +187,7 @@ module GameState
         sf.rbi player_id
       end
       set_array key(:bases), temp
+      pusher 'move', {player_id: player_id, new_base: new_base, is_steal: is_steal == 1}
       if is_steal == 1
         sf = StatFactory.new id,@inning
         sf.steal player_id   
@@ -206,6 +221,10 @@ module GameState
     end
 
     private
+    def pusher(event, data = {})
+      Pusher['game_channel_'+@id.to_s].trigger(event, data)
+    end
+
     def set_expiration epoch
         r.expireat(key :bases, epoch)
         r.expireat(key :away, epoch)
