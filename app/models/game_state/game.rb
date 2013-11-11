@@ -222,7 +222,7 @@ module GameState
 
     private
     def pusher(event, data = {})
-      Pusher['game_channel_'+@id.to_s].trigger(event, data)
+      Pusher['game_channel_'+@id.to_s].trigger_async(event, data)
     end
 
     def set_expiration epoch
