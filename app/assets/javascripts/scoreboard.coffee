@@ -9,6 +9,16 @@ load
   @away_score = 0
   state_json = {}
 
+  pusher = new Pusher(PUSHER_KEY)
+  channel = pusher.subscribe("game_state_"+game_id)
+
+  pusher.connection.bind('connected', ->
+            jQuery.get("/state/#{game_id}.json", null, stateCallback)
+  )
+  pusher.connection.bind('unavailable', ->
+            alert("Live connection lost")
+  )
+
   @innings = 
     count: 0
     number: 0
@@ -245,10 +255,6 @@ load
     player['name'] +
     "</li>"
     return html
-
-  # #Get the JSON Object
-  # $(jQuery.get("/state/" + game_id + ".json", null, stateCallback))
-  $(jQuery.get("/state/#{game_id}.json", null, stateCallback))
 
   @do_strike = () ->
     #server call

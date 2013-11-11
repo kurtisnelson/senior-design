@@ -8,8 +8,9 @@ html lang="en"
     = csrf_meta_tags
 
     = google_webfonts_init({google: ['Oxygen']})
-    = stylesheet_link_tag "application", :media => "all"
-    = javascript_include_tag "application", debug: true
+    = stylesheet_link_tag "application", media: "all"
+    = javascript_include_tag "application"
+    script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"
 
   body data-controller="#{controller.controller_name}" data-action="#{controller.action_name}"
     .login-bar.navbar.navbar-fixed-top
