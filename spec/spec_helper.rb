@@ -12,9 +12,6 @@ require 'fakeredis/rspec'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].sort.each {|f| require f}
 
-
-
-
 # Load the .env file
 Dotenv.load
 Zonebie.set_random_timezone

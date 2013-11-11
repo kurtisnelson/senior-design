@@ -1,11 +1,13 @@
 language: ruby
 rvm:
-  - 2.0.0
+- 2.0.0
 env:
+  matrix:
   - DB=postgresql
+  - secure: QMm9738l8di8K5MNt5b2c4oPbdOGiPQb/5dMnTaseDLsejWOMGFmd5621AefmOhOsG/M6h6hP3yTG9PhQga1Qfx99qocIBKHzN0yokokmmv0zySpCcU+/gedImwF41xjIJZ3J1v/OTxlzSWnnq0ZJLQz34HcbwCk5+AISRpkkzA=
 script:
-  - RAILS_ENV=test bundle exec rake db:migrate --trace
-  - bundle exec rake db:test:prepare
-  - xvfb-run bundle exec rspec
+- RAILS_ENV=test bundle exec rake db:migrate --trace
+- bundle exec rake db:test:prepare
+- xvfb-run bundle exec rspec
 before_script:
-  - psql -c 'create database fenway_test' -U postgres
+- psql -c 'create database fenway_test' -U postgres

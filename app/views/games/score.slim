@@ -6,28 +6,30 @@
 .row
 	span12.scoreboard
 		=image_tag("Scoreboard.png")
-.row
-	.info id="home-team-id"
-	.lineup id="home-lineup"
-		ul.sortable id="home-list"
-			h3 
-				=@game.home_team.name[0..2] 
-				|  Lineup
-				
-	.row
-	.lineup id="away-lineup"
-		ul.sortable id="away-list"
-			h3
-				=@game.away_team.name[0..2] 
-				|  Lineup
+- if @game.home_team
+  .row
+    .info id="home-team-id"
+    .lineup id="home-lineup"
+      ul.sortable id="home-list"
+        h3 
+          =@game.home_team.name[0..2]
+          |  Lineup
+
+- if @game.away_team
+  .row
+    .lineup id="away-lineup"
+      ul.sortable id="away-list"
+        h3
+          =@game.away_team.name[0..2]
+          |  Lineup
 .row
 	p.game-status = @game.status_tag
 	.home-team
-		h4.team-name = @game.home_team.name
+		h4.team-name = @game.home_team.try(:name)
 	.home-team-score
 		h1.score 0
 	.away-team
-		h4.team-name = @game.away_team.name
+		h4.team-name = @game.away_team.try(:name)
 	.away-team-score
 		h1.score 0	
 .row
@@ -54,18 +56,21 @@
 	.score-light id="out2" hidden="true"
 
 	table id="innings-grid"
-		tbody
-			tr id="away-inning-row"
-				td id="innings-away-team" = @game.away_team.name[0..2]
-				- (1..10).each do |i|
-					td.innings-top data-number=i 
+    tbody
+      - if @game.away_team
+        tr id="away-inning-row"
+          td id="innings-away-team" = @game.away_team.name[0..2]
+          - (1..10).each do |i|
+            td.innings-top data-number=i
 
-			tr id="home-inning-row"
-				td id="innings-home-team" = @game.home_team.name[0..2]
-				- (1..10).each do |i|
-					td.innings-btm data-number=i 
+      - if @game.home_team
+        tr id="home-inning-row"
+          td id="innings-home-team" = @game.home_team.name[0..2]
+          - (1..10).each do |i|
+            td.innings-btm data-number=i
 
 javascript:
+  var PUSHER_KEY = "#{Pusher.key}"
 	$('#home').popover();
 	$('#first').popover();
 	$('#second').popover();
