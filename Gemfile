@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
 ruby '2.0.0'
-gem 'rails', '4.0.0'
+gem 'rails', '~> 4.0'
 
 gem 'active_enum', github: 'adzap/active_enum'
 gem 'best_in_place', github: 'bernat/best_in_place'
 gem 'bootstrap-datepicker-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 2.3'
 gem 'coffee-rails'
 gem 'devise'
 gem 'draper'
