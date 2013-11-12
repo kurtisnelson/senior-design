@@ -7,17 +7,28 @@ load "games#score", ->
   pusher = new Pusher(PUSHER_KEY)
   channel = pusher.subscribe("game_state_"+game_id)
 
-  pusher.connection.bind('connected', ->
+  pusher.connection.bind('connected', =>
             state.update()
+            @socketId = pusher.connection.socket_id
   )
-  pusher.connection.bind('unavailable', ->
+  pusher.connection.bind('unavailable', =>
             alert("Live connection lost")
   )
 
+  ajax_put = (type, data = {}) ->
+    data['socket_id'] = @socketId
+    jQuery.ajax("/state/#{game_id}/#{type}", {
+            type: 'PUT'
+            data: JSON.stringify(data)
+            contentType: 'application/json'
+            dataType: 'json'
+      })
 
-  @do_strike = () ->
-    #server call
-    jQuery.ajax("/state/#{game_id}/strike", {type:'PUT'})
+  @do_strike = ->
+    ajax_put('strike')
+    strike()
+
+  strike = ->
     if state.counters.strikes == 2
       state.home.reset()
       do_out()
@@ -25,16 +36,24 @@ load "games#score", ->
       state.counters.strike()
       Renderer.counters(state)
 
-  @do_ball = () ->
-    #server call
-    jQuery.ajax("/state/#{game_id}/ball", {type:'PUT'})
+  channel.bind('strike', strike)
+
+  @do_ball = ->
+    ajax_put('ball')
+    ball()
+
+  ball = ->
     #TODO(rfahsel3) call move base on 4th ball
     state.counters.ball()
     Renderer.counters(state)
 
+  channel.bind('ball', ball)
+
   @do_out = () ->
-    #Server call
-    jQuery.ajax("/state/#{game_id}/out", {type:'PUT'})
+    ajax_put('out')
+    out()
+
+  out = ->
     if state.counters.outs == 2
       console.log "out counter is 2"
       state.home.reset()
@@ -47,6 +66,8 @@ load "games#score", ->
     state.counters.out()
     Renderer.bases(state)
     Renderer.counters(state)
+
+  channel.bind('out', out)
 
   @do_out_onbase = (base_on) ->
     if(base_on == 0)
@@ -99,7 +120,7 @@ load "games#score", ->
     console.log lineup_json
     #Server call
     jQuery.ajax("/state/#{game_id}.json", {type:'PATCH', contentType: 'application/json', data: JSON.stringify(lineup_json), dataType: 'json' })
-    jQuery.ajax("/state/#{game_id}/start_game", {type:'PUT'})
+    ajax_put('start_game')
     $("#startBtn").fadeOut()
     $(".lineup>ul>li:nth-child(n+11)").fadeOut()
     $('.sortable').sortable("disable")
@@ -107,6 +128,8 @@ load "games#score", ->
     state.innings.number= 1
     state.innings.top = true
     #innings.count = 2
+  
+
 
   @do_nextup = () ->
     state.counters.balls = 0
@@ -120,16 +143,24 @@ load "games#score", ->
     Renderer.counters(state)
 
   @do_single = () ->
-    jQuery.ajax("/state/#{game_id}/single", {type:'PUT'})
+    ajax_put("single")
+    single()
+
+  single = ->
     state.home.popover_hide()
     if(!state.first.is_empty())
       state.first.popover_show()
     state.first.set(state.active_lineup().at_bat())
     state.home.reset()
     do_nextup()
+
+  channel.bind('single', single)
 
   @do_walk = () ->
     #TODO walk server put
+    walk()
+
+  walk = ->
     state.home.popover_hide()
     if(!state.first.is_empty())
       state.first.popover_show()
@@ -137,8 +168,13 @@ load "games#score", ->
     state.home.reset()
     do_nextup()
 
+  channel.bind('walk', walk)
+
   @do_double = () ->
-    jQuery.ajax("/state/#{game_id}/double", {type:'PUT'})
+    ajax_put('double')
+    double()
+
+  double = ->
     state.home.popover_hide()
     if(!state.first.is_empty())
       state.second.set(state.first.player.shift())
@@ -149,8 +185,13 @@ load "games#score", ->
     state.home.reset()
     do_nextup()
 
+  channel.bind('double', double)
+
   @do_triple = () ->
-    jQuery.ajax("/state/#{game_id}/triple", {type:'PUT'})
+    ajax_put('triple')
+    triple()
+
+  triple = ->
     state.home.popover_hide()
     if(!state.second.is_empty())
       state.third.set(state.second.player.shift())
@@ -164,8 +205,13 @@ load "games#score", ->
     state.home.reset()
     do_nextup()
 
-  @do_homerun = () ->
-    jQuery.ajax("/state/#{game_id}/homerun", {type:'PUT'})
+  channel.bind("triple", triple)
+
+  @do_homerun = ->
+    ajax_put('homerun')
+    homerun()
+
+  homerun = ->
     state.home.popover_hide()
     if(!state.second.is_empty())
       state.second.reset()
@@ -180,6 +226,8 @@ load "games#score", ->
     do_score()
     do_nextup()
 
+  channel.bind('homerun', homerun)
+
 
   @do_move = (base_on, func) ->
     move_json = {
@@ -188,7 +236,10 @@ load "games#score", ->
         is_steal: 0
       }
     #server call
-    jQuery.ajax("/state/#{game_id}/move", {type:'PUT', contentType: 'application/json', data: JSON.stringify(move_json), dataType: 'json' })
+    ajax_put('move', move_json)
+    move(move_json)
+
+  move = (move_json) ->
 
     if(func == 1)
       #TODO steal server put
@@ -220,12 +271,17 @@ load "games#score", ->
       state.third.player.shift()
     Renderer.bases(state)
 
+  channel.bind('move', move)
 
-  @do_score = () ->
+
+  @do_score = ->
     score_json = {
       topOrBottom: 0
     }
-    jQuery.ajax("/state/#{game_id}/score", {type:'PUT',contentType: 'application/json', data: JSON.stringify(score_json), dataType: 'json'})
+    ajax_put('score', score_json)
+    score(score_json)
+
+  score = (score_json) ->
     state.innings.score++
     state.counters.balls = 0
     state.counters.strikes = 0
@@ -238,6 +294,8 @@ load "games#score", ->
       state.away_score++
       $("#away-inning-row [data-number='"+state.innings.number+"']").html(state.innings.score)
     Renderer.counters(state)
+
+  channel.bind('score', score)
 
 window.update_popover = (id, name) ->
     popover = $(id).data('popover')

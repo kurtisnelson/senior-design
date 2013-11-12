@@ -13,6 +13,11 @@ class User < ActiveRecord::Base
     value id: 2, name: "Coach"
   end
 
+  def scorer?
+    return true if role == 1
+    false
+  end
+
   def self.find_for_google_oauth2(auth)
     data = auth.info
     user = User.where(:email => data["email"]).first

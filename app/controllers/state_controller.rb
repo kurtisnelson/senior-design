@@ -35,10 +35,15 @@ class StateController < ApplicationController
     head :ok
   end
 
-  # def steal
-  #   @game_state.steal!(params[:player_id])
-  #   head :ok
-  # end
+  def steal
+    @game_state.steal!(params[:player_id])
+    head :ok
+  end
+
+  def out
+    @game_state.out!(params[:player_id])
+    head :ok
+  end
 
   def move
     @game_state.move! params[:player_id], params[:new_base], params[:is_steal]
@@ -74,5 +79,6 @@ class StateController < ApplicationController
     id = params[:id]
     id ||= params[:state_id]
     @game_state = GameState::Game.find(id)
+    @game_state.socket_id = params[:socket_id]
   end
 end

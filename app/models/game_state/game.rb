@@ -3,6 +3,7 @@ module GameState
     attr_reader :date
     attr_reader :lineups, :inning
     attr_reader :away_score, :home_score
+    attr_accessor :socket_id
 
     def initialize(id)
       super(id)
@@ -85,14 +86,14 @@ module GameState
       lineups.active(@inning).next
     end
 
-    def out player_id
+    def out! player_id
       if(player_id == at_bat)
         s = lineups.active(@inning).to_out
         r.set(key(:last_to_bat), player_id)
       else
         s = r.lrem key(:bases), 0, player_id
       end
-      out!
+      out
       pusher 'out', player_id: player_id
       sf = StatFactory.new id,@inning
       sf.strike_out s
@@ -104,7 +105,7 @@ module GameState
 
     def strike!
       strikes = r.incr(key :strikes)
-      self.out! if strikes == 3
+      self.out if strikes == 3
       pusher 'strike'
     end
 
@@ -146,14 +147,13 @@ module GameState
       set(:outs, num)
     end
 
-    def out!
+    def out
       r.pipelined do
         outs = r.incr(key :outs)
         set(:balls, 0)
         set(:strikes, 0)
       end
       next_inning! if outs >= 3
-      pusher 'out'
     end
 
     def next_inning!
@@ -222,7 +222,7 @@ module GameState
 
     private
     def pusher(event, data = {})
-      Pusher['game_state_'+@id.to_s].trigger_async(event, data)
+      Pusher.trigger_async('game_state_'+@id.to_s, event, data, {socket_id: @socket_id})
     end
 
     def set_expiration epoch

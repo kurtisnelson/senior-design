@@ -18,6 +18,7 @@ Fenway::Application.routes.draw do
     put 'homerun'
     put 'score'
     put 'move'
+    put 'out'
   end
 
   resources :games do
