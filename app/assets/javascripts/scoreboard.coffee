@@ -17,23 +17,25 @@ load "games#score", ->
 
   @do_strike = () ->
     #server call
-    $(jQuery.ajax("/state/#{game_id}/strike", {type:'PUT'}))
-    if state.strike.counter == 2
+    jQuery.ajax("/state/#{game_id}/strike", {type:'PUT'})
+    if state.counters.strikes == 2
       state.home.reset()
       do_out()
     else
-      state.strike.process()
+      state.counters.strike()
+      state.counters.render()
 
   @do_ball = () ->
     #server call
-    $(jQuery.ajax("/state/#{game_id}/ball", {type:'PUT'}))
+    jQuery.ajax("/state/#{game_id}/ball", {type:'PUT'})
     #TODO(rfahsel3) call move base on 4th ball
-    state.ball.process()
+    state.counters.ball()
+    state.counters.render()
 
   @do_out = () ->
     #Server call
-    #$(jQuery.ajax("/state/#{game_id}/out", {type:'PUT'}))
-    if state.out.counter == 2
+    jQuery.ajax("/state/#{game_id}/out", {type:'PUT'})
+    if state.counters.outs == 2
       console.log "out counter is 2"
       state.home.reset()
       state.first.reset()
@@ -42,7 +44,8 @@ load "games#score", ->
       state.innings.next()
     else
       do_nextup()
-    state.out.process()
+    state.counters.out()
+    state.counters.render()
 
   @do_out_onbase = (base_on) ->
     if(base_on == 0)
@@ -105,8 +108,9 @@ load "games#score", ->
     #innings.count = 2
 
   @do_nextup = () ->
-    state.ball.reset()
-    state.strike.reset()
+    state.counters.balls = 0
+    state.counters.strikes = 0
+    state.counters.render()
     if(state.innings.top)
       console.log "away"
       state.away_lineup.next()
@@ -134,14 +138,14 @@ load "games#score", ->
 
   @do_double = () ->
     jQuery.ajax("/state/#{game_id}/double", {type:'PUT'})
-    home.popover_hide()
-    if(!first.is_empty())
-      second.set(first.player.shift())
-      first.render()
-    if(!second.is_empty())
-      second.popover_show()
-    second.set(which_lineup().at_bat)
-    home.reset()
+    state.home.popover_hide()
+    if(!state.first.is_empty())
+      state.second.set(state.first.player.shift())
+      state.first.render()
+    if(!state.second.is_empty())
+      state.second.popover_show()
+    state.second.set(which_lineup().at_bat)
+    state.home.reset()
     do_nextup()
 
   @do_triple = () ->
@@ -223,8 +227,9 @@ load "games#score", ->
       topOrBottom: 0
     }
     state.innings.score++
-    state.ball.reset()
-    state.strike.reset()
+    state.counters.balls = 0
+    state.counters.strikes = 0
+    state.counters.render()
     if(state.active_lineup().name == "home")
       score_json.topOrBottom = 0
       state.home_score++

@@ -11,8 +11,7 @@ class window.Base
       @render()
 
     is_empty: =>
-      return true if @player.length <= 0
-      false
+      _.isEmpty @player
 
     popover_hide: =>
       $('#'+this.name).popover('hide')

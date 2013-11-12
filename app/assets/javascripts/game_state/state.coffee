@@ -1,9 +1,7 @@
 class window.State
   constructor: (@id) ->
           @innings = new Innings
-          @strike = new Strike
-          @ball = new Ball
-          @out = new Out
+          @counters = new Counters
           @home = new Base("home")
           @first = new Base("first")
           @second = new Base("second")
@@ -35,7 +33,9 @@ class window.State
             if @home_id != data['game']['home_id']
                     @home_id = data['game']['home_id']
                     @update_home()
+            @initialize()
           )
+          true
 
   update_away: =>
           jQuery.get("/teams/" + @away_id + ".json", (data, status, xhr) =>
@@ -57,27 +57,26 @@ class window.State
   initialize: =>
     $(".lineup>ul>li:nth-child(n+11)").fadeOut()
     $('.sortable').sortable("disable")
-    @strike.counter = @data.game.strikes
-    @ball.counter  = @data.game.balls
-    @out.counter = @data.game.outs
-    
+    @counters.strikes = @data.game.strikes
+    @counters.balls  = @data.game.balls
+    @counters.outs = @data.game.outs
+
     #set start button
     $("#startBtn").fadeOut()
     #set players on base
-    if(@innings.top)
-      if(@data.game.bases[0] != 0)
-        @first.set(@away_players[@data.game.bases[0]])
-      if(@data.game.bases[1] != 0)
-        @second.set(@away_players[@data.game.bases[1]])
-      if(@data.game.bases[2] != 0)
-        @third.set(@away_players[@data.game.bases[2]])
+
+    if @innings.top
+      active_players = @away_players
     else
-      if(@data.game.bases[0] != 0)
-        @first.set(@home_players[@data.game.bases[0]])
-      if(@data.game.bases[1] != 0)
-        @second.set(@home_players[@data.game.bases[1]])
-      if(@data.game.bases[2] != 0)
-        @third.set(@home_players[@data.game.bases[2]])
+      active_players = @home_players
+
+    if(@data.game.bases[0] != 0)
+      @first.set(active_players[@data.game.bases[0]])
+    if(@data.game.bases[1] != 0)
+      @second.set(active_players[@data.game.bases[1]])
+    if(@data.game.bases[2] != 0)
+      @third.set(active_players[@data.game.bases[2]])
+
     #set home lineup
     for player_id in @data.game.lineups.home
       @home_lineup.batting_order.unshift(@home_players[player_id])
@@ -94,13 +93,11 @@ class window.State
   active_lineup: =>
     return @away_lineup if @innings.top
     @home_lineup
-    
+
   render: =>
     #Render Everything else
     @render_scores()
-    @strike.render()
-    @ball.render()
-    @out.render()
+    @counters.render()
     @first.render()
     @second.render()
     @third.render()
