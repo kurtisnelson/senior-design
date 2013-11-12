@@ -131,16 +131,15 @@ load "games#score", ->
   
 
 
-  @do_nextup = () ->
+  @do_nextup = ->
+    nextup()
+
+  nextup = ->
     state.counters.balls = 0
     state.counters.strikes = 0
-    if(state.innings.top)
-      console.log "away"
-      state.away_lineup.next()
-    else
-      console.log "home"
-      state.home_lineup.next()
+    state.active_lineup().next()
     Renderer.counters(state)
+    Renderer.bases(state)
 
   @do_single = () ->
     ajax_put("single")
@@ -152,12 +151,12 @@ load "games#score", ->
       state.first.popover_show()
     state.first.set(state.active_lineup().at_bat())
     state.home.reset()
-    do_nextup()
+    nextup()
 
   channel.bind('single', single)
 
   @do_walk = () ->
-    #TODO walk server put
+    ajax_put('walk')
     walk()
 
   walk = ->
@@ -241,7 +240,7 @@ load "games#score", ->
 
   move = (move_json) ->
 
-    if(func == 1)
+    if(0 == 1)
       #TODO steal server put
       console.log "steal"
       move_json.is_steal = 1

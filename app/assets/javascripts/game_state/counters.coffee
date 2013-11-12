@@ -15,11 +15,10 @@ class window.Counters
           @strikes = 0
   ball: =>
           @balls++
-          if @balls == 4
+          if @balls >= 4
                   @balls = 0
                   @strikes = 0
                   @outs = 0
-                  do_walk()
   render: =>
           @_counter_render('ball', @balls)
           @_counter_render('strike', @strikes)

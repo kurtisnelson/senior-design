@@ -18,8 +18,6 @@ class window.State
   update: =>
           jQuery.get("/state/#{@id}.json", null, (data, status, xhr) =>
             @data = data
-            #set innings
-
             if @away_id != data['game']['away_id']
                     @away_id = data['game']['away_id']
                     @update_away()
@@ -49,6 +47,7 @@ class window.State
           )
 
   sync: =>
+    return unless @data.game.inning.number > 0
     $(".lineup>ul>li:nth-child(n+11)").fadeOut()
     $('.sortable').sortable("disable")
     @counters.strikes = @data.game.strikes
@@ -69,6 +68,7 @@ class window.State
     Renderer.scores(this)
 
   sync_bases: =>
+    return if _.isEmpty(@data.game.bases)
     if @innings.top
       active_players = @away_players
     else

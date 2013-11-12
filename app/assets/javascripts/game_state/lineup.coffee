@@ -14,3 +14,4 @@ class window.Lineup
   inc_counter: =>
       @counter++
       @counter = @counter % 9
+      @counter = @counter % @batting_order.length
