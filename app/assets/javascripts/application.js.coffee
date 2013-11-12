@@ -7,4 +7,5 @@
 #= require bootstrap-collapse
 #= require loadjs
 #= require best_in_place
+#= require underscore
 #= require_tree .
