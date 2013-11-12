@@ -221,6 +221,7 @@ module GameState
 
     private
     def pusher(event, data = {})
+      @socket_id ||= ""
       Pusher.trigger_async('game_state_'+@id.to_s, event, data, {socket_id: @socket_id})
     end
 

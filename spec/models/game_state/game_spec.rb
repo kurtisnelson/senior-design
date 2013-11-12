@@ -122,18 +122,18 @@ describe GameState::Game do
   end
   describe "#out!" do
     it "increments the out count on a fresh game" do
-      state.out!
+      state.out
       state.outs.should eq 1
     end
     it "calls next_inning after 3 outs" do
       state.should_receive(:next_inning!).once
-      state.out!
-      state.out!
-      state.out!
+      state.out
+      state.out
+      state.out
     end
     it "records a strike out stat when out is called on current batter" do
       state.lineups.away.add 32
-      stat = state.out 32
+      stat = state.out! 32
       stat.user_id.should eq 32
       stat.category(:name).should eq "Strike Out"
       stat.game_id.should eq state.id
@@ -155,7 +155,7 @@ describe GameState::Game do
     end
 
     it "calls out after 3 strikes" do
-      state.should_receive(:out!).once
+      state.should_receive(:out).once
       state.strike!
       state.strike!
       state.strike!
