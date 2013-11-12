@@ -15,7 +15,7 @@ class window.State
           @home_score = 0
           @away_score = 0
 
-  update: =>
+  update: (all) =>
           jQuery.get("/state/#{@id}.json", null, (data, status, xhr) =>
             @data = data
             if @away_id != data['game']['away_id']
@@ -25,6 +25,7 @@ class window.State
                     @home_id = data['game']['home_id']
                     @update_home()
             @sync()
+            @sync_bases() if all
           )
           true
 
@@ -57,31 +58,37 @@ class window.State
 
     #set start button
     $("#startBtn").fadeOut()
-    #set players on base
 
     @innings.top = @data.game.inning.top
     @innings.set_number @data.game.inning.number
 
     @home_score = @data.game.home_score
     @away_score = @data.game.away_score
-    
     Renderer.scores(this)
 
   sync_bases: =>
-    return if _.isEmpty(@data.game.bases)
+    return false if _.isEmpty(@data.game.bases)
     if @innings.top
       active_players = @away_players
     else
       active_players = @home_players
 
-    if(@data.game.bases[0] != 0)
+    if(@data.game.bases[0] == 0)
+      @first.reset()
+    else
       @first.set(active_players[@data.game.bases[0]])
-    if(@data.game.bases[1] != 0)
+    if(@data.game.bases[1] == 0)
+      @second.reset()
+    else
       @second.set(active_players[@data.game.bases[1]])
-    if(@data.game.bases[2] != 0)
+    if(@data.game.bases[2] == 0)
+      @third.reset()
+    else
       @third.set(active_players[@data.game.bases[2]])
-    @home.set(@active_lineup().at_bat())
+    if @active_lineup().at_bat()
+      @home.set(@active_lineup().at_bat())
     Renderer.bases(this)
+    true
 
   active_lineup: =>
     return @away_lineup if @innings.top

@@ -18,7 +18,6 @@ class window.Counters
           if @balls >= 4
                   @balls = 0
                   @strikes = 0
-                  @outs = 0
   render: =>
           @_counter_render('ball', @balls)
           @_counter_render('strike', @strikes)

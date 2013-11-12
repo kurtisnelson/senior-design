@@ -1,16 +1,20 @@
+h1
+  ' Score Keeping for
+  = link_to @game.name, game_path(@game)
+#connection-status
+  h2 Connection:
+  p Disconnected
+button.btn onClick="do_refresh()" Refresh
+br
 .row
-	.span12
-		h1 Score Keeping for #{link_to @game.name, game_path(@game)}
-
-.row
-	span12.scoreboard
+	.span12.scoreboard
 		=image_tag("Scoreboard.png")
 - if @game.home_team
   .row
     .info id="home-team-id"
     .lineup id="home-lineup"
       ul.sortable id="home-list"
-        h3 
+        h3
           =@game.home_team.name[0..2]
           |  Lineup
 
@@ -30,7 +34,7 @@
 	.away-team
 		h4.team-name = @game.away_team.try(:name)
 	.away-team-score
-		h1.score 0 
+		h1.score 0
 .row
 	button.btn.btn-large id="startBtn" onClick="do_start_game()" Start Game
 	button.btn.btn-large id="strikeBtn" onClick="do_strike()" Strike

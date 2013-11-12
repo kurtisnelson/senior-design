@@ -1,5 +1,5 @@
 json.game do
-	json.extract! @game_state, :id, :bases, :strikes, :balls, :walks, :outs, :home_score, :away_score
+	json.extract! @game_state, :id, :bases, :strikes, :balls, :outs, :home_score, :away_score
 	json.home_id @game.home_team.try(:id)
 	json.away_id @game.away_team.try(:id)
 	json.inning do

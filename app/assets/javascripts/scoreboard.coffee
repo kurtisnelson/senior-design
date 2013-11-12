@@ -8,10 +8,15 @@ load "games#score", ->
   channel = pusher.subscribe("game_state_"+game_id)
 
   pusher.connection.bind('connected', =>
+            $('#connection-status p').text('good')
             state.update()
             @socketId = pusher.connection.socket_id
   )
+  pusher.connection.bind('connecting', =>
+            $('#connection-status p').text("connecting...")
+  )
   pusher.connection.bind('unavailable', =>
+            $('#connection-status p').text('disconnected')
             alert("Live connection lost")
   )
 
@@ -23,6 +28,12 @@ load "games#score", ->
             contentType: 'application/json'
             dataType: 'json'
       })
+
+  @do_refresh = ->
+    refresh()
+
+  refresh = ->
+    @state.update(true)
 
   @do_strike = ->
     ajax_put('strike')
@@ -43,8 +54,8 @@ load "games#score", ->
     ball()
 
   ball = ->
-    #TODO(rfahsel3) call move base on 4th ball
     state.counters.ball()
+    walk() if state.counters.balls == 0
     Renderer.counters(state)
 
   channel.bind('ball', ball)
@@ -165,7 +176,7 @@ load "games#score", ->
       state.first.popover_show()
     state.first.set(state.active_lineup().at_bat())
     state.home.reset()
-    do_nextup()
+    nextup()
 
   channel.bind('walk', walk)
 
@@ -228,46 +239,47 @@ load "games#score", ->
   channel.bind('homerun', homerun)
 
 
-  @do_move = (base_on, func) ->
+  @do_move = (base_on, isSteal) ->
     move_json = {
         player_id: 1
         new_base: base_on+1
-        is_steal: 0
+        is_steal: isSteal
       }
     #server call
     ajax_put('move', move_json)
-    move(move_json)
+    move(move_jsonm isSteal)
 
-  move = (move_json) ->
+  move = (move_json, isSteal) ->
 
-    if(0 == 1)
+    if(isSteal)
       #TODO steal server put
       console.log "steal"
       move_json.is_steal = 1
 
-    if(base_on == 1)
-      #update player_id
-      move_json.player_id = state.first.player[0]['user_id']
-      if(!state.second.is_empty())
-        state.second.popover_show()
-      state.first.popover_hide()
-      state.second.set(state.first.player.shift())
-    else if(base_on == 2)
-      #update player_id
-      move_json.player_id = state.second.player[0]['user_id']
-      if(!state.third.is_empty())
-        state.third.popover_show()
-      state.second.popover_hide()
-      state.third.set(state.second.player.shift())
-    else if(base_on == 3)
-      #update player_id
-      move_json.player_id = state.third.player[0]['user_id']
-      if state.third.player.length > 2
-        state.third.popover_show()
-      else
-        state.third.popover_hide()
-      do_score()
-      state.third.player.shift()
+    switch move_json['new_base']
+      when 2
+        #update player_id
+        move_json.player_id = state.first.player[0]['user_id']
+        if(!state.second.is_empty())
+          state.second.popover_show()
+        state.first.popover_hide()
+        state.second.set(state.first.player.shift())
+      when 3
+        #update player_id
+        move_json.player_id = state.second.player[0]['user_id']
+        if(!state.third.is_empty())
+          state.third.popover_show()
+        state.second.popover_hide()
+        state.third.set(state.second.player.shift())
+      when 4
+        #update player_id
+        move_json.player_id = state.third.player[0]['user_id']
+        if state.third.player.length > 2
+          state.third.popover_show()
+        else
+          state.third.popover_hide()
+        score()
+        state.third.player.shift()
     Renderer.bases(state)
 
   channel.bind('move', move)

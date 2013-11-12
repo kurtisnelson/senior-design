@@ -119,7 +119,7 @@ module GameState
 
     def ball!
       balls = r.incr(key :balls)
-      self.walk! if balls == 3
+      self.walk! if balls == 4
       pusher 'ball'
     end
 
@@ -127,16 +127,15 @@ module GameState
       set(:balls, num)
     end
 
-    def walks
-      get(:walks).to_i
-    end
-
     def walk!
+      pusher 'walk' unless balls == 4 #this was an autowalk, don't push
       r.pipelined do
         set(:balls, 0)
         set(:strikes, 0)
       end
-      pusher 'walk'
+      player_id = lineups.active(@inning).to_base 1
+      r.set(key(:last_to_bat), player_id)
+      ##TODO(rfahsel3) Log a stat
     end
 
     def outs
