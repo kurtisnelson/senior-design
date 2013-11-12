@@ -21,7 +21,7 @@ class window.Base
 
     render: =>
       if !@is_empty()
-        $("#"+@name+">h4").text(@player[0]['user_id'])
+        $("#"+@name+">h4").text(@player[0]['number'])
         $("#"+@name).fadeIn()
         update_popover("#"+this.name , @player[0]['name'])
       else

@@ -23,14 +23,14 @@ load "games#score", ->
       do_out()
     else
       state.counters.strike()
-      state.counters.render()
+      Renderer.counters(state)
 
   @do_ball = () ->
     #server call
     jQuery.ajax("/state/#{game_id}/ball", {type:'PUT'})
     #TODO(rfahsel3) call move base on 4th ball
     state.counters.ball()
-    state.counters.render()
+    Renderer.counters(state)
 
   @do_out = () ->
     #Server call
@@ -45,7 +45,8 @@ load "games#score", ->
     else
       do_nextup()
     state.counters.out()
-    state.counters.render()
+    Renderer.bases(state)
+    Renderer.counters(state)
 
   @do_out_onbase = (base_on) ->
     if(base_on == 0)
@@ -110,20 +111,20 @@ load "games#score", ->
   @do_nextup = () ->
     state.counters.balls = 0
     state.counters.strikes = 0
-    state.counters.render()
     if(state.innings.top)
       console.log "away"
       state.away_lineup.next()
     else
       console.log "home"
       state.home_lineup.next()
+    Renderer.counters(state)
 
   @do_single = () ->
     jQuery.ajax("/state/#{game_id}/single", {type:'PUT'})
     state.home.popover_hide()
     if(!state.first.is_empty())
       state.first.popover_show()
-    state.first.set(state.active_lineup().at_bat)
+    state.first.set(state.active_lineup().at_bat())
     state.home.reset()
     do_nextup()
 
@@ -132,7 +133,7 @@ load "games#score", ->
     state.home.popover_hide()
     if(!state.first.is_empty())
       state.first.popover_show()
-    state.first.set(state.active_lineup().at_bat)
+    state.first.set(state.active_lineup().at_bat())
     state.home.reset()
     do_nextup()
 
@@ -144,7 +145,7 @@ load "games#score", ->
       state.first.render()
     if(!state.second.is_empty())
       state.second.popover_show()
-    state.second.set(which_lineup().at_bat)
+    state.second.set(state.active_lineup().at_bat())
     state.home.reset()
     do_nextup()
 
@@ -159,7 +160,7 @@ load "games#score", ->
       state.first.render()
     if(!state.third.is_empty())
       state.third.popover_show()
-    state.third.set(state.active_lineup().at_bat)
+    state.third.set(state.active_lineup().at_bat())
     state.home.reset()
     do_nextup()
 
@@ -186,6 +187,8 @@ load "games#score", ->
         new_base: base_on+1
         is_steal: 0
       }
+    #server call
+    jQuery.ajax("/state/#{game_id}/move", {type:'PUT', contentType: 'application/json', data: JSON.stringify(move_json), dataType: 'json' })
 
     if(func == 1)
       #TODO steal server put
@@ -199,7 +202,6 @@ load "games#score", ->
         state.second.popover_show()
       state.first.popover_hide()
       state.second.set(state.first.player.shift())
-      state.first.render()
     else if(base_on == 2)
       #update player_id
       move_json.player_id = state.second.player[0]['user_id']
@@ -207,7 +209,6 @@ load "games#score", ->
         state.third.popover_show()
       state.second.popover_hide()
       state.third.set(state.second.player.shift())
-      state.second.render()
     else if(base_on == 3)
       #update player_id
       move_json.player_id = state.third.player[0]['user_id']
@@ -217,19 +218,17 @@ load "games#score", ->
         state.third.popover_hide()
       do_score()
       state.third.player.shift()
-      state.third.render()
-    #server call
-    jQuery.ajax("/state/#{game_id}/move", {type:'PUT', contentType: 'application/json', data: JSON.stringify(move_json), dataType: 'json' })
+    Renderer.bases(state)
 
 
   @do_score = () ->
     score_json = {
       topOrBottom: 0
     }
+    jQuery.ajax("/state/#{game_id}/score", {type:'PUT',contentType: 'application/json', data: JSON.stringify(score_json), dataType: 'json'})
     state.innings.score++
     state.counters.balls = 0
     state.counters.strikes = 0
-    state.counters.render()
     if(state.active_lineup().name == "home")
       score_json.topOrBottom = 0
       state.home_score++
@@ -238,9 +237,7 @@ load "games#score", ->
       score_json.topOrBottom = 1
       state.away_score++
       $("#away-inning-row [data-number='"+state.innings.number+"']").html(state.innings.score)
-    #server call
-    jQuery.ajax("/state/#{game_id}/score", {type:'PUT',contentType: 'application/json', data: JSON.stringify(score_json), dataType: 'json'})
-
+    Renderer.counters(state)
 
 window.update_popover = (id, name) ->
     popover = $(id).data('popover')

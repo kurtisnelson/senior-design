@@ -1,7 +1,6 @@
 .row
 	.span12
 		h1 Score Keeping for #{link_to @game.name, game_path(@game)}
-		
 
 .row
 	span12.scoreboard
@@ -31,7 +30,7 @@
 	.away-team
 		h4.team-name = @game.away_team.try(:name)
 	.away-team-score
-		h1.score 0	
+		h1.score 0 
 .row
 	button.btn.btn-large id="startBtn" onClick="do_start_game()" Start Game
 	button.btn.btn-large id="strikeBtn" onClick="do_strike()" Strike

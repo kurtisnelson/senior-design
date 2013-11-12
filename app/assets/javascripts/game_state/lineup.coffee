@@ -1,13 +1,15 @@
 class window.Lineup
   constructor: (@name) ->
       @batting_order = []
-      @at_bat = {}
       @counter = 0
 
   next: =>
-      @at_bat = @batting_order[@counter]
+      at_bat = @batting_order[@counter]
       @inc_counter()
-      return @at_bat
+      return at_bat
+
+  at_bat: =>
+      @batting_order[@counter]
 
   inc_counter: =>
       @counter++

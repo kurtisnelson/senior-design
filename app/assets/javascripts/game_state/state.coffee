@@ -19,13 +19,6 @@ class window.State
           jQuery.get("/state/#{@id}.json", null, (data, status, xhr) =>
             @data = data
             #set innings
-            @innings.number = data.game.inning.number
-            @innings.top = data.game.inning.top
-            #set innings count
-            if(@innings.top)
-              @innings.count = @innings.number * 2
-            else
-              @innings.count = @innings.number * 2 +1
 
             if @away_id != data['game']['away_id']
                     @away_id = data['game']['away_id']
@@ -33,38 +26,49 @@ class window.State
             if @home_id != data['game']['home_id']
                     @home_id = data['game']['home_id']
                     @update_home()
-            @initialize()
+            @sync()
           )
           true
 
   update_away: =>
           jQuery.get("/teams/" + @away_id + ".json", (data, status, xhr) =>
             for player in data['players']
-              $("#away-list").append(lineup_builder(player))
               @away_players[player['user_id']] = player
+            @away_lineup.batting_order = _.map(@data.game.lineups.away, (i) => @away_players[i])
+            Renderer.away_lineup(@)
+            @sync_bases() if @active_lineup() == @away_lineup
           )
 
   update_home: =>
           jQuery.get("/teams/" + @home_id + ".json", (data, status, xhr) =>
             for player in data['players']
-              $("#home-list").append(lineup_builder(player))
               @home_players[player['user_id']] = player
-            if(@innings.count > 1)
-              console.log "initialize ran"
-              @initialize()
+            @home_lineup.batting_order = _.map(@data.game.lineups.home, (i) => @home_players[i])
+            Renderer.home_lineup(@)
+            @sync_bases() if @active_lineup() == @home_lineup
           )
 
-  initialize: =>
+  sync: =>
     $(".lineup>ul>li:nth-child(n+11)").fadeOut()
     $('.sortable').sortable("disable")
     @counters.strikes = @data.game.strikes
     @counters.balls  = @data.game.balls
     @counters.outs = @data.game.outs
+    Renderer.counters(this)
 
     #set start button
     $("#startBtn").fadeOut()
     #set players on base
 
+    @innings.top = @data.game.inning.top
+    @innings.set_number @data.game.inning.number
+
+    @home_score = @data.game.home_score
+    @away_score = @data.game.away_score
+    
+    Renderer.scores(this)
+
+  sync_bases: =>
     if @innings.top
       active_players = @away_players
     else
@@ -76,36 +80,9 @@ class window.State
       @second.set(active_players[@data.game.bases[1]])
     if(@data.game.bases[2] != 0)
       @third.set(active_players[@data.game.bases[2]])
-
-    #set home lineup
-    for player_id in @data.game.lineups.home
-      @home_lineup.batting_order.unshift(@home_players[player_id])
-    #set away lineup
-    for player_id in @data.game.lineups.away
-      @away_lineup.batting_order.unshift(@away_players[player_id])
-    #set home score
-    @home_score = @data.game.home_score
-    #set away score
-    @away_score = @data.game.away_score
-    console.log ("away_score: " + @away_score)
-    @render()
+    @home.set(@active_lineup().at_bat())
+    Renderer.bases(this)
 
   active_lineup: =>
     return @away_lineup if @innings.top
     @home_lineup
-
-  render: =>
-    #Render Everything else
-    @render_scores()
-    @counters.render()
-    @first.render()
-    @second.render()
-    @third.render()
-    @active_lineup().next()
-    @home.render()
-
-  render_scores: =>
-      $(".home-team-score>h1").html(@home_score)
-      $(".away-team-score>h1").html(@away_score)
-lineup_builder = (player) ->
-  "<li class='ui-state-default' data-id=" + player['user_id'] + "> <span class='ui-icon.ui-icon-arrowthick-2-n-s'> </span>" + player['number'] + " " + player['name'] + "</li>"

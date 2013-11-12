@@ -6,13 +6,7 @@ class window.Innings
       @score = 0
 
     next: =>
-      if(this.number <= 10)
-        if(this.score == 0)
-          if(which_lineup().name == "home")
-            $("#home-inning-row [data-number='"+innings.number+"']").html(innings.score)
-          else if(which_lineup().name == "away")
-            $("#away-inning-row [data-number='"+innings.number+"']").html(innings.score)
-      this.score = 0
+      @score = 0
       if(this.count >= 19 and home_score != away_score)
         #game over
         console.log "game over"
@@ -26,3 +20,13 @@ class window.Innings
         else
           this.top= false
         do_nextup()
+
+    set_number: (num) =>
+      @number = num
+      @calc_count()
+
+    calc_count: =>
+      if @top
+        @count = @number * 2
+      else
+        @count = @number * 2 + 1
