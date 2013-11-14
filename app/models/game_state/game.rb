@@ -222,6 +222,7 @@ module GameState
     private
     def pusher(event, data = {})
       @socket_id ||= ""
+      return if Rails.env == "test"
       Pusher.trigger_async('game_state_'+@id.to_s, event, data, {socket_id: @socket_id})
     end
 
