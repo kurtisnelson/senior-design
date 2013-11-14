@@ -13,6 +13,10 @@ class window.Renderer
         $('.sortable').sortable("disable")
         #set start button
         $("#startBtn").fadeOut()
+        $("#strikeBtn").fadeIn()
+        $("#ballBtn").fadeIn()
+      else
+        $("#startBtn").fadeIn()
 
    @counters: (state) ->
       state.counters.render()
