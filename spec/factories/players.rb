@@ -2,5 +2,8 @@
 
 FactoryGirl.define do
   factory :player do
+      player_number  {Random.rand(100)}
+      team
+      user
   end
 end
