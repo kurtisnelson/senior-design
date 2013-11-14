@@ -42,7 +42,7 @@ load "games#score", ->
   strike = ->
     if state.counters.strikes == 2
       state.home.reset()
-      do_out()
+      out()
     else
       state.counters.strike()
       Renderer.counters(state)
