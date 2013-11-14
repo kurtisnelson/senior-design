@@ -247,7 +247,7 @@ load "games#score", ->
       }
     #server call
     ajax_put('move', move_json)
-    move(move_jsonm isSteal)
+    move(move_json isSteal)
 
   move = (move_json, isSteal) ->
 
