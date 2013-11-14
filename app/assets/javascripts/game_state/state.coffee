@@ -18,12 +18,10 @@ class window.State
   update: =>
           jQuery.get("/state/#{@id}.json", null, (data, status, xhr) =>
             @data = data
-            if @away_id != data['game']['away_id']
-                    @away_id = data['game']['away_id']
-                    @update_away()
-            if @home_id != data['game']['home_id']
-                    @home_id = data['game']['home_id']
-                    @update_home()
+            @away_id = data['game']['away_id']
+            @update_away()
+            @home_id = data['game']['home_id']
+            @update_home()
             @sync()
             @sync_bases()
           )
@@ -31,6 +29,7 @@ class window.State
 
   update_away: =>
           jQuery.get("/teams/" + @away_id + ".json", (data, status, xhr) =>
+            @away_lineup.counter = 0
             for player in data['players']
               @away_players[player['user_id']] = player
             @away_lineup.batting_order = _.map(@data.game.lineups.away, (i) => @away_players[i])
@@ -40,6 +39,7 @@ class window.State
 
   update_home: =>
           jQuery.get("/teams/" + @home_id + ".json", (data, status, xhr) =>
+            @home_lineup.counter = 0
             for player in data['players']
               @home_players[player['user_id']] = player
             @home_lineup.batting_order = _.map(@data.game.lineups.home, (i) => @home_players[i])

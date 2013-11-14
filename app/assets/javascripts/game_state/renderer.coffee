@@ -24,11 +24,19 @@ class window.Renderer
 
    @away_lineup: (state) ->
       $("#away-list").empty()
-      _.each state.away_players, (player) ->
+      lineup = state.away_lineup.batting_order
+      if(_.isEmpty? lineup)
+        lineup = state.away_players
+
+      _.each lineup, (player) ->
               $("#away-list").append lineup_builder(player)
    @home_lineup: (state) ->
       $("#home-list").empty()
-      _.each state.home_players, (player) ->
+      lineup = state.home_lineup.batting_order
+      if(_.isEmpty? lineup)
+        lineup = state.home_players
+
+      _.each lineup, (player) ->
               $("#home-list").append lineup_builder(player)
 
    @scores: (state) ->

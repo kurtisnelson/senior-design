@@ -33,7 +33,7 @@ load "games#score", ->
     refresh()
 
   refresh = ->
-    @state.update()
+    state.update()
 
   channel.bind('next_inning', refresh)
 
@@ -68,19 +68,22 @@ load "games#score", ->
 
   out = ->
     if state.counters.outs == 2
-      console.log "out counter is 2"
-      state.home.reset()
-      state.first.reset()
-      state.second.reset()
-      state.third.reset()
-      state.innings.next()
+      next()
     else
-      do_nextup()
+      nextup()
     state.counters.out()
     Renderer.bases(state)
     Renderer.counters(state)
 
   channel.bind('out', out)
+
+  next_inning = ->
+      state.home.reset()
+      state.first.reset()
+      state.second.reset()
+      state.third.reset()
+      state.innings.next()
+      nextup()
 
   @do_out_onbase = (base_on) ->
     if(base_on == 0)
@@ -137,7 +140,7 @@ load "games#score", ->
     Renderer.do(state)
 
   start_game = ->
-    state.home.set(state.away_lineup.next())
+    state.home.set(state.away_lineup.at_bat())
     state.innings.number = 1
     state.innings.top = true
     Renderer.ui(state)
@@ -148,7 +151,9 @@ load "games#score", ->
   nextup = ->
     state.counters.balls = 0
     state.counters.strikes = 0
-    state.active_lineup().next()
+    state.home.set(state.active_lineup().next())
+    Renderer.home_lineup(state)
+    Renderer.away_lineup(state)
     Renderer.counters(state)
     Renderer.bases(state)
 
@@ -247,7 +252,7 @@ load "games#score", ->
       }
     #server call
     ajax_put('move', move_json)
-    move(move_json isSteal)
+    move(move_json, isSteal)
 
   move = (move_json, isSteal) ->
 

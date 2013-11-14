@@ -8,7 +8,7 @@ json.game do
 	end
 
   json.lineups do
-    json.home @game_state.lineups.home.to_a
-    json.away @game_state.lineups.away.to_a
+    json.home @game_state.lineups.home.to_a.reverse
+    json.away @game_state.lineups.away.to_a.reverse
   end
 end
