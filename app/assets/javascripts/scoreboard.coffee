@@ -33,7 +33,9 @@ load "games#score", ->
     refresh()
 
   refresh = ->
-    @state.update(true)
+    state.update()
+
+  channel.bind('next_inning', refresh)
 
   @do_strike = ->
     ajax_put('strike')
@@ -42,7 +44,7 @@ load "games#score", ->
   strike = ->
     if state.counters.strikes == 2
       state.home.reset()
-      do_out()
+      out()
     else
       state.counters.strike()
       Renderer.counters(state)
@@ -66,19 +68,22 @@ load "games#score", ->
 
   out = ->
     if state.counters.outs == 2
-      console.log "out counter is 2"
-      state.home.reset()
-      state.first.reset()
-      state.second.reset()
-      state.third.reset()
-      state.innings.next()
+      next()
     else
-      do_nextup()
+      nextup()
     state.counters.out()
     Renderer.bases(state)
     Renderer.counters(state)
 
   channel.bind('out', out)
+
+  next_inning = ->
+      state.home.reset()
+      state.first.reset()
+      state.second.reset()
+      state.third.reset()
+      state.innings.next()
+      nextup()
 
   @do_out_onbase = (base_on) ->
     if(base_on == 0)
@@ -104,8 +109,8 @@ load "games#score", ->
 
 
   @do_start_game = () ->
+    # DOM-database
     #set Home Lineup array
-    console.log state.home_players
     home_array = []
     home_list = $('#home-list li:nth-child(-n+10)')
     home_list.each ->
@@ -128,19 +133,17 @@ load "games#score", ->
       }
     }
 
-    console.log lineup_json
     #Server call
     jQuery.ajax("/state/#{game_id}.json", {type:'PATCH', contentType: 'application/json', data: JSON.stringify(lineup_json), dataType: 'json' })
     ajax_put('start_game')
-    $("#startBtn").fadeOut()
-    $(".lineup>ul>li:nth-child(n+11)").fadeOut()
-    $('.sortable').sortable("disable")
-    state.home.set(state.away_lineup.next())
-    state.innings.number= 1
-    state.innings.top = true
-    #innings.count = 2
-  
+    start_game()
+    Renderer.do(state)
 
+  start_game = ->
+    state.home.set(state.away_lineup.at_bat())
+    state.innings.number = 1
+    state.innings.top = true
+    Renderer.ui(state)
 
   @do_nextup = ->
     nextup()
@@ -148,7 +151,9 @@ load "games#score", ->
   nextup = ->
     state.counters.balls = 0
     state.counters.strikes = 0
-    state.active_lineup().next()
+    state.home.set(state.active_lineup().next())
+    Renderer.home_lineup(state)
+    Renderer.away_lineup(state)
     Renderer.counters(state)
     Renderer.bases(state)
 
@@ -247,7 +252,7 @@ load "games#score", ->
       }
     #server call
     ajax_put('move', move_json)
-    move(move_jsonm isSteal)
+    move(move_json, isSteal)
 
   move = (move_json, isSteal) ->
 

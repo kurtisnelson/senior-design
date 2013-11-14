@@ -15,22 +15,21 @@ class window.State
           @home_score = 0
           @away_score = 0
 
-  update: (all) =>
+  update: =>
           jQuery.get("/state/#{@id}.json", null, (data, status, xhr) =>
             @data = data
-            if @away_id != data['game']['away_id']
-                    @away_id = data['game']['away_id']
-                    @update_away()
-            if @home_id != data['game']['home_id']
-                    @home_id = data['game']['home_id']
-                    @update_home()
+            @away_id = data['game']['away_id']
+            @update_away()
+            @home_id = data['game']['home_id']
+            @update_home()
             @sync()
-            @sync_bases() if all
+            @sync_bases()
           )
           true
 
   update_away: =>
           jQuery.get("/teams/" + @away_id + ".json", (data, status, xhr) =>
+            @away_lineup.counter = 0
             for player in data['players']
               @away_players[player['user_id']] = player
             @away_lineup.batting_order = _.map(@data.game.lineups.away, (i) => @away_players[i])
@@ -40,6 +39,7 @@ class window.State
 
   update_home: =>
           jQuery.get("/teams/" + @home_id + ".json", (data, status, xhr) =>
+            @home_lineup.counter = 0
             for player in data['players']
               @home_players[player['user_id']] = player
             @home_lineup.batting_order = _.map(@data.game.lineups.home, (i) => @home_players[i])
@@ -48,19 +48,15 @@ class window.State
           )
 
   sync: =>
-    return unless @data.game.inning.number > 0
-    $(".lineup>ul>li:nth-child(n+11)").fadeOut()
-    $('.sortable').sortable("disable")
+    @innings.top = @data.game.inning.top
+    @innings.set_number @data.game.inning.number
+    Renderer.ui(this)
+    return unless @innings.number > 0
+
     @counters.strikes = @data.game.strikes
     @counters.balls  = @data.game.balls
     @counters.outs = @data.game.outs
     Renderer.counters(this)
-
-    #set start button
-    $("#startBtn").fadeOut()
-
-    @innings.top = @data.game.inning.top
-    @innings.set_number @data.game.inning.number
 
     @home_score = @data.game.home_score
     @away_score = @data.game.away_score

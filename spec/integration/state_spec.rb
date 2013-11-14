@@ -24,7 +24,7 @@ describe StateController do
 		end
 		it "contains a lineup and bases with User IDs" do
 			@state_json['game']['bases'].should include User.first.id
-			@state_json['game']['lineups']['away'].should eq ([1] + User.limit(9).pluck(:id).reverse[0..7])
+			@state_json['game']['lineups']['away'].should eq (User.limit(9).pluck(:id)[1..9] + [1])
 		end
 	end
 end
