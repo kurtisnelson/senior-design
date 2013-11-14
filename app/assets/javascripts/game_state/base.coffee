@@ -3,7 +3,11 @@ class window.Base
       @player = []
 
     set: (obj) =>
-      @player.push(obj)
+      if(obj==null)
+        console.log("You tried to set a null object")
+        return
+      else
+        @player.push(obj)
 
     reset: =>
       @player = []
