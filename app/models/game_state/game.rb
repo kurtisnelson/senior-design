@@ -189,7 +189,7 @@ module GameState
       pusher 'move', {player_id: player_id, new_base: new_base, is_steal: is_steal == 1}
       if is_steal == 1
         sf = StatFactory.new id,@inning
-        sf.steal player_id   
+        sf.steal player_id
       end
     end
 
@@ -197,7 +197,7 @@ module GameState
       r.incr(key(:away_score))
     end
 
-    def away_score 
+    def away_score
       r.get(key(:away_score)).to_i
     end
 
@@ -206,7 +206,7 @@ module GameState
     end
 
     def home_score
-       r.get(key(:home_score)).to_i 
+       r.get(key(:home_score)).to_i
     end
 
     def set_expiration

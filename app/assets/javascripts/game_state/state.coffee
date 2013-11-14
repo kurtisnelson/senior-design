@@ -15,7 +15,7 @@ class window.State
           @home_score = 0
           @away_score = 0
 
-  update: (all) =>
+  update: =>
           jQuery.get("/state/#{@id}.json", null, (data, status, xhr) =>
             @data = data
             if @away_id != data['game']['away_id']
@@ -25,7 +25,7 @@ class window.State
                     @home_id = data['game']['home_id']
                     @update_home()
             @sync()
-            @sync_bases() if all
+            @sync_bases()
           )
           true
 
@@ -48,19 +48,15 @@ class window.State
           )
 
   sync: =>
-    return unless @data.game.inning.number > 0
-    $(".lineup>ul>li:nth-child(n+11)").fadeOut()
-    $('.sortable').sortable("disable")
+    @innings.top = @data.game.inning.top
+    @innings.set_number @data.game.inning.number
+    Renderer.ui(this)
+    return unless @innings.number > 0
+
     @counters.strikes = @data.game.strikes
     @counters.balls  = @data.game.balls
     @counters.outs = @data.game.outs
     Renderer.counters(this)
-
-    #set start button
-    $("#startBtn").fadeOut()
-
-    @innings.top = @data.game.inning.top
-    @innings.set_number @data.game.inning.number
 
     @home_score = @data.game.home_score
     @away_score = @data.game.away_score

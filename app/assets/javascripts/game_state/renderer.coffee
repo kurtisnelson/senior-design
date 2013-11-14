@@ -1,11 +1,19 @@
 class window.Renderer
    @do: (state) ->
+      @ui(state)
       @counters(state)
       @bases(state)
       @home_lineup(state)
       @away_lineup(state)
       @scores(state)
       true
+   @ui: (state) ->
+      if state.innings.number > 0
+        $(".lineup>ul>li:nth-child(n+11)").fadeOut()
+        $('.sortable').sortable("disable")
+        #set start button
+        $("#startBtn").fadeOut()
+
    @counters: (state) ->
       state.counters.render()
    @bases: (state) ->

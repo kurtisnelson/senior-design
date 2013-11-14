@@ -33,7 +33,9 @@ load "games#score", ->
     refresh()
 
   refresh = ->
-    @state.update(true)
+    @state.update()
+
+  channel.bind('next_inning', refresh)
 
   @do_strike = ->
     ajax_put('strike')
@@ -104,8 +106,8 @@ load "games#score", ->
 
 
   @do_start_game = () ->
+    # DOM-database
     #set Home Lineup array
-    console.log state.home_players
     home_array = []
     home_list = $('#home-list li:nth-child(-n+10)')
     home_list.each ->
@@ -128,19 +130,17 @@ load "games#score", ->
       }
     }
 
-    console.log lineup_json
     #Server call
     jQuery.ajax("/state/#{game_id}.json", {type:'PATCH', contentType: 'application/json', data: JSON.stringify(lineup_json), dataType: 'json' })
     ajax_put('start_game')
-    $("#startBtn").fadeOut()
-    $(".lineup>ul>li:nth-child(n+11)").fadeOut()
-    $('.sortable').sortable("disable")
-    state.home.set(state.away_lineup.next())
-    state.innings.number= 1
-    state.innings.top = true
-    #innings.count = 2
-  
+    start_game()
+    Renderer.do(state)
 
+  start_game = ->
+    state.home.set(state.away_lineup.next())
+    state.innings.number = 1
+    state.innings.top = true
+    Renderer.ui(state)
 
   @do_nextup = ->
     nextup()
