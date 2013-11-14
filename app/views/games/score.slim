@@ -1,84 +1,81 @@
-h1
-  ' Score Keeping for
-  = link_to @game.name, game_path(@game)
-#connection-status
-  h2 Connection:
-  p Disconnected
-button.btn onClick="do_refresh()" Refresh
-br
-.row
-	.span12.scoreboard
-		=image_tag("Scoreboard.png")
-- if @game.home_team
+.container
   .row
-    .info id="home-team-id"
-    .lineup id="home-lineup"
-      ul.sortable id="home-list"
-        h3
-          =@game.home_team.name[0..2]
-          |  Lineup
+    h1.game_name
+      ' Score Keeping for
+      = link_to @game.name, game_path(@game)
+    #connection-status
+      h2 Connection:
+      p Disconnected
+    button.btn onClick="do_refresh()" Refresh
+  	.scoreboard
+      p.game-status = @game.status_tag
+      .scoring
+        .home-team
+          h4.team-name = @game.home_team.try(:name)
+        .home-team-score
+          h1.score 0
+        .away-team
+          h4.team-name = @game.away_team.try(:name)
+        .away-team-score
+          h1.score 0
 
-- if @game.away_team
-  .row
-    .lineup id="away-lineup"
-      ul.sortable id="away-list"
-        h3
-          =@game.away_team.name[0..2]
-          |  Lineup
-.row
-	p.game-status = @game.status_tag
-	.home-team
-		h4.team-name = @game.home_team.try(:name)
-	.home-team-score
-		h1.score 0
-	.away-team
-		h4.team-name = @game.away_team.try(:name)
-	.away-team-score
-		h1.score 0
-.row
-	button.btn.btn-large id="startBtn" onClick="do_start_game()" Start Game
-	button.btn.btn-large id="strikeBtn" onClick="do_strike()" Strike
-	button.btn.btn-large id="ballBtn" onClick="do_ball()" Ball
-	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_single()'>Single</a></li><li><a onClick='do_double()'>Double</a></li><li><a onClick='do_triple()'>Triple</a></li><li><a onClick='do_homerun()'>Home Run</a></li><li><a onClick='do_out_onbase(0)'>Out</a></li><li><a onClick='do_walk()'>Walk</a></li></ul>" hidden="true"
-		h4 0
-	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(1,1)'>Steal</a></li><li><a onClick='do_move(1,0)'>Move</a></li><li><a onClick='do_out_onbase(1)'>Out</a></li></ul>" hidden="true"
-		h4 1
-	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(2,1)'>Steal</a></li><li><a onClick='do_move(2,0)'>Move</a></li><li><a onClick='do_out_onbase(2)'>Out</a></ul>" hidden="true"
-		h4 2
-	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(3,1)'>Steal</a></li><li><a onClick='do_move(3,0)'>Score</a></li><li><a onClick='do_out_onbase(3)'>Out</a></li></ul>" hidden="true"
-		h4 3
 
-	.score-light id="ball1" hidden="true"
-	.score-light id="ball2" hidden="true"
-	.score-light id="ball3"	hidden="true"
-
-	.score-light id="strike1" hidden="true"
-	.score-light id="strike2" hidden="true"
-
-	.score-light id="out1" hidden="true"
-	.score-light id="out2" hidden="true"
-
-	table id="innings-grid"
-    tbody
-      - if @game.away_team
-        tr id="away-inning-row"
-          td id="innings-away-team" = @game.away_team.name[0..2]
-          - (1..10).each do |i|
-            td.innings-top data-number=i
 
       - if @game.home_team
-        tr id="home-inning-row"
-          td id="innings-home-team" = @game.home_team.name[0..2]
-          - (1..10).each do |i|
-            td.innings-btm data-number=i
+        .info id="home-team-id"
+        .lineup id="home-lineup"
+          ul.sortable id="home-list"
+            h3
+              =@game.home_team.name[0..2]
+              |  Lineup
 
-javascript:
-  var PUSHER_KEY = "#{Pusher.key}"
-	$('#home').popover();
-	$('#first').popover();
-	$('#second').popover();
-	$('#third').popover();
-	$('.sortable').sortable();
-	$('.sortable').disableSelection();
+      - if @game.away_team
+        .lineup id="away-lineup"
+          ul.sortable id="away-list"
+            h3
+              =@game.away_team.name[0..2]
+              |  Lineup
+    	button.btn.btn-large id="startBtn" onClick="do_start_game()" Start Game
+    	button.btn.btn-large id="strikeBtn" onClick="do_strike()" Strike
+    	button.btn.btn-large id="ballBtn" onClick="do_ball()" Ball
+    	a.circle id="home" data-placement="right" data-toggle="popover" data-title="Player0" data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_single()'>Single</a></li><li><a onClick='do_double()'>Double</a></li><li><a onClick='do_triple()'>Triple</a></li><li><a onClick='do_homerun()'>Home Run</a></li><li><a onClick='do_out_onbase(0)'>Out</a></li><li><a onClick='do_walk()'>Walk</a></li></ul>" hidden="true"
+    		h4 0
+    	a.circle id="first" data-placement="right" data-toggle="popover" data-title="Player1"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(1,1)'>Steal</a></li><li><a onClick='do_move(1,0)'>Move</a></li><li><a onClick='do_out_onbase(1)'>Out</a></li></ul>" hidden="true"
+    		h4 1
+    	a.circle id="second" data-placement="bottom" data-toggle="popover" data-title="Player2"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(2,1)'>Steal</a></li><li><a onClick='do_move(2,0)'>Move</a></li><li><a onClick='do_out_onbase(2)'>Out</a></ul>" hidden="true"
+    		h4 2
+    	a.circle id="third" data-placement="left" data-toggle="popover" data-title="Player3"data-html="true" data-content="<ul class='nav nav-tabs nav-stacked'><li><a onClick='do_move(3,1)'>Steal</a></li><li><a onClick='do_move(3,0)'>Score</a></li><li><a onClick='do_out_onbase(3)'>Out</a></li></ul>" hidden="true"
+    		h4 3
+
+    	.score-light id="ball1" hidden="true"
+    	.score-light id="ball2" hidden="true"
+    	.score-light id="ball3"	hidden="true"
+
+    	.score-light id="strike1" hidden="true"
+    	.score-light id="strike2" hidden="true"
+
+    	.score-light id="out1" hidden="true"
+    	.score-light id="out2" hidden="true"
+
+    	table id="innings-grid"
+        tbody
+          - if @game.away_team
+            tr id="away-inning-row"
+              - (1..10).each do |i|
+                td.innings-top data-number=i
+
+          - if @game.home_team
+            tr id="home-inning-row"
+              - (1..10).each do |i|
+                td.innings-btm data-number=i
+
+    javascript:
+      var PUSHER_KEY = "#{Pusher.key}"
+    	$('#home').popover();
+    	$('#first').popover();
+    	$('#second').popover();
+    	$('#third').popover();
+    	$('.sortable').sortable();
+    	$('.sortable').disableSelection();
 
 
