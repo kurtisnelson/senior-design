@@ -1,0 +1,55 @@
+.score_overview
+  .banner
+    .conatiner
+      .row
+        h2 id="game_date" 
+          |Start date: 
+          = @game.start_date
+  .overview
+    .container  
+      .row
+        table.score
+          tr.home_team
+            td.team_name = @game.home_team.name
+            td.score = 0
+          .away_team
+            td.team_name = @game.away_team.name
+            td.score = 0
+        .info
+          .bases
+            .first.diamond
+            .second.diamond.active
+            .third.diamond
+          p.balls.strikes.outs
+            = "0"
+            = " - "
+            = "0"
+            = "  "
+            = "0"
+        .inning
+          .current
+            p = "Top 1"
+.detail
+  table.scores_by_inning
+    thead
+      th
+      - (1..9).each do |i|
+        th = i
+      th.runs R
+      th H
+      th E
+    tbody
+      tr.home_team
+        td.name = @game.home_team.name
+        - (1..9).each do |i|
+          td data-number=i 0
+        td.runs 0
+        td.hits 0
+        td.errors 0
+      tr.away_team
+        td.name = @game.away_team.name
+        - (1..9).each do |i|
+          td data-number=i 0
+        td.runs 0
+        td.hits 0
+        td.errors 0

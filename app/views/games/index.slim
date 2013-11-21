@@ -16,5 +16,7 @@
         p Sorry no active games right now.
       - else
         - @games.each do |g|
-          h2 = link_to g.name, g
-          p = link_to "Live Score", game_score_path(g)
+          h2 = link_to g.name, game_score_path(g)
+          - @game = g
+          
+          == render :partial => 'mobile_score', :object => @game

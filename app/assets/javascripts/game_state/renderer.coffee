@@ -13,6 +13,10 @@ class window.Renderer
         $('.sortable').sortable("disable")
         #set start button
         $("#startBtn").fadeOut()
+        $("#strikeBtn").fadeIn()
+        $("#ballBtn").fadeIn()
+      else
+        $("#startBtn").fadeIn()
 
    @counters: (state) ->
       state.counters.render()
@@ -42,6 +46,8 @@ class window.Renderer
    @scores: (state) ->
       $(".home-team-score>h1").html(state.home_score)
       $(".away-team-score>h1").html(state.away_score)
+      $("#home-inning-row [data-number='"+state.innings.number+"']").html(state.innings.score)
+      $("#away-inning-row [data-number='"+state.innings.number+"']").html(state.innings.score)
 
 lineup_builder = (player) ->
   "<li class='ui-state-default' data-id=" + player['user_id'] + "> <span class='ui-icon.ui-icon-arrowthick-2-n-s'> </span>" + player['number'] + " " + player['name'] + "</li>"

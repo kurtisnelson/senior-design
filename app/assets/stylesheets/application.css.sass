@@ -6,6 +6,7 @@
 @import "game"
 
 @import "bootstrap"
+@import "bootstrap-responsive"
 html
 	height: 100%
 
@@ -43,6 +44,8 @@ h1
 h2
 	font-size: 36px
 	color: #fb8a7d
+	a, a:hover
+		color: #fb8a7d
 
 h2.grey_title
 	font-variant: small-caps
@@ -70,7 +73,7 @@ li p
 	line-height: 24px
 
 .navbar
-	height: 40px
+	min-height: 40px
 	background-color: #dadada
 	box-shadow: 4px 4px 5px #888888
 	background-image: linear-gradient(rgb(248, 248, 248), rgb(218, 218, 218))
@@ -143,11 +146,16 @@ ul.large li
 .grey_background h3
 	color: #fb8a7d
 
+.how_does_it_work
+	width: 968px
+	margin: 0 auto
+
 ul.how_it_works
 	list-style: none
 
 ul.how_it_works li
-	width: 350px
+	width: 100%
+	max-width: 350px
 	float: left
 
 ul.how_it_works h3
@@ -204,10 +212,219 @@ img.player_img
 	margin-right: 20px
 	margin-top: 20px
 
-@media only screen and (max-width: 959px)
-	.container
+.banner
+	width: 100%
+	background:
+		color: #323232
+		image: linear-gradient(#323232, #242424)
+	border:
+		style: solid
+		width: 1px
+		color: black
+	h2
+		color: #a5a5a5
+		font:
+			size: 14px
+		margin: 0 auto
+		text:
+			align: center
+
+.score_overview
+	.overview
 		width: 100%
-		margin: 0 10px
+		color: white
+		background:
+			color: #383838
+
+	.row
+		margin:
+			left: auto
+
+	table.score
+		width: 40%
+		float: left
+		font:
+			size: 24px
+		line:
+			height: 30px
+		td
+			padding:
+				bottom: 10px
+
+	h4.team-name
+		font-size: 40px
+		text-transform: none
+		float: left
+
+	h1.score
+		font-size: 40px
+		float: left
+
+	.lineup
+		clear: both
+
+	.diamond 
+		width: 20px
+		height: 20px
+		background:
+			color: #1b1d08
+		-webkit-transform: rotate(-45deg)
+		-moz-transform: rotate(-45deg)
+		-ms-transform: rotate(-45deg)
+		-o-transform: rotate(-45deg)
+		transform: rotate(-45deg)
+		-webkit-transform-origin: 0 100%
+		-moz-transform-origin: 0 100%
+		-ms-transform-origin: 0 100%
+		-o-transform-origin: 0 100%
+		transform-origin: 0 100%
+
+	.diamond.active
+		background:
+			color: #f89021
+			image: linear-gradient(45deg, #efd99f, #d56a24)
+
+	.info
+		float: left
+		width: 20%
+		.balls.strikes.outs
+			width: 100%
+			color: #ffffff
+			text:
+				align: center
+
+	.bases
+		width: 40px
+		height: 40px
+		margin:
+			top: 15px
+			left: auto
+			right: auto
+		.first
+			position: absolute
+			margin:
+				top: 20px
+		.second
+			position: absolute
+			margin:
+				left: 20px
+				top: 0px
+		.third
+			position: absolute
+			margin:
+				left: 40px
+				top: 20px
+
+	.inning
+		width: 25%
+		float: left
+		margin:
+			top: 20px
+			left: 20px
+		.current
+			height: 50px
+			width: 90px
+			margin: 0 auto
+			color: #ffffff
+			-webkit-border-radius: 8px
+			-moz-border-radius: 8px
+			border-radius: 8px
+			background:
+				color: #303030
+				image: linear-gradient(#303030, #1c1c1e)
+			p 
+				padding:
+					top: 15px
+				line-height: 18px
+				color: #ffffff
+				text:
+					align: center
+
+.game_feed 
+	.detail
+		visibility: hidden
+		display: none
+
+@media screen and (max-width: 959px)
+
+	h1
+		font-size: 60px
+		line-height: 65px
+		margin-top: -20px
+
+	h2 
+		font-size: 28px
+
+	#sign_in
+		margin:
+			top: 5px
+
+	.btn-header
+		float: none
+		margin-top: 10px
+		margin-bottom: 10px
+
+	h1.game_name
+		margin:
+			top: -20px
+		font:
+			size: 40px
+		line:
+			height: 48px
+		a 
+			color: #fb8a7d
+
+	.navbar
+		margin:
+			left: 0px
+			right: 0px
+
+	.container
+		width: auto
+
+	.row
+		width: 90%
+		margin: 0 auto
+
+	.scoreboard
+		display: none
+
+	#mobilesocreboard
+		display: visible
+
+	#connection-status
+		display: none
+
+	.detail
+		font-size: 18px
+		width: 80%
+		margin: 0 auto
+			top: 10px
+		.scores_by_inning
+			margin: 0 auto
+		tr
+			border:
+				bottom:
+					style: solid
+					width: 1px
+					color: #000000
+
+		td
+			padding:
+				left: 5px
+		.name
+			padding:
+				top: 5px
+				right: 20px
+				bottom: 5px
+		.runs
+			padding:
+				left: 10px
+
+@media (max-width: 767px)
+	body
+		padding-right: 0
+		padding-left: 0
 
 
 

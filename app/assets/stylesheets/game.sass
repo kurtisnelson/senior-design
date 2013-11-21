@@ -1,8 +1,18 @@
 @media only screen and (min-width: 960px) 
 	/* styles for wide screens */
+
+	#mobilesocreboard
+		display: none
+
 	.scoreboard
+		width: 968px
+		margin: 0 auto
+		display: visible
 		background-image: image-url("Scoreboard.png")
+		background-repeat: no-repeat
 		background-position: 0px -80px
+		background:
+			repeat: none
 		min-height: 808px
 
 	.game-status
@@ -38,16 +48,19 @@
 		position: absolute
 		margin-left: 250px
 		margin-top: 190px
+		display: none
 
 	button#strikeBtn
 		position: absolute
 		margin-left: 660px
 		margin-top: 190px
+		display: none
 
 	button#startBtn
 		position: absolute
-		margin-left: 500px
-		margin-top: 515px
+		margin-left: 435px
+		margin-top: 390px
+		display: none
 
 
 	.circle
@@ -72,20 +85,24 @@
 		background: #44CEFC
 
 	.circle#home
-		left: 687px
-		top: 882px
+		position: absolute
+		margin-left: 475px
+		margin-top: 540px
 
 	.circle#first
-		left: 851px
-		top: 708px
+		position: absolute
+		margin-left: 620px
+		margin-top: 390px
 
 	.circle#second
-		left: 687px
-		top: 547px
+		position: absolute
+		margin-left: 475px
+		margin-top: 240px
 
 	.circle#third
-		left: 517px
-		top: 708px
+		position: absolute
+		margin-left: 325px
+		margin-top: 380px
 
 
 	.circle>h4
@@ -132,8 +149,8 @@
 
 	table#innings-grid
 		position: absolute
-		left: 586px
-		top: 410px
+		margin-left: 426px
+		margin-top: 90px
 
 	table#innings-grid
 		tbody
