@@ -1,12 +1,10 @@
 .container
   .row
-    h1.game_name
-      ' Score Keeping for
-      = link_to @game.name, game_path(@game)
+    h1.game_name = link_to @game.name, game_path(@game)
     #connection-status
       h2 Connection:
       p Disconnected
-    button.btn onClick="do_refresh()" Refresh
+      button.btn onClick="do_refresh()" Refresh
   	.scoreboard
       p.game-status = @game.status_tag
       .scoring
@@ -19,7 +17,20 @@
         .away-team-score
           h1.score 0
 
+        table id="innings-grid"
+          tbody
+            - if @game.away_team
+              tr id="away-inning-row"
+                - (1..10).each do |i|
+                  td.innings-top data-number=i 0
+            - else
+              tr
+                td hmm
 
+            - if @game.home_team
+              tr id="home-inning-row"
+                - (1..10).each do |i|
+                  td.innings-btm data-number=i 0
 
       - if @game.home_team
         .info id="home-team-id"
@@ -57,25 +68,16 @@
     	.score-light id="out1" hidden="true"
     	.score-light id="out2" hidden="true"
 
-    	table id="innings-grid"
-        tbody
-          - if @game.away_team
-            tr id="away-inning-row"
-              - (1..10).each do |i|
-                td.innings-top data-number=i
+#mobilesocreboard
+  == render :partial => 'mobile_score', :object => @game
 
-          - if @game.home_team
-            tr id="home-inning-row"
-              - (1..10).each do |i|
-                td.innings-btm data-number=i
-
-    javascript:
-      var PUSHER_KEY = "#{Pusher.key}"
-    	$('#home').popover();
-    	$('#first').popover();
-    	$('#second').popover();
-    	$('#third').popover();
-    	$('.sortable').sortable();
-    	$('.sortable').disableSelection();
+javascript:
+  var PUSHER_KEY = "#{Pusher.key}"
+	$('#home').popover();
+	$('#first').popover();
+	$('#second').popover();
+	$('#third').popover();
+	$('.sortable').sortable();
+	$('.sortable').disableSelection();
 
 

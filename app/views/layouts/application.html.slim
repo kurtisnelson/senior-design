@@ -14,28 +14,34 @@ html lang="en"
 
   body data-controller="#{controller.controller_name}" data-action="#{controller.action_name}"
     .login-bar.navbar.navbar-fixed-top
-      .container
-        - if not current_page?('/')
-          ul.nav
-            li = link_to "FENWAY", root_path, class: "brand"
+      .navbar-inner
+        .container
+          - if not current_page?('/')
+            = link_to "FENWAY", root_path, class: "brand"
 
-        ul.nav.pull-right
-          - if controller.controller_name == "games"
-            li = link_to "GAMES", games_path, class: "active"
-          - else
-            li = link_to "GAMES", games_path
+          a.btn.btn-navbar data-toggle="collapse" data-target=".nav-collapse"
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          .pull-right
+            .nav-collapse.collapse
+              .nav
+                - if controller.controller_name == "games"
+                  li = link_to "GAMES", games_path, class: "active"
+                - else
+                  li = link_to "GAMES", games_path
 
-          - if controller.controller_name == "teams"
-            li = link_to "TEAMS", teams_path, class: "active"
-          - else
-            li = link_to "TEAMS", teams_path
+                - if controller.controller_name == "teams"
+                  li = link_to "TEAMS", teams_path, class: "active"
+                - else
+                  li = link_to "TEAMS", teams_path
 
-          - if controller.controller_name == "users" or controller.controller_name == "players"
-            li = link_to "PLAYERS", players_path, class: "active"
-          -else
-            li = link_to "PLAYERS", players_path
+                - if controller.controller_name == "users" or controller.controller_name == "players"
+                  li = link_to "PLAYERS", players_path, class: "active"
+                -else
+                  li = link_to "PLAYERS", players_path
 
-    .container
+    .container.clearfix
       .row
         ul.nav.pull-right id="sign_in"
           - if user_signed_in?
