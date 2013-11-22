@@ -4,7 +4,7 @@
 
     h2 Bio
     .well
-      p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id mi libero. Praesent egestas erat vitae lorem feugiat, non convallis mi consequat. Phasellus ullamcorper sodales tellus at condimentum. Suspendisse vitae libero tempor, elementum dui sed, mattis justo. Vestibulum interdum facilisis sapien, non rutrum leo pretium sit amet. Curabitur adipiscing eros et purus imperdiet dictum. Nulla venenatis consectetur metus eu tempor. Curabitur ornare et nisl vitae congue. Cras commodo faucibus facilisis. Praesent condimentum eget mauris vel tristique.
+      p I love to take long walks on the baseball diamond. I just love playing in the dirt and picking flowers in the outfield. Also, I love senior design, it's my favorite. I'm the man.
 
     h2 Player for
     .well
@@ -17,4 +17,23 @@
 
     h2 Stats
     .well
-      h4 Not functional yet.
+      -@single = Stat.where(user_id: @user.id, category: 0).count
+      -@double = Stat.where(user_id: @user.id, category: 1).count
+      -@triple = Stat.where(user_id: @user.id, category: 2).count
+      -@out = Stat.where(user_id: @user.id, category: 6).count
+      -@strike_out = Stat.where(user_id: @user.id, category: 7).count
+      -@homerun = Stat.where(user_id: @user.id, category: 4).count
+      -@steal = Stat.where(user_id: @user.id, category: 3).count
+      -@rbi = Stat.where(user_id: @user.id, category: 5).count
+      -@base_on_balls = Stat.where(user_id: @user.id, category: 0).count
+      -@batting_average = Stat.avg(@user.stats)
+      h4
+        | Singles: #{@single} </br>
+        | Doubles: #{@double}  </br>
+        | Triples: #{@triple} </br>
+        | Strike Outs: #{@strike_out}  </br>
+        | Homerun: #{@homerun}  </br>
+        | Steal: #{@steal} </br>
+        | RBI: #{@rbi}  </br>
+        | Base on Balls: #{@base_on_balls} </br>
+        | Batting Average: #{@batting_average}        
