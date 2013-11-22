@@ -183,6 +183,7 @@ module GameState
       elsif new_base == 4
         temp = [0,0,0]
         #TODO, score a run
+        sf = StatFactory.new id,@inning
         sf.rbi player_id
       end
       set_array key(:bases), temp

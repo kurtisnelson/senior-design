@@ -68,7 +68,7 @@ load "games#score", ->
 
   out = ->
     if state.counters.outs == 2
-      next()
+      next_inning()
     else
       nextup()
     state.counters.out()
@@ -283,7 +283,7 @@ load "games#score", ->
           state.third.popover_show()
         else
           state.third.popover_hide()
-        score()
+        do_score()
         state.third.player.shift()
     Renderer.bases(state)
 
@@ -296,14 +296,18 @@ load "games#score", ->
     }
     ajax_put('score', score_json)
     score(score_json)
+    do_refresh()
 
   score = (score_json) ->
     state.innings.score++
     state.counters.balls = 0
     state.counters.strikes = 0
+    console.log (state.active_lineup().name)
     if(state.active_lineup().name == "home")
+      console.log ("got here")
       score_json.topOrBottom = 0
       state.home_score++
+      console.log (state.home_score)
       $("#home-inning-row [data-number='"+state.innings.number+"']").html(state.innings.score)
     else if(state.active_lineup().name == "away")
       score_json.topOrBottom = 1
