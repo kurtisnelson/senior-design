@@ -9,7 +9,6 @@ module GameState
       super(id)
       @lineups = Lineups.new(id)
       @inning = Inning.new(id)
-
     end
 
     def single!
