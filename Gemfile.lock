@@ -50,6 +50,8 @@ GEM
     addressable (2.3.5)
     arel (4.0.1)
     atomic (1.1.14)
+    autoprefixer-rails (0.8.20131104)
+      execjs
     bcrypt-ruby (3.1.2)
     bootstrap-datepicker-rails (1.1.1.9)
       railties (>= 3.0)
@@ -79,7 +81,7 @@ GEM
       term-ansicolor
       thor
     database_cleaner (1.2.0)
-    devise (3.2.1)
+    devise (3.2.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -137,7 +139,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     method_source (0.8.2)
-    mime-types (1.25)
+    mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.8.2)
@@ -162,7 +164,7 @@ GEM
     orm_adapter (0.5.0)
     pg (0.17.0)
     polyglot (0.3.3)
-    pry (0.9.12.3)
+    pry (0.9.12.4)
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
@@ -245,7 +247,7 @@ GEM
       railties (>= 3.0, < 4.1)
       slim (~> 2.0)
     slop (3.4.7)
-    sprockets (2.10.0)
+    sprockets (2.10.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -291,6 +293,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_enum!
+  autoprefixer-rails
   best_in_place!
   bootstrap-datepicker-rails
   bootstrap-sass (~> 2.3)
