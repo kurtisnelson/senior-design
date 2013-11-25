@@ -18,20 +18,9 @@
             td.score = @game_state.away_score
         .info
           .bases
-            - if @game_state.bases[1] != 0
-              .first.diamond.active
-            -else
-              .first.diamond
-
-            - if @game_state.bases[2] != 0
-              .second.diamond.active
-            -else
-              .second.diamond
-
-            - if @game_state.bases[3] != 0
-              .third.diamondactive
-            -else
-              .third.diamond
+            == diamond_icon @game_state.bases[1], 'first'
+            == diamond_icon @game_state.bases[2], 'second'
+            == diamond_icon @game_state.bases[3], 'third'
 
           p.balls.strikes.outs
             = @game_state.balls
