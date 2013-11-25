@@ -24,5 +24,9 @@ module GameState
     def bottom?
       !top?
     end
+
+    def set_expiration epoch
+      r.expireat(key(:inning), epoch)
+    end
   end
 end

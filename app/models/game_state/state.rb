@@ -41,8 +41,8 @@ module GameState
       r.lrange(key(attr), 0, -1).map {|i| i.to_i}
     end
 
-    def set_expiration
-      raise "no expiration method"
+    def set_expiration epoch
+      puts self.class.to_s + " Missing expiration"
     end
 
     def r

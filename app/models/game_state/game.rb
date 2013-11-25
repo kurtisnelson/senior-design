@@ -209,13 +209,13 @@ module GameState
        r.get(key(:home_score)).to_i
     end
 
-    def set_expiration
-      @date = ::Game.find(id).start_datetime + 1.day
+    def expire
+      @date = Time.now
       epoch = @date.to_i
       r.pipelined do
         lineups.set_expiration(epoch)
         inning.set_expiration(epoch)
-        self.set_expiration(epoch)
+        set_expiration(epoch)
       end
     end
 
@@ -227,12 +227,14 @@ module GameState
     end
 
     def set_expiration epoch
-        r.expireat(key :bases, epoch)
-        r.expireat(key :away, epoch)
-        r.expireat(key :home, epoch)
-        r.expireat(key :balls, epoch)
-        r.expireat(key :strikes, epoch)
-        r.expireat(key :outs, epoch)
+        r.expireat(key(:bases), epoch)
+        r.expireat(key(:away), epoch)
+        r.expireat(key(:home_score), epoch)
+        r.expireat(key(:away_score), epoch)
+        r.expireat(key(:home), epoch)
+        r.expireat(key(:balls), epoch)
+        r.expireat(key(:strikes), epoch)
+        r.expireat(key(:outs), epoch)
     end
   end
 end
