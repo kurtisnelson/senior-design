@@ -23,6 +23,10 @@ class Stat < ActiveRecord::Base
     @homeruns = Stat.look_for("Homerun", stats)
   end
 
+  def self.homeruns_by_inning(stats,inning)
+    @homeruns = Stat.look_for("Homerun", stats.where(inning: inning))
+  end
+
   def self.rbi(stats)
     @rbi = Stat.look_for("RBI", stats)
   end 

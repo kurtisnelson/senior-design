@@ -80,6 +80,10 @@ class StatFactory
 
   private
   def base_stat
-    Stat.new(game_id: @game_id, inning: @inning)
+    s = Stat.new(game_id: @game_id)
+    if @inning.instance_of?(GameState::Inning)
+      s.inning = @inning.to_number
+    end
+    s
   end
 end
