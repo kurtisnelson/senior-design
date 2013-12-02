@@ -19,9 +19,13 @@ class window.Counters
                   @balls = 0
                   @strikes = 0
   render: =>
+          console.log "rendering balls"
           @_counter_render('ball', @balls)
           @_counter_render('strike', @strikes)
           @_counter_render('out', @outs)
+          $("p.balls.strikes.outs").html("#{@balls}-#{@strikes} #{@outs}")
+
+
   _counter_render: (type, count) =>
           switch count
                   when 0

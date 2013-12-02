@@ -10,12 +10,12 @@
     .container  
       .row
         table.score
+          tr.away_team
+            td.team_name = @game.away_team.name
+            td.score = @game_state.away_score
           tr.home_team
             td.team_name = @game.home_team.name
             td.score = @game_state.home_score
-          .away_team
-            td.team_name = @game.away_team.name
-            td.score = @game_state.away_score
         .info
           .bases
             == diamond_icon @game_state.bases[1], 'first'

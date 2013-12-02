@@ -63,24 +63,36 @@ class window.State
     Renderer.scores(this)
 
   sync_bases: =>
+    console.log("Syncing bases....")
     return false if _.isEmpty(@data.game.bases)
     if @innings.top
       active_players = @away_players
     else
       active_players = @home_players
 
-    if(@data.game.bases[0] == 0)
-      @first.reset()
-    else
+    #if(@data.game.bases[0] == 0)
+    #  @first.reset()
+    #else
+
+    @first.reset
+    @second.reset
+    @third.reset
+
+    if @data.game.bases[0] > 0
       @first.set(active_players[@data.game.bases[0]])
-    if(@data.game.bases[1] == 0)
-      @second.reset()
-    else
+    #if(@data.game.bases[1] == 0)
+    #  @second.reset()
+    #else
+    if @data.game.bases[1] > 0 
       @second.set(active_players[@data.game.bases[1]])
-    if(@data.game.bases[2] == 0)
-      @third.reset()
-    else
+      console.log @first.isEmpty
+    #if(@data.game.bases[2] == 0)
+    #  @third.reset()
+    #else
+    if @data.game.bases[2] > 0
       @third.set(active_players[@data.game.bases[2]])
+      console.log @first.isEmpty
+
     if @active_lineup().at_bat()
       @home.set(@active_lineup().at_bat())
     Renderer.bases(this)

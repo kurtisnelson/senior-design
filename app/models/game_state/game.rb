@@ -45,22 +45,26 @@ module GameState
       set(:balls, 0)
       set(:strikes, 0)
       player_id = lineups.active(@inning).to_base 4
-      r.set(key(:last_to_bat), player_id)      
-      # run! @inning.top?
+      r.set(key(:last_to_bat), player_id)   
+      run! @inning.top? ? 0 : 1
       pusher 'homerun'
       sf = StatFactory.new id, @inning
       sf.homerun(player_id)
     end
 
     def run! topOrBottom
-      if topOrBottom
+      Rails.logger.info "RUNNGINGGG::::::#{topOrBottom}"
+      if topOrBottom == 0
+        Rails.logger.info "MORE AWAY SCORE!!!!"
         increment_away_score
       else
+        Rails.logger.info "MORE HOME SCORE!!!!"
         increment_home_score
       end
       pusher 'run', top: topOrBottom
       sf = StatFactory.new id, @inning
       sf.rbi r.get(key(:last_to_bat))
+      sf.homerun 0
     end
 
     def on_base base_id

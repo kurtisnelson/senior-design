@@ -224,23 +224,41 @@ load "games#score", ->
 
   @do_homerun = ->
     ajax_put('homerun')
+    if !state.first.isEmpty
+      do_score()
+    if !state.second.isEmpty
+      do_score()
+    if !state.third.isEmpty
+      do_score()
+    Renderer.bases(state)
     homerun()
 
   homerun = ->
-    state.home.popover_hide()
-    if(!state.second.is_empty())
-      state.second.reset()
-      do_score()
-    if(!state.first.is_empty())
-      state.first.reset()
-      do_score()
-    if(!state.third.is_empty())
-      state.third.reset()
-      do_score()
-    state.home.reset()
-    do_score()
-    do_nextup()
+    console.log "got into homerun..."
+    console.log "and the home score is.."
+    
+    #do_nextup()
+    state.update()
 
+    if !state.first.isEmpty
+      state.first.reset()
+      state.first.render()
+    if !state.second.isEmpty
+      state.second.reset()
+      state.second.render()
+    if !state.third.isEmpty
+      state.third.reset()
+      state.third.render()
+
+
+    state.home.popover_hide()
+    state.home.reset()
+    do_nextup()
+    console.log state.home_score
+    console.log state.away_score
+    Renderer.scores(state)
+    Renderer.bases(state)
+    #console.log "the score is " + state.away_score
   channel.bind('homerun', homerun)
 
 
@@ -291,30 +309,24 @@ load "games#score", ->
 
 
   @do_score = ->
+    console.log "DOing score"
     score_json = {
-      topOrBottom: 0
+      topOrBottom: (if state.active_lineup().name == "home" then 1 else 0)
     }
+    console.log score_json.topOrBottom
     ajax_put('score', score_json)
     score(score_json)
     do_refresh()
 
   score = (score_json) ->
-    state.innings.score++
-    state.counters.balls = 0
-    state.counters.strikes = 0
-    console.log (state.active_lineup().name)
+    state.update()
     if(state.active_lineup().name == "home")
-      console.log ("got here")
-      score_json.topOrBottom = 0
-      state.home_score++
-      console.log (state.home_score)
       $("#home-inning-row [data-number='"+state.innings.number+"']").html(state.innings.score)
     else if(state.active_lineup().name == "away")
-      score_json.topOrBottom = 1
-      state.away_score++
       $("#away-inning-row [data-number='"+state.innings.number+"']").html(state.innings.score)
     Renderer.counters(state)
-
+    Renderer.bases(state)
+    Renderer.scores(state)
   channel.bind('score', score)
 
 window.update_popover = (id, name) ->
